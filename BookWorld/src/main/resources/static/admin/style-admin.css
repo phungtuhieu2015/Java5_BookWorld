@@ -166,8 +166,23 @@
     border: 1px solid var(--mau-border);
     border-radius: 6px;
     min-height: 100%;
-
-
+}
+.page-wrapper .page-title {
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 8px 15px;
+    margin: 0px 0px 0px auto;
+    background: var(--mau-chu-sidebar);
+    min-width: 200px;
+    max-width: 300px;
+    height: 36px;
+    border-radius:0px 6px 0px 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(17px, -16px);
 }
 #content article .card.page-wrapper .nav .nav-link {
     color: var(--mau-chu-mac-dinh-sidebar);
