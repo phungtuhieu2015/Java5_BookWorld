@@ -14,20 +14,6 @@ body {
   margin: 0 auto;
 }
 
-a {
-  border: 0 none;
-  outline: 0;
-  text-decoration: none;
-}
-
-strong {
-  font-weight: bold;
-}
-
-p {
-  margin: 0.75rem 0 0;
-}
-
 .td_titleBook {
   font-size: 0.75rem;
   font-weight: normal;
@@ -35,20 +21,20 @@ p {
   padding: 0;
 }
 
-input,
+.mainct input,
 button {
   border: 0 none;
   outline: 0 none;
 }
 
-img,
+.product-image img,
 .basket-module,
 .basket-labels,
 .basket-product {
   width: 100%;
 }
 
-input,
+.mainct input,
 button,
 .basket,
 .basket-module,
@@ -63,25 +49,8 @@ button,
   float: left;
 }
 
-/* .price:before,
-.subtotal:before,
-.subtotal-value:before,
-.total-value:before,
-.promo-value:before {
-  content: "£";
-} */
-
 .hide {
   display: none;
-}
-
-main {
-  clear: both;
-  font-size: 0.75rem;
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 1rem 0;
-  width: 1260px;
 }
 
 .basket,
@@ -98,11 +67,6 @@ aside {
 
 .basket-module {
   color: #111;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.3125rem;
 }
 
 .promo-code-field {
@@ -251,19 +215,32 @@ li.subtotal:before {
   padding: 2px;
   width: 3.75rem;
 }
-
+.mainct {
+  clear: both;
+  font-size: 0.75rem;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 1rem 0;
+  width: 1260px;
+  background-color: red;
+  position: relative;
+  height: 1800px;
+}
 aside {
   float: right;
   position: relative;
   width: 30%;
+  background-color: red;
 }
 
 .summary {
   background-color: #eee;
   border: 1px solid #aaa;
   padding: 1rem;
-  position: fixed;
+  /* position: fixed; */
+  margin-top: 30px;
   width: 350px;
+
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;

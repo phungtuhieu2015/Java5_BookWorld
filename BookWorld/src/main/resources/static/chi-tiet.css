@@ -6,11 +6,10 @@
   margin: 0;
   font-family: "Open Sans", sans-serif;
 }
-body {
+.khung {
   line-height: 1.5;
   max-width: 1180px;
   margin: 0 auto;
-  background-color: #dddada;
 }
 
 .container_tai {
@@ -19,7 +18,7 @@ body {
   margin: 0 auto;
   margin-top: 60px;
   height: 500px;
-  background-color: #ffffff;
+  background-color: #efdada;
   border-radius: 10px;
 }
 .product-imgs {
@@ -28,7 +27,7 @@ body {
   display: flex;
 }
 /* slide */
-img {
+.container_tai img {
   width: 100%;
   display: block;
 }
@@ -61,8 +60,9 @@ img {
   margin: 0.3rem;
 }
 .td-img-item img {
-  width: 66px;
-  border: 1px solid rgb(211, 208, 208);
+  width: 69px;
+
+  border: 1px solid rgb(254, 8, 8);
 }
 .td-img-item:nth-child(1),
 .td-img-item:nth-child(2),
