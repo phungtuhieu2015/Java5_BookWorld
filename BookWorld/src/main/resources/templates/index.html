@@ -4,17 +4,82 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Book World</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/elegant-icons.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/fontawesome-free-6.4.0-web/css/all.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/nice-select.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/jquery-ui.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/slicknav.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/assets/css/owl.carousel.min.css}" rel="stylesheet" type="text/css" />
+<title>Book World</title>
+
+
 </head>
 <body>
     <!-- Header -->
     <div th:replace="fragment/header.html :: #header "></div>
     <!-- /Header -->
-    <div class="header">
-        <div class="header__child"></div>
-    </div>
 
+ <!--footer  -->
+ <div th:replace="fragment/Carousel.html :: #hero"></div>
+ <!--/footer  -->
+
+ 
+<!-- featured -->
+ <div th:replace="fragment/featured.html :: #featured"></div>
+<!-- /featured -->
+
+<!--product  -->
+<div th:replace="fragment/product.html :: #product"></div>
+<!--/product  -->
+
+
+<!--footer  -->
     <div th:replace="fragment/footer.html :: #footer"></div>
+    <!--/footer  -->
+
+
+
+
+ 
+
+
+
+
 </body>
+<!-- link html demo chạy không server  -->
+<!-- <link rel="stylesheet" href="..//static/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="..//static/css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="..//static/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="..//static/css/jquery-ui.min.css" type="text/css">
+<link rel="stylesheet" href="..//static/css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="..//static/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="..//static/css/style.css" type="text/css">
+
+<script src="..//static/css/js/jquery-3.3.1.min.js"></script>
+<script src="..//static/css/js/bootstrap.min.js"></script>
+<script src="..//static/css/js/jquery.nice-select.min.js"></script>
+<script src="..//static/css/js/jquery-ui.min.js"></script>
+<script src="..//static/css/js/jquery.slicknav.js"></script>
+<script src="..//static/css/js/mixitup.min.js"></script>
+<script src="..//static/css/js/owl.carousel.min.js"></script>
+<script src="..//static/css/js/main.js"></script>   -->
+<!-- link html demo chạy không server  -->
+
+
+<!-- Link chính -->
+<script th:src="@{/assets/css/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/assets/css/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/css/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/assets/css/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/assets/css/js/jquery-ui.min.js}"></script>
+<script th:src="@{/assets/css/js/jquery.slicknav.j}"></script>
+<script th:src="@{/assets/css/js/mixitup.min.js}"></script>
+<script th:src="@{/assets/css/js/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/css/js/main.js}"></script>
+
+
 </html>
