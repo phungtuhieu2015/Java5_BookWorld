@@ -12,4 +12,14 @@ public class AccountController {
 
         return "login";
     }
+    @RequestMapping("/forgot-password")
+    public String doForgotPassword(Model model){
+
+        return "forgot-password";
+    }
+    @RequestMapping("/change-password")
+    public String doChangePassword(Model model){
+
+        return "change-password";
+    }
 }
