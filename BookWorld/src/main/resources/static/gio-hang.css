@@ -222,15 +222,16 @@ li.subtotal:before {
   overflow: hidden;
   padding: 1rem 0;
   width: 1260px;
-  background-color: red;
+  background-color: rgb(193, 190, 190);
+  border-radius: 5px;
   position: relative;
-  height: 1800px;
+  
 }
 aside {
   float: right;
   position: relative;
   width: 30%;
-  background-color: red;
+
 }
 
 .summary {
@@ -238,7 +239,7 @@ aside {
   border: 1px solid #aaa;
   padding: 1rem;
   /* position: fixed; */
-  margin-top: 30px;
+  margin-top: 26px;
   width: 350px;
 
   -webkit-box-sizing: border-box;
