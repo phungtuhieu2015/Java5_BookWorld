@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin")
-public class AuthorController {
-    @RequestMapping("/author")
-    public String author(Model model) {
-        model.addAttribute("pageName","author");
+public class CategoriesController {
+    @RequestMapping("/categories")
+    public String publisher(Model model) {
+        model.addAttribute("pageName","categories");
         return "admin/index-admin";
     }
 }
