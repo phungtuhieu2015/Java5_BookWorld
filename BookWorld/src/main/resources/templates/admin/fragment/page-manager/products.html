@@ -1,0 +1,168 @@
+<div class="card page-wrapper">
+  <div class="card-body">
+    <div class="page-title">Sách</div>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link   " id="nav-form-tab" data-bs-toggle="tab" data-bs-target="#nav-form" type="button" role="tab" aria-controls="nav-form" aria-selected="false">Cập nhật</button>
+        <button class="nav-link active" id="nav-authors-tab" data-bs-toggle="tab" data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh sách</button>
+       
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <!-- Cập nhật -->
+      <div class="tab-pane fade " id="nav-form" role="tabpanel" aria-labelledby="nav-form-tab" tabindex="0">
+        <div class="form-wrapper form-center">
+            <form  class="form-section" action="" method="post" enctype="multipart/form-data">
+              <div class="row">
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="id" id="youtube-id" tabindex="1"  class="form-control" placeholder="Mã sách" th:value="${id}">
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control" placeholder="Tên sách" value="">
+              </div>
+              <div class="form-group mb-3 col-6">
+                <!-- <select class="form-select" >
+                  <option value="1">Quốc tịch</option>
+                  <option value="1">Việt Nam</option>
+                  <option value="2">Hoa Kỳ</option>
+                  <option value="3">Nga</option>
+                </select> -->
+              
+                  <input class="form-control input-datalist"   style="border-radius:0;"  list="DSQuocTich" placeholder="Tác giả...">
+                  <datalist id="DSQuocTich">
+                    <option value="Tác giả 1">
+                    <option value="Tác giả 2">
+                    <option value="Tác giả 3">
+                    <option value="Tác giả 4">
+                    <option value="Tác giả 5">
+                  </datalist>
+              </div>
+              <div class="form-group mb-3 col-6">
+                <!-- <select class="form-select" >
+                  <option value="1">Quốc tịch</option>
+                  <option value="1">Việt Nam</option>
+                  <option value="2">Hoa Kỳ</option>
+                  <option value="3">Nga</option>
+                </select> -->
+              
+                  <input class="form-control input-datalist"   style="border-radius:0;"  list="DSQuocTich" placeholder="Nhà xuất bản...">
+                  <datalist id="DSQuocTich">
+                    <option value="NXB 1">
+                    <option value="NXB 2">
+                    <option value="NXB 3">
+                    <option value="NXB 4">
+                    <option value="NXB 5">
+                  </datalist>
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Đơn giá" value="" >
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Số lượng" value="" >
+              </div>
+            
+              
+              </div>
+              <div class="mb-3">
+                <div class="input-group mb-3">
+                  <input type="file" class="form-control" id="inputGroupFile02">
+                  <label class="input-group-text" for="inputGroupFile02">Hình ảnh</label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-group text-black">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="active" checked id="active1" 
+                      value="true">
+                    <label class="form-check-label" for="active1">Còn hàng</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"   name="active" id="inactive2" value="false">
+                    <label class="form-check-label" for="inactive2">Hết hàng</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb-3 text-black col-12">
+                 <textarea class="form-control" name="description" id="description1" placeholder="Mô tả" rows="4"></textarea>
+              </div>
+
+              <div class="form-group mb-3 d-flex justify-content-end">
+                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
+                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Update">
+                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
+                <input type="submit" tabindex="4" class="form-control btn ms-2" value="Reset">
+              </div>
+            </form>
+         </div>
+      </div>
+      <!-- /Cập nhật -->
+      <!-- Danh sách -->
+      <div class="tab-pane fade  show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
+        <div class="table-top row px-0 mx-0">
+          <div class="table-top__search-set col-6 px-0">
+            <div class="search-input">
+            </div>
+          </div>  
+          <div class="table-top__wordset col-6  px-0">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+              <div class="container-fluid px-0">
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <ul class="navbar-nav ms-auto me-0 mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="bi bi-filetype-exe"></i></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="bi bi-printer-fill"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+        <div class="table-bottom">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="tb-header">
+                    <th scope="col">ID </th>
+                    <th scope="col">Tên sách</th>
+                    <th scope="col">Tác giả</th>
+                    <th scope="col">Danh mục</th>
+                    <th scope="col">NXB</th>
+                    <th scope="col">Ngày tạo</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Mô tả</th>
+                    <th scope="col">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+     <!-- /Danh sách -->
+    </div>
+    
+  </div>
+</div>

@@ -1,0 +1,260 @@
+<div class="card page-wrapper">
+  <div class="card-body">
+    <div class="page-title"> Nhà xuất bản</div>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link  " id="nav-form-tab" data-bs-toggle="tab" data-bs-target="#nav-form" type="button" role="tab" aria-controls="nav-form" aria-selected="false">Cập nhật</button>
+        <button class="nav-link active " id="nav-authors-tab" data-bs-toggle="tab" data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh sách</button>
+        
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <!-- Cập nhật -->
+      <div class="tab-pane fade " id="nav-form" role="tabpanel" aria-labelledby="nav-form-tab" tabindex="0">
+        <div class="form-wrapper form-center">
+            <form  class="form-section" action="" method="post" enctype="multipart/form-data">
+              <div class="row">
+              <div class="form-group mb-3 col-6">
+                <input type="text"  tabindex="1"  class="form-control" placeholder="Mã NXB " th:value="${id}">
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control" placeholder="Tên NXB" value="">
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="views"  tabindex="1" class="form-control" placeholder="Địa chi" value="" >
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="views"  tabindex="1" class="form-control" placeholder="Thành phố" value="" >
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="email" name="views"  tabindex="1" class="form-control" placeholder="Email" value="" >
+              </div>
+              <div class="form-group mb-3 col-6">
+                <input type="text" name="views"  tabindex="1" class="form-control" placeholder="Số điện thoại" value="" >
+              </div>
+              <div class="form-group mb-3 col-12">
+                <!-- <select class="form-select" >
+                  <option value="1">Quốc tịch</option>
+                  <option value="1">Việt Nam</option>
+                  <option value="2">Hoa Kỳ</option>
+                  <option value="3">Nga</option>
+                </select> -->
+              
+                  <input class="form-control input-datalist"   style="border-radius:0;"  list="DSQuocTich" placeholder="Quốc tịch...">
+                  <datalist id="DSQuocTich">
+                    <option value="Việt Nam">
+                    <option value="Hoa Kỳ">
+                    <option value="Nga">
+                    <option value="Pháp">
+                    <option value="Đức">
+                  </datalist>
+              </div>
+              <!-- <div class="form-group text-black">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="active" id="active1" 
+                    value="true">
+                  <label class="form-check-label" for="active1">Active</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio"   name="active" id="inactive2" value="false">
+                  <label class="form-check-label" for="inactive2">Inactive</label>
+                </div>
+              </div> -->
+              </div>
+              
+              <div class="form-group mb-3 d-flex justify-content-end">
+                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
+                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Update">
+                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
+                <input type="submit" tabindex="4" class="form-control btn ms-2" value="Reset">
+              </div>
+            
+            </form>
+         </div>
+      </div>
+      <!-- /Cập nhật -->
+      <!-- Danh sách -->
+      <div class="tab-pane fade show active  " id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
+        <div class="table-top row px-0 mx-0">
+          <div class="table-top__search-set col-6 px-0">
+            <div class="search-input">
+            </div>
+          </div>  
+          <div class="table-top__wordset col-6  px-0">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+              <div class="container-fluid px-0">
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <ul class="navbar-nav ms-auto me-0 mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="bi bi-filetype-exe"></i></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="bi bi-printer-fill"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+        <div class="table-bottom">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="tb-header">
+                    <th scope="col">ID </th>
+                    <th scope="col" >Tên NXB</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Thành phố</th>
+                    <th scope="col" >Quốc gia</th>
+                    <th scope="col" >Email</th>
+                    <th scope="col" >SĐT</th>
+                    <th scope="col">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row">1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td class="td-action ">
+                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            
+        </div>
+      </div>
+     <!-- /Danh sách -->
+    </div>
+    
+  </div>
+</div>

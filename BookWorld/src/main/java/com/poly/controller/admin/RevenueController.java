@@ -1,4 +1,4 @@
-package com.poly.controller;
+package com.poly.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin")
-public class IndexAdminController {
-    @RequestMapping("/index")
-    public String index(Model model) {
-        // model.addAttribute("pageName","author");
+public class RevenueController {
+    @RequestMapping("/revenue")
+    public String revenue(Model model){
+        model.addAttribute("pageName", "revenue");
         return "admin/index-admin";
     }
 }
