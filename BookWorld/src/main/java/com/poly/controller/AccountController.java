@@ -22,4 +22,9 @@ public class AccountController {
 
         return "change-password";
     }
+    @RequestMapping("/sign-up")
+    public String doSignUp(Model model){
+
+        return "sign-up";
+    }
 }
