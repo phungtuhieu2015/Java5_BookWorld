@@ -47,7 +47,7 @@
 }
 
 .img-showcase img:hover {
-  transform: scale(1.4);
+  transform: scale(1.2);
 }
 .img-select {
   width: 15%;
@@ -61,8 +61,8 @@
 }
 .td-img-item img {
   width: 69px;
-
-  border: 1px solid rgb(254, 8, 8);
+  height: 97.7px;
+  border: 1px solid rgb(159, 155, 155);
 }
 .td-img-item:nth-child(1),
 .td-img-item:nth-child(2),
