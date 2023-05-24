@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexAdminController {
     @RequestMapping("/index")
     public String index(Model model) {
-        // model.addAttribute("pageName","author");
+        model.addAttribute("pageName","content-index index");
         return "admin/index-admin";
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthorsController {
     @RequestMapping("/authors")
     public String author(Model model) {
-        model.addAttribute("pageName","authors");
+        model.addAttribute("pageName","authors products");
         return "admin/index-admin";
     }
 }

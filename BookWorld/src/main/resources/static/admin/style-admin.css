@@ -6,7 +6,7 @@
     --mau-dong-bo:#CA2F2F;
 
     /* Màu chữ */
-    --mau-chu-sidebar:#FE9F43;
+    --mau-chu-sidebar:#CA2F2F;
     --mau-chu-mac-dinh-sidebar :#67748E;
   
     /* Button */
@@ -15,7 +15,7 @@
     --mau-btn-cap-nhat :#28a745;
     --mau-chu-btn-hover: #212529;
     --mau-btn-thong-tin: #006adb;
-    --mau-btn-active: rgba(254, 159, 67, 0.08);
+    --mau-btn-active: rgba(254, 67, 67, 0.08);
     /* backgroud */
     --mau-bg-hover-tr: #f5f5f5;
     --mau-bg-header-table:#FAFBFE;
@@ -34,6 +34,15 @@
 .header-left {
     border-right: 1px solid var(--mau-border);
     padding: 0px 20px !important;
+}
+.header-left__logo .logo-box {
+    width: 100%;
+    height: 58px;
+}
+.header-left__logo .logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .header-right .header-right__navbar {
     background-color: #fff !important;

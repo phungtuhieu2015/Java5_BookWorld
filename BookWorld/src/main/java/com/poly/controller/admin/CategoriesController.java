@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CategoriesController {
     @RequestMapping("/categories")
     public String publisher(Model model) {
-        model.addAttribute("pageName","categories");
+        model.addAttribute("pageName","categories products");
         return "admin/index-admin";
     }
 }

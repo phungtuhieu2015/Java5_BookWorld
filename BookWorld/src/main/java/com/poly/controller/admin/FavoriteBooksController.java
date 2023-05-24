@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FavoriteBooksController {
     @RequestMapping("/favorite-books")
     public String author(Model model) {
-        model.addAttribute("pageName","favorite-books");
+        model.addAttribute("pageName","favorite-books statistical");
         return "admin/index-admin";
     }
 }
