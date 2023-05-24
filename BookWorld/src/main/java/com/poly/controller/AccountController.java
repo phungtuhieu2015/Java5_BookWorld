@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/bookworld")
+@RequestMapping("/account")
 public class AccountController {
     @RequestMapping("/login")
     public String doLogin(Model model){
@@ -21,10 +21,11 @@ public class AccountController {
     public String doChangePassword(Model model){
 
         return "change-password";
-    }
+    } 
     @RequestMapping("/sign-up")
     public String doSignUp(Model model){
 
         return "sign-up";
     }
+
 }
