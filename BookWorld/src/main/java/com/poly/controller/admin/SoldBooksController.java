@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SoldBooksController {
     @RequestMapping("/sold-books")
     public String soldeBooks(Model model){
-        model.addAttribute("pageName", "sold-books");
+        model.addAttribute("pageName", "sold-books statistical");
         return "admin/index-admin";
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UsersController {
     @RequestMapping("/users")
     public String soldeBooks(Model model){
-        model.addAttribute("pageName", "users");
+        model.addAttribute("pageName", "users user");
         return "admin/index-admin";
     }
 }

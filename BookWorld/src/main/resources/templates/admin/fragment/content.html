@@ -5,7 +5,8 @@
             <div th:replace="admin/fragment/sidebar-menu.html :: #sidebar-menu "></div>
         </aside>
         <article class="col-10">
-            <div th:include="${'admin/fragment/page-manager/' + pageName + '.html'}"></div>
+            <div th:include="${'admin/fragment/page-manager/' + #strings.substringBefore(pageName, ' ')  + '.html'}"></div>
+
         </article>
     </div>
 </div>

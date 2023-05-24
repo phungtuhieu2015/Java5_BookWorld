@@ -1,7 +1,7 @@
 :root {
     --shadow-form :  rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-    --mau-border-input-focus:     #FE9F43;
-    --mau-border-btn-focus:     #e08f3d;
+    --mau-border-input-focus:     #CA2F2F;
+    --mau-border-btn-focus:     #ff4848;
 }
 .form-wrapper .card .card-header {
     background-color: #fff;

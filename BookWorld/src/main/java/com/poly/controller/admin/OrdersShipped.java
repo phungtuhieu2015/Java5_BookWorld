@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class OrdersShipped {
     @RequestMapping("/orders-shipped")
     public String ordersShipped(Model model) {
-        model.addAttribute("pageName", "orders-shipped");
+        model.addAttribute("pageName", "orders-shipped orders");
         return "admin/index-admin";
     }
 }
