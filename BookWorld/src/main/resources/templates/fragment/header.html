@@ -44,7 +44,7 @@
                                  </ul>
                              </div>
                              <div class="header__top__right__auth">
-                                 <a href="#"><i class="fa fa-user"></i> Login</a>
+                                 <a th:href="@{/account/login}"><i class="fa fa-user"></i> Login</a>
                              </div>
                          </div>
                      </div>
@@ -63,17 +63,18 @@
                      <nav class="header__menu">
                          <ul>
                              <li class="active"><a th:href="@{/bookworld/index}">Trang Chủ</li>
-                             <li><a href="#">Giới Thiệu</a></li>
-                             <li><a href="#l">Liên Hệ</a></li>
-                             <li><a href="#">Yêu Thích</a></li>
+                             <li><a th:href="@{/bookworld/gioithieu}">Giới Thiệu</a></li>
+                             <li><a th:href="@{/bookworld/lienhe}">Liên Hệ</a></li>
+                             <li><a th:href="@{/bookworld/yeuthich}">Yêu Thích</a></li>
                          </ul>
                      </nav>
                  </div>
                  <div class="col-lg-3">
                      <div class="header__cart">
                          <ul>
-                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                             <li><a th:href="@{/bookworld/yeuthich}"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                             <li><a th:href="@{/bookworld/giohang}"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                          
                          </ul>
                          <div class="header__cart__price">item: <span>$150.00</span></div>
                      </div>
