@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.model.user;
 import com.poly.utils.ParamService;
@@ -28,10 +29,19 @@ public class AccountController {
     }
 
     @RequestMapping("/login/save")
-    public String postLogin(@Valid @ModelAttribute("user") user account ,BindingResult result){
-
+    public String postLogin(@Valid @ModelAttribute("user") user account ,BindingResult result,Model model,RedirectAttributes params){
+        System.out.println(account.getId());
+        System.out.println(account.getPassword());
         if(result.hasErrors()){
-            return"login";
+            if(account.getId().equalsIgnoreCase("admin") && account.getPassword().equalsIgnoreCase("admin")){
+                return "redirect:/admin/index";
+            }else{
+              if(!account.getId().isBlank() && !account.getPassword().isBlank()){
+
+                model.addAttribute("checkLG", true);
+                return"/index";
+              }
+            }
         }
         return"login";
     }
@@ -46,10 +56,7 @@ public class AccountController {
     public String postForgotPassword(@Valid @ModelAttribute("user") user account ,BindingResult result){
 
         if(result.hasErrors()){
-
-
             return"forgot-password";
-
         }
         return"forgot-password";
     }

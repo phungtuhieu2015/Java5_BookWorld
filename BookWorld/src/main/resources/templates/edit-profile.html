@@ -7,17 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <th:block th:include="fragment/css-links.html"></th:block>
-    <link rel="stylesheet" href="@{/assets/css/edit-profile.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/edit-profile.css}">
 
 </head>
 
 <body>
 
-        <!-- Header -->
-        <div th:replace="fragment/header.html :: #header "></div>
-        <!-- /Header -->
+    <!-- Header -->
+    <div th:replace="fragment/header.html :: #header "></div>
+    <!-- /Header -->
     <main style="margin: 0 auto;">
-     
+
         <div class="container-xl px-4 mt-5 mb-5 d-flex justify-content-center ">
             <!-- Account page navigation-->
             <div class="row w-75">
@@ -90,17 +90,19 @@
                                     </div>
                                 </div>
 
-
-                                <button class="btn btn-primary" type="button">Save changes</button>
+                                <div class="cardbtn">
+                                    <button class="btn btn-primary" type="submit">Save changes</button>
+                                    <button class="btnCP" type="submit">Change password</button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    <!--footer  -->
-    <div th:replace="fragment/footer.html :: #footer"></div>
-    <!--/footer  -->
+        <!--footer  -->
+        <div th:replace="fragment/footer.html :: #footer"></div>
+        <!--/footer  -->
     </main>
 
     <script th:src="@{/assets/js/edit-profile.js}"></script>
