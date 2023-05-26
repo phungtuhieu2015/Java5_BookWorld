@@ -13,13 +13,16 @@
 
 <body>
 
-
+        <!-- Header -->
+        <div th:replace="fragment/header.html :: #header "></div>
+        <!-- /Header -->
     <main style="margin: 0 auto;">
-        <div class="container-xl px-4 mt-5 mb-5 ">
+     
+        <div class="container-xl px-4 mt-5 mb-5 d-flex justify-content-center ">
             <!-- Account page navigation-->
-            <div class="row ">
+            <div class="row w-75">
 
-                <div class="col-xl-8  ">
+                <div class="col-xl-12">
                     <!-- Account details card-->
                     <div class="card mb-4 ">
                         <div class="card-header">Account Details</div>
@@ -95,8 +98,11 @@
                 </div>
             </div>
         </div>
-
+    <!--footer  -->
+    <div th:replace="fragment/footer.html :: #footer"></div>
+    <!--/footer  -->
     </main>
+
     <script th:src="@{/assets/js/edit-profile.js}"></script>
 </body>
 

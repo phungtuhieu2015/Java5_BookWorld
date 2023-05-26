@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.poly.model.DB;
 
 @Controller
-@RequestMapping("/bookworld")
+
 public class IndexController {
     @RequestMapping("/index")
     public String index(Model model){

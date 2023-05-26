@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.model.user;
@@ -99,12 +100,17 @@ public class AccountController {
         return "sign-up";
     }
     @RequestMapping("/sign-up/save")
-    public String postSignUp(@Valid @ModelAttribute("user") user account ,BindingResult result){
+    public String doSignUp(@Valid @ModelAttribute("user") user account ,BindingResult result){
 
         if(result.hasErrors()){
             return"sign-up";
         }
         return"sign-up";
+    }
+    @RequestMapping("/profile")
+    public String doMyProfile(Model model){
+
+        return"edit-profile";
     }
 
 }
