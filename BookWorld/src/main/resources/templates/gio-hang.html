@@ -49,8 +49,8 @@
                 <div class="subtotal td-giaTong">0</div>
 
                 <div class="remove">
-                    <a  th:onclick="removeCart([[${prod}]],[[${pStat}]])"  ><i class="bi bi-trash3"></i></a >
-                    <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  class="removeBtn"><i class="bi bi-trash3"></i></button > -->
+                    <a  th:href="@{/cart/remove/__${prod.id}__}" class="btn-delete" ><i class="bi bi-trash3"></i></a >
+                    <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  th:onclick="removeCart([[${prod}]],[[${pStat}]])class="removeBtn"><i class="bi bi-trash3"></i></button > -->
                      
                     </div>
             </div>
