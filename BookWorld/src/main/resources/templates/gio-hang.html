@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Giỏ hàng</title>
 
     <th:block th:include="fragment/css-links.html"></th:block>
     <link rel="stylesheet" th:href="@{/assets/css/gio-hang.css}">
@@ -17,7 +17,7 @@
     <!--  -->
     <div class="mainct mt-5 mb-5">
         <div class="basket">
-
+            <button th:onclick="removeCartAll()"  style="font-size: 18px; border-radius: 10px ;" class="btn btn-danger" >clear all</button>
             <div class="basket-labels">
                 <ul>
 
@@ -28,220 +28,37 @@
 
                 </ul>
             </div>
-
-            <div class="basket-product">
-
+            <div class="basket-product" th:each="prod,pStat: ${cart.products}" >
                 <div class="item">
-
                     <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
+                            <img th:src="@{/assets/img/__${prod.anh}__}"
                             alt="Placholder Image 2" height="148px" class="product-frame">
                     </div>
                     <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
+                        <h1 class="td_titleBook"><strong th:text="${prod.ten}"> </strong>
                         </h1>
-
                     </div>
                 </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
+                <div class="price"><span class="td-giaGiam"th:text="${prod.gia}"></span>
+                    <!-- <p><del class="td-giaCu">86.000</del></p> -->
                 </div>
                 <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
+                    <input type="number" id="example" value="1" th:onchange="refreshCart([[${prod}]],[[${pStat}]])"  name="example" min="0" max="100" step="1" pattern="\d+"
                         class="input-number">
                 </div>
-                <div class="subtotal td-giaTong">104.00</div>
+                <div class="subtotal td-giaTong">0</div>
 
                 <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
+                    <a  th:onclick="removeCart([[${prod}]],[[${pStat}]])"  ><i class="bi bi-trash3"></i></a >
+                    <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  class="removeBtn"><i class="bi bi-trash3"></i></button > -->
+                     
+                    </div>
             </div>
-            <div class="basket-product">
-
-                <div class="item">
-
-                    <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
-                    </div>
-                    <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
-                        </h1>
-
-                    </div>
-                </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
-                </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">104.00</div>
-
-                <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
-            </div>
-            <div class="basket-product">
-
-                <div class="item">
-
-                    <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
-                    </div>
-                    <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
-                        </h1>
-
-                    </div>
-                </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
-                </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">104.00</div>
-
-                <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
-            </div>
-            <div class="basket-product">
-
-                <div class="item">
-
-                    <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
-                    </div>
-                    <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
-                        </h1>
-
-                    </div>
-                </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
-                </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">104.00</div>
-
-                <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
-            </div>
-            <div class="basket-product">
-
-                <div class="item">
-
-                    <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
-                    </div>
-                    <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
-                        </h1>
-
-                    </div>
-                </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
-                </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">104.00</div>
-
-                <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
-            </div>
-            <div class="basket-product">
-
-                <div class="item">
-
-                    <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
-                    </div>
-                    <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
-                        </h1>
-
-                    </div>
-                </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
-                </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">104.00</div>
-
-                <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
-            </div>
-            <div class="basket-product">
-
-                <div class="item">
-
-                    <div class="product-image">
-                        <img src="https://cdn0.fahasa.com/media/catalog/product/h/_/h_nh-tinh-c_a-m_t-k_-ngh_-nhi_u-tr_c-1-1.jpg"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
-                    </div>
-                    <div class="product-details">
-                        <h1 class="td_titleBook"><strong> Hành Tinh Của Một Kẻ Nghĩ Nhiều</strong>
-                        </h1>
-
-                    </div>
-                </div>
-                <div class="price"><span class="td-giaGiam">43.000 đ</span>
-                    <p><del class="td-giaCu">86.000</del></p>
-                </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1" name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">104.00</div>
-
-                <div class="remove">
-                    <button><i class="bi bi-trash3"></i></button>
-                </div>
-
-
-            </div>
-
-
-
-
 
         </div>
         <aside>
             <div class="summary">
                 <div class="summary-total-items">Thông Tin Khách Hàng</div>
-
 
                 <div class="summary-delivery ">
                     <div class="mb-5">
@@ -302,8 +119,6 @@
                                 </div>
                             </label>
                         </div>
-
-
                     </div>
                     <div class="td-khung2 ">
                         <div class="fhs-radio-big-with-icon-container">
@@ -353,7 +168,8 @@
     <div th:replace="fragment/footer.html :: #footer"></div>
     <th:block th:include="fragment/script-links.html"></th:block>
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script th:src="@{/assets/js/gio-hang.js}"></script>
 </body>
 
 </html>

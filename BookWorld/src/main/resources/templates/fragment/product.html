@@ -12,12 +12,12 @@
 
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href=""><i class="fa-solid fa-share"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a th:href="@{/cart/add/__${item.id}__}"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
 
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#" th:text="${item.title}">Sách 1</a></h6>
+                            <h6><a href="#" th:text="${item.ten}">Sách 1</a></h6>
                             <h4>200.000 VNĐ</h4>
                             <h5>100.000 VNĐ</h5>
                         </div>

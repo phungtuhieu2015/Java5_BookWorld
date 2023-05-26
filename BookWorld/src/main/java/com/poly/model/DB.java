@@ -3,20 +3,20 @@ package com.poly.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
 
-@Service
+
 public class DB {
-    public static Map<Integer, book> items = new HashMap<>();
+    public static Map<String, Product> products = new HashMap<>();
     static {
-    items.put(1, new book("1", "Sach 1", 10, "Sach1.jpg" ));
-    items.put(2, new book("2", "Sach 2", 10, "Sach2.jpg" ));
-    items.put(3, new book("3", "Sach 3", 10, "Sach3.jpg" ));
-    items.put(4, new book("4", "Sach 4", 10, "Sach4.jpg" ));
-    items.put(5, new book("5", "Sach 5", 10, "Sach5.jpg" ));
-    items.put(6, new book("6", "Sach 6", 10, "Sach6.jpg" ));
-    items.put(7, new book("7", "Sach 7", 10, "Sach7.jpg" ));
-    items.put(8, new book("8", "Sach 8", 10, "Sach8.jpg" ));
+    products.put("1", new Product("1", "Sach 1", 10, 100, "Sach1.jpg" ));
+    products.put("2", new Product("2", "Sach 2", 10, 234, "Sach2.jpg" ));
+    products.put("3", new Product("3", "Sach 3", 10, 523, "Sach3.jpg" ));
+    products.put("4", new Product("4", "Sach 4", 10, 623, "Sach4.jpg" ));
+    products.put("5", new Product("5", "Sach 5", 10, 236, "Sach5.jpg" ));
+    products.put("6", new Product("6", "Sach 6", 10, 873, "Sach6.jpg" ));
+    products.put("7", new Product("7", "Sach 7", 10, 58, "Sach7.jpg" ));
+    products.put("8", new Product("8", "Sach 8", 10, 364, "Sach8.jpg" ));
+   
    
     }
 }

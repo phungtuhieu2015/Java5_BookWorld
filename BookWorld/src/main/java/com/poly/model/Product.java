@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class book {
+public class Product {
 
-
-   
-    
 	String id;
-    String title;
+    String ten;
     int soLuong;
+    double gia;
     String anh;
-    
+ 
 }

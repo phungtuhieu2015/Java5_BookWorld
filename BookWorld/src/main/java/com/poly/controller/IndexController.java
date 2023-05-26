@@ -11,8 +11,7 @@ import com.poly.model.DB;
 public class IndexController {
     @RequestMapping("/index")
     public String index(Model model){
-        model.addAttribute("items", DB.items.values());
+        model.addAttribute("items", DB.products.values());
         return "index";
-        
     }
 }
