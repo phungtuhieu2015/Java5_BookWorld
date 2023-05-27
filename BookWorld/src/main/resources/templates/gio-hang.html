@@ -49,8 +49,8 @@
                 <div class="subtotal td-giaTong">0</div>
 
                 <div class="remove">
-                    <a  th:href="@{/cart/remove/__${prod.id}__}" class="btn-delete" ><i class="bi bi-trash3"></i></a >
-                    <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  th:onclick="removeCart([[${prod}]],[[${pStat}]])class="removeBtn"><i class="bi bi-trash3"></i></button > -->
+                    <a  th:onclick="removeCart([[${prod}]],[[${pStat}]])" class="btn-delete"><i class="bi bi-trash3"></i></a >
+                    <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  class="removeBtn"><i class="bi bi-trash3"></i></button > -->
                      
                     </div>
             </div>
@@ -152,8 +152,6 @@
                     </div>
 
                 </div>
-
-
                 <div class="summary-total">
                     <div class="total-title">Tổng</div>
                     <div class="total-value final-value td-giaGiam" id="basket-total">130.00</div>
@@ -167,9 +165,9 @@
     <!--  -->
     <div th:replace="fragment/footer.html :: #footer"></div>
     <th:block th:include="fragment/script-links.html"></th:block>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script th:src="@{/assets/js/gio-hang.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+   
 </body>
 
 </html>
