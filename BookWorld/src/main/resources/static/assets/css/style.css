@@ -466,6 +466,9 @@ ol {
 	opacity: 0;
 	visibility: hidden;
 }
+.header__menu ul li.active a {
+	color: #ff0000;
+}
 
 .header__menu ul li .header__menu__dropdown li {
 	margin-right: 0;
@@ -483,9 +486,7 @@ ol {
 	padding: 5px 15px;
 }
 
-.header__menu ul li.active a {
-	color: #ff0000;
-}
+
 
 .header__menu ul li:hover .header__menu__dropdown {
 	top: 30px;
