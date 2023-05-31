@@ -1,6 +1,13 @@
 package com.poly.model;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,15 +15,37 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "Users")
+public class User {
+	
+  @Id
+  String username;
 
-public class user {
-    @NotBlank(message = "Không được để trống tài khoản")
-    String id;
-    @NotBlank(message = "Không được để trống mật khẩu")
-    String password;
-    @NotBlank(message = "Không được để trống email")
-    String email;
-    @NotBlank(message = "Không được để trống họ và tên")
-    String fullName;
+  String password;
 
+  String fullName;
+
+  String phone;
+
+  String email;
+
+  String address;
+
+  String image;
+
+  Boolean admin;
+
+  Boolean activated;
+
+
+  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  List<Share> share ;
+
+  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  List<Favorite> favorite ;
+
+  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  List<Order> order ;
+    
 }
