@@ -17,11 +17,13 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -42,13 +44,13 @@ public class Order {
 
     Integer status;
 
-    Integer payment_method;
+    Integer paymentMethod;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "cancellation_date")
     Date cancellationDate;
 
-    String cancellation_reason;
+    String cancellationReason;
 
 
     @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
