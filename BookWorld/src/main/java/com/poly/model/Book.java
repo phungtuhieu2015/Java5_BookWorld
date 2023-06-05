@@ -27,6 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "Books")
+
 public class Book {
     
     @Id
@@ -57,17 +58,17 @@ public class Book {
     String description;
 
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<OrderDetail> orderDetail;
 
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<AuthorBook> authorBook;
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Share> share;
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Favorite> favorite;
 
 }

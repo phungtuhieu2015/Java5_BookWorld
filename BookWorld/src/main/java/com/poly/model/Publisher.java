@@ -39,7 +39,7 @@ public class Publisher {
 
     String phone;
 
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.REFRESH)
     List<Book> book;
 
 }

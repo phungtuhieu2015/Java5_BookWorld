@@ -92,7 +92,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="" th:each="item : ${items}">
+                <tr class="" th:each="item : ${page.content}">
                   <td scope="row" th:text="${item.id}">1</td>
                   <td th:text="${item.categoryName}"></td>
                   <td class="td-action ">
@@ -109,9 +109,34 @@
           </div>
 
         </div>
+        <!-- page -->
+        <nav aria-label="Page navigation example" class="pagination-section">
+          <div class="text">
+            <i th:text="${page.number +1}"></i> <strong>of</strong> <i th:text="${page.totalPages}">3</i>
+          </div>
+          <ul class="pagination">
+            <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
+              <a class="page-link" th:href="@{/admin/categories(p=0)}">First</a>
+            </li>
+            <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/categories(p=${page.number-1})}">Prev</a>
+            </li>
+            <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/categories(p=${page.number+1})}">Next</a>
+            </li>
+            <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/categories(p=${page.totalPages-1})}">Last</a>
+            </li>
+
+          </ul>
+        </nav>
+        <!-- /page -->
       </div>
       <!-- /Danh sách -->
     </div>
 
+
+
   </div>
+
 </div>

@@ -44,13 +44,13 @@ public class User {
   Boolean activated;
 
 
-  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "user", cascade=CascadeType.REFRESH)
   List<Share> share ;
 
-  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "user", cascade=CascadeType.REFRESH)
   List<Favorite> favorite ;
 
-  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "user", cascade=CascadeType.REFRESH)
   List<Order> order ;
     
 }

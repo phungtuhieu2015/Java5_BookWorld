@@ -3,25 +3,33 @@
     <div class="page-title"> Tác giả</div>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link   " id="nav-form-tab" data-bs-toggle="tab" data-bs-target="#nav-form" type="button" role="tab" aria-controls="nav-form" aria-selected="false">Cập nhật</button>
-        <button class="nav-link active" id="nav-authors-tab" data-bs-toggle="tab" data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh sách</button>
-       
+        <button th:class="'nav-link ' +  (${form==true ? 'active' : ''})  " id="nav-form-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-form" type="button" role="tab" aria-controls="nav-form" aria-selected="false">Cập
+          nhật</button>
+        <button th:class="'nav-link '+ (${form==false ? 'active' : ''}) " id="nav-authors-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh
+          sách</button>
+
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <!-- Cập nhật -->
-      <div class="tab-pane fade " id="nav-form" role="tabpanel" aria-labelledby="nav-form-tab" tabindex="0">
+      <div th:class="'tab-pane fade ' + (${form==true ? 'show active' : ''}) " id="nav-form" role="tabpanel"
+        aria-labelledby="nav-form-tab" tabindex="0">
         <div class="form-wrapper form-center">
-            <form  class="form-section" action="" method="post" enctype="multipart/form-data">
-              <div class="row">
-              <div class="form-group mb-3 col-6">
-                <input type="text" name="id" id="youtube-id" tabindex="1"  class="form-control" placeholder="Mã tác giả " th:value="${id}">
+          <form class="form-section" action="" method="post" enctype="multipart/form-data">
+            <div class="row">
+              <div class="form-group mb-3 ">
+                <input type="hidden" name="id" id="youtube-id" tabindex="1" class="form-control"
+                  placeholder="Mã tác giả " th:value="${id}">
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control" placeholder="Tên tác giả" value="">
+                <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control"
+                  placeholder="Tên tác giả" value="">
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Ngày sinh" value="" >
+                <input type="date" name="views" id="view-count" tabindex="1" class="form-control"
+                  placeholder="Ngày sinh" value="">
               </div>
               <div class="form-group mb-3 col-6">
                 <!-- <select class="form-select" >
@@ -30,15 +38,16 @@
                   <option value="2">Hoa Kỳ</option>
                   <option value="3">Nga</option>
                 </select> -->
-              
-                  <input class="form-control input-datalist"   style="border-radius:0;"  list="DSQuocTich" placeholder="Quốc tịch...">
-                  <datalist id="DSQuocTich">
-                    <option value="Việt Nam">
-                    <option value="Hoa Kỳ">
-                    <option value="Nga">
-                    <option value="Pháp">
-                    <option value="Đức">
-                  </datalist>
+
+                <input class="form-control input-datalist" style="border-radius:0;" list="DSQuocTich"
+                  placeholder="Quốc tịch...">
+                <datalist id="DSQuocTich">
+                  <option value="Việt Nam">
+                  <option value="Hoa Kỳ">
+                  <option value="Nga">
+                  <option value="Pháp">
+                  <option value="Đức">
+                </datalist>
               </div>
               <!-- <div class="form-group text-black">
                 <div class="form-check form-check-inline">
@@ -51,28 +60,30 @@
                   <label class="form-check-label" for="inactive2">Inactive</label>
                 </div>
               </div> -->
-              </div>
-              <div class="form-group mb-3 text-black col-12">
-          <textarea class="form-control" name="description" id="description1" placeholder="Mô tả" rows="4"></textarea>
-              </div>
-              <div class="form-group mb-3 d-flex justify-content-end">
-                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
-                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Update">
-                <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
-                <input type="submit" tabindex="4" class="form-control btn ms-2" value="Reset">
-              </div>
-            
-            </form>
-         </div>
+            </div>
+            <div class="form-group mb-3 text-black col-12">
+              <textarea class="form-control" name="description" id="description1" placeholder="Mô tả"
+                rows="4"></textarea>
+            </div>
+            <div class="form-group mb-3 d-flex justify-content-end">
+              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
+              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Update">
+              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
+              <input type="submit" tabindex="4" class="form-control btn ms-2" value="Reset">
+            </div>
+
+          </form>
+        </div>
       </div>
       <!-- /Cập nhật -->
       <!-- Danh sách -->
-      <div class="tab-pane fade  show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
+      <div th:class="'tab-pane fade ' + (${form==false ? 'show active' : ''})  " id="nav-authors" role="tabpanel"
+        aria-labelledby="nav-authors-tab" tabindex="0">
         <div class="table-top row px-0 mx-0">
           <div class="table-top__search-set col-6 px-0">
             <div class="search-input">
             </div>
-          </div>  
+          </div>
           <div class="table-top__wordset col-6  px-0">
             <nav class="navbar navbar-expand-lg bg-body-tertiary ">
               <div class="container-fluid px-0">
@@ -94,182 +105,65 @@
           </div>
         </div>
         <div class="table-bottom">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr class="tb-header">
-                    <th scope="col">ID </th>
-                    <th scope="col" style="width: 300px;">Tên tác giả</th>
-                    <th scope="col">Ngày sinh</th>
-                    <th scope="col">Quốc tịch</th>
-                    <th scope="col" style="width: 300px;">Mô tả</th>
-                    <th scope="col">Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
-                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td class="td-action ">
-                        <button type="button" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </button>
-                        <button type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></button>
-                    </td>
-                  </tr>
-                  
-                </tbody>
-              </table>
-            </div>
-            
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr class="tb-header">
+                  <th scope="col">ID </th>
+                  <th scope="col" style="width: 300px;">Tên tác giả</th>
+                  <th scope="col">Ngày sinh</th>
+                  <th scope="col">Quốc tịch</th>
+                  <th scope="col" style="width: 300px;">Mô tả</th>
+                  <th scope="col">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="" th:each="item :${page.content}">
+                  <td scope="row" th:text="${item.id}">1</td>
+                  <td th:text="${item.authorName}">2</td>
+                  <td th:text="${#dates.format(item.dateOfBirth, 'dd-MM-yyyy')}">4</td>
+                  <td th:text="${item.nationality}">4</td>
+                  <td class="reduce-td" th:text="${item.description}">5</td>
+                  <td class="td-action ">
+                    <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                    <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                  </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+
         </div>
+        <nav aria-label="Page navigation example" class="pagination-section">
+          <div class="text">
+            <i th:text="${page.number +1}"></i> <strong>of</strong> <i th:text="${page.totalPages}">3</i>
+          </div>
+          <ul class="pagination">
+            <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
+              <a class="page-link" th:href="@{/admin/authors(p=0)}">First</a>
+            </li>
+            <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/authors(p=${page.number-1})}">Prev</a>
+            </li>
+            <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/authors(p=${page.number+1})}">Next</a>
+            </li>
+            <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/authors(p=${page.totalPages-1})}">Last</a>
+            </li>
+
+          </ul>
+        </nav>
+        <!-- /page -->
       </div>
-     <!-- /Danh sách -->
+
+      <!-- /Danh sách -->
     </div>
-    
+
+    <!-- page -->
+
+
   </div>
 </div>
