@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.poly.model.Favorite;
 
-public interface FavoriteDAO extends JpaRepository <Favorite,Integer> {
+public interface FavoriteDAO extends JpaRepository <Favorite,Long> {
     
 }
