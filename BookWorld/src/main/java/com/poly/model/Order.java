@@ -53,7 +53,7 @@ public class Order {
     String cancellationReason;
 
 
-    @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade=CascadeType.REFRESH)
     List<OrderDetail> orderDetail;
 
 }

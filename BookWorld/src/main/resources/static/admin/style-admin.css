@@ -423,3 +423,12 @@
     width: 700px;
 }
 
+.reduce-td{
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    min-width: 120px;
+    max-width: 120px;
+}

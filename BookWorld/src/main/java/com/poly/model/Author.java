@@ -38,7 +38,7 @@ public class Author {
 
     String description;
 
-    @OneToMany(mappedBy = "author", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade=CascadeType.REFRESH)
     List<AuthorBook> AuthorBook;
 
 }

@@ -30,6 +30,6 @@ public class Category {
 
     String categoryName;
 
-    @OneToMany(mappedBy = "category", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade=CascadeType.REFRESH)
     List<Book> book;
 }
