@@ -1,0 +1,4 @@
+.pagination-section {
+    display: flex !important;
+    justify-content: end !important;
+}
