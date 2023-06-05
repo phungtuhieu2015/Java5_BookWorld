@@ -315,11 +315,16 @@ aside {
 .checkout-cta {
   display: block;
   float: none;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   text-align: center;
   text-transform: uppercase;
   padding: 0.625rem 0;
   width: 100%;
+  color: white;
+  background-color: red;
+}
+.checkout-cta:hover {
+  background-color: #EF3B36;
 }
 
 .summary-delivery-selection {
@@ -419,9 +424,8 @@ aside {
   width: 100%;
 }
 
-.td-khung2,
 .td-khung1 {
-  width: 50%;
+  width: 100%;
   height: 100px;
 }
 

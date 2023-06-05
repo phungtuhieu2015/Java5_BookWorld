@@ -1,5 +1,7 @@
 package com.poly.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,10 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.poly.model.user;
-import com.poly.utils.ParamService;
+import com.poly.dao.UserDAO;
+import com.poly.model.User;
+import com.poly.service.ParamService;
 
 import jakarta.validation.Valid;
 
@@ -21,39 +25,48 @@ public class AccountController {
     @Autowired
     ParamService paramService;
 
+    @Autowired
+    UserDAO dao;
+
+    @ResponseBody
+    @RequestMapping("/dinhdaubuoirerach")
+    public List<User> dinhga(){
+        return dao.findAll();
+    }
+
     
     @RequestMapping("/login")
-    public String doLogin(@ModelAttribute("user") user account,Model model){
+    public String doLogin(@ModelAttribute("user") User account,Model model){
 
         return "login";
     }
 
-    @RequestMapping("/login/save")
-    public String postLogin(@Valid @ModelAttribute("user") user account ,BindingResult result,Model model,RedirectAttributes params){
-        System.out.println(account.getId());
-        System.out.println(account.getPassword());
-        if(result.hasErrors()){
-            if(account.getId().equalsIgnoreCase("admin") && account.getPassword().equalsIgnoreCase("admin")){
-                return "redirect:/admin/index";
-            }else{
-              if(!account.getId().isBlank() && !account.getPassword().isBlank()){
+    // @RequestMapping("/login/save")
+    // public String postLogin(@Valid @ModelAttribute("user") User account ,BindingResult result,Model model,RedirectAttributes params){
+    //     System.out.println(account.getId());
+    //     System.out.println(account.getPassword());
+    //     if(result.hasErrors()){
+    //         if(account.getId().equalsIgnoreCase("admin") && account.getPassword().equalsIgnoreCase("admin")){
+    //             return "redirect:/admin/index";
+    //         }else{
+    //           if(!account.getId().isBlank() && !account.getPassword().isBlank()){
 
-                model.addAttribute("checkLG", true);
-                return"redirect:/index";
-              }
-            }
-        }
-        return"login";
-    }
+    //             model.addAttribute("checkLG", true);
+    //             return"/index";
+    //           }
+    //         }
+    //     }
+    //     return"login";
+    // }
 
 
     @RequestMapping("/forgot-password")
-    public String doForgotPassword( @ModelAttribute("user") user account,Model model){
+    public String doForgotPassword( @ModelAttribute("user") User account,Model model){
 
         return "forgot-password";
     }
     @RequestMapping("/forgot-password/save")
-    public String postForgotPassword(@Valid @ModelAttribute("user") user account ,BindingResult result){
+    public String postForgotPassword(@Valid @ModelAttribute("user") User account ,BindingResult result){
 
         if(result.hasErrors()){
             return"forgot-password";
@@ -64,12 +77,12 @@ public class AccountController {
 
 
     @RequestMapping("/change-password")
-    public String doChangePassword(@ModelAttribute("user") user account,Model model){
+    public String doChangePassword(@ModelAttribute("user") User account,Model model){
 
         return "change-password";
     } 
     @RequestMapping("/change-password/save")
-    public String postChangePassword(@Valid @ModelAttribute("user") user account ,BindingResult result,Model model){
+    public String postChangePassword(@Valid @ModelAttribute("user") User account ,BindingResult result,Model model){
 
         if(result.hasErrors()){
             
@@ -102,12 +115,12 @@ public class AccountController {
 
 
     @RequestMapping("/sign-up")
-    public String doSignUp( @ModelAttribute("user") user account,Model model){
+    public String doSignUp( @ModelAttribute("user") User account,Model model){
 
         return "sign-up";
     }
     @RequestMapping("/sign-up/save")
-    public String doSignUp(@Valid @ModelAttribute("user") user account ,BindingResult result){
+    public String doSignUp(@Valid @ModelAttribute("user") User account ,BindingResult result){
 
         if(result.hasErrors()){
             return"sign-up";
