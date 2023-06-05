@@ -58,14 +58,14 @@ public class GioHangController {
         Product updatedItem = cart.update(item.getId(), item.getSoLuong());
         return updatedItem;
     }
-    // @ResponseBody
-    // @PostMapping("/cart/item/remove")
-    // public String removeCardItem(@RequestBody Product item) {
-    //     if( cart.remove(item.getId())) 
-    //         return "Đã xóa thành công"; 
-    //             else
-    //                 return "Xóa thất bại";
-    // }
+    @ResponseBody
+    @PostMapping("/cart/item/remove")
+    public String removeCardItem(@RequestBody Product item) {
+        if( cart.remove(item.getId())) 
+            return "Đã xóa thành công"; 
+                else
+                    return "Xóa thất bại";
+    }
     @ResponseBody
     @PostMapping("/cart/item/removeall")
     public String removeCardItemAll() {
