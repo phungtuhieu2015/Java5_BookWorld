@@ -3,42 +3,50 @@
     <div class="page-title">Quản lí người dùng</div>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link   " id="nav-form-tab" data-bs-toggle="tab" data-bs-target="#nav-form" type="button" role="tab" aria-controls="nav-form" aria-selected="false">Cập nhật</button>
-        <button class="nav-link active" id="nav-authors-tab" data-bs-toggle="tab" data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh sách</button>
-       
+        <button th:class="'nav-link ' +  (${form==true ? 'active' : ''})  " id="nav-form-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-form" type="button" role="tab" aria-controls="nav-form" aria-selected="false">Cập
+          nhật</button>
+        <button th:class="'nav-link '+ (${form==false ? 'active' : ''}) " id="nav-authors-tab" data-bs-toggle="tab"
+          data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh
+          sách</button>
+
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <!-- Cập nhật -->
-      <div class="tab-pane fade " id="nav-form" role="tabpanel" aria-labelledby="nav-form-tab" tabindex="0">
+       <div th:class="'tab-pane fade ' + (${form==true ? 'show active' : ''}) " id="nav-form" role="tabpanel"
+      aria-labelledby="nav-form-tab" tabindex="0">
         <div class="form-wrapper form-center">
-          <form  class="form-section" action="" method="post" enctype="multipart/form-data">
+       
+          <form class="form-section" th:action="@{/admin/Users}" th:object="${item}" method="post"
+          enctype="multipart/form-data">
             <div class="row">
+
             <div class="form-group mb-3 col-6">
-              <input type="text" name="id" id="youtube-id" tabindex="1"  class="form-control" placeholder="Mã người dùng" th:value="${id}">
+              <input type="text" name="id" id="youtube-id" tabindex="1"  class="form-control" placeholder="Mã người dùng" th:value="${item.username}">
             </div>
             <div class="form-group mb-3 col-6">
-              <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control" placeholder="Mật khẩu" value="">
+              <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control" placeholder="Mật khẩu" th:value="${item.password}">
             </div>
            
        
             <div class="form-group mb-3 col-6">
-              <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Họ và tên" value="" >
+              <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Họ và tên" th:value="${item.fullName}" >
             </div>
             <div class="form-group mb-3 col-6">
-              <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Số điện thoại" value="" >
+              <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Số điện thoại" th:value="${item.phone}" >
             </div>
             <div class="form-group mb-3 col-6">
-              <input type="email" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Email" value="" >
+              <input type="email" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Email" th:value="${item.email}" >
             </div>
             <div class="form-group mb-3 col-6">
-              <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Địa chỉ" value="" >
+              <input type="text" name="views" id="view-count" tabindex="1" class="form-control" placeholder="Địa chỉ" th:value="${item.address}" >
             </div>
           
             </div>
             <div class="mb-3">
               <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02">
+                <input type="file" class="form-control" id="inputGroupFile02" value="" >
                 <label class="input-group-text" for="inputGroupFile02">Hình ảnh</label>
               </div>
             </div>
@@ -46,7 +54,7 @@
               <div class="form-group text-black">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="active" checked id="active1" 
-                    value="true">
+                    th:value="true">
                   <label class="form-check-label" for="active1">Còn hoạt động</label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -59,7 +67,7 @@
               <div class="form-group text-black">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="role"id="admin" 
-                    value="true">
+                    th:value="true">
                   <label class="form-check-label" for="admin">Admin</label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -70,17 +78,24 @@
             </div>
      
             <div class="form-group mb-3 d-flex justify-content-end">
-              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
-              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Update">
-              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
-              <input type="submit" tabindex="4" class="form-control btn ms-2" value="Reset">
+              <input formaction="/admin/users/create" th:disabled="${isEdit==true}" type="submit" tabindex="4"
+              class="form-control btn ms-2" value="Create">
+            <!-- <input formaction="/admin/categories/update" type="submit" tabindex="4" th:disabled="${isEdit==false}"
+              class="form-control btn ms-2" value="Update">
+            <input th:attr="formaction=@{/admin/categories/delete/{itemId}(itemId=${item.id})}"
+              th:disabled="${isEdit==false}" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
+ -->
+
+              <input type="submit" tabindex="4" formaction="/admin/users/reset" class="form-control btn ms-2"
+              value="Reset">
             </div>
           </form>
          </div>
-      </div>
+      </div> 
       <!-- /Cập nhật -->
       <!-- Danh sách -->
-      <div class="tab-pane fade  show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
+      <div th:class="'tab-pane fade ' + (${form==false ? 'show active' : ''})  " id="nav-authors" role="tabpanel"
+      aria-labelledby="nav-authors-tab" tabindex="0">
         <div class="table-top row px-0 mx-0">
           <div class="table-top__search-set col-6 px-0">
             <div class="search-input">
@@ -124,22 +139,27 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
+                  <tr th:each="item : ${items}">
+        
+                    <td th:text="${item.username}"></td>
+                    <td th:text="${item.password}"></td>
+                    <td th:text="${item.fullName}"></td>
+                    <td th:text="${item.phone}"></td>
+                    <td th:text="${item.email}"></td>
+                    <td th:text="${item.address}"></td>
+                    <td th:text="${item.activated ? 'Active' : 'Inactive'}"></td>
+                    <td th:text="${item.admin ? 'Admin' : 'User'}"></td>
+                    <td>
+                      <img th:src="${item.image}" alt="User Image">
+                    </td>
                     <td class="td-action ">
-                        <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
-                        <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                      <a th:href="@{/admin/users/edit/{username}(username=${item.username})}"
+                        class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
+                      <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
                     </td>
                   </tr>
                 </tbody>
+                
               </table>
             </div>
             
