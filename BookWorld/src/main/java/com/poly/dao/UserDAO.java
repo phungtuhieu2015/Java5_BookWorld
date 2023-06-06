@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.poly.model.User;
 
 public interface UserDAO extends JpaRepository<User,String> {
+      
    
 }
