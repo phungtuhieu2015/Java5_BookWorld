@@ -10,8 +10,9 @@ import com.poly.model.BookFavorite;
 
 public interface BookDAO extends JpaRepository<Book, String> {
 
-    @Query("SELECT new com.poly.model.BookFavorite(b.title,b.category.categoryName,count(f),min(f.likedDate),max(f.likedDate)) "
-            + " FROM Book b JOIN b.favorite f "
-            + " GROUP BY b.category.categoryName,b")
+    @Query("SELECT new com.poly.model.BookFavorite(b.title, b.category.categoryName, COUNT(f), MIN(f.likedDate), MAX(f.likedDate)) "
+        + " FROM Book b JOIN b.favorite f "
+        + " GROUP BY b.category.categoryName, b"
+        + " ORDER BY COUNT(f) DESC")
     List<BookFavorite> getBookFavorite();
 }

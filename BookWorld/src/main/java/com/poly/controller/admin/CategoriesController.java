@@ -24,75 +24,81 @@ public class CategoriesController {
 
     @Autowired
     CategoryDAO dao;
-   
+
     Boolean form = false;
     Boolean isEdit = false;
 
+    Category item = new Category();
 
     @RequestMapping("/categories")
-    public String categories(Model model,@RequestParam("p") Optional<Integer> p) {
-        model.addAttribute("pageName","categories products");
+    public String categories(Model model, @RequestParam("p") Optional<Integer> p) {
+        model.addAttribute("pageName", "categories products");
+        if(p.isPresent()){
+            //check khi bấm phân trang khi đang sửa
+            if(isEdit == true){          
+                 form = false;
+            }
+            // check khi bấm phân trang sau khi bấm reset  
+             if(form == true ){
+                 form = false;
+                 isEdit = false;
+             }
+        }
+        // check mặc định tránh bị ghi đè 
+        if( (form == false && isEdit == false)  ){
+             form = false;
+             isEdit = false;
+        } 
+        if(item.getId() == null) {
+            item = new Category();
+        }
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
-        Category item = new Category();
         model.addAttribute("item", item);
 
-
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
-        Page<Category> page = dao.findAll(pageable);
+        Page<Category> page = dao.findAll(pageable);     
         model.addAttribute("page", page);
-        if(pageable != null){
-            form = false;
-        }
 
-        
-       
-        
         return "admin/index-admin";
     }
 
-    
     @RequestMapping("/categories/edit/{id}")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("pageName","categories products");
-       
-        model.addAttribute("form", true);
-        model.addAttribute("isEdit", true);
-
-        Category item = dao.findById(id).get();
-        model.addAttribute("item", item);
-        List<Category> items = dao.findAll();
-        model.addAttribute("items", items);    
-        return "admin/index-admin";
+    public String edit(@PathVariable("id") Long id) {
+        form = true;
+        isEdit = true;
+        item = dao.findById(id).get();
+        return "redirect:/admin/categories";
     }
 
     @RequestMapping("/categories/create")
     public String create(Category item) {
-        
         dao.save(item);
-        form = false;
+        this.item = new Category();
         return "redirect:/admin/categories";
     }
 
     @RequestMapping("/categories/update")
     public String update(Category item) {
         dao.save(item);
-           
         return "redirect:/admin/categories/edit/" + item.getId();
     }
 
-
     @RequestMapping("/categories/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
+        this.item = new Category();
+        form = false;
+        isEdit = false;
         dao.deleteById(id);
         return "redirect:/admin/categories";
     }
 
     @RequestMapping("/categories/reset")
     public String reset(Model model) {
+        this.item = new Category();
         form = true;
+        isEdit = false;
         return "redirect:/admin/categories";
     }
-
 
 }

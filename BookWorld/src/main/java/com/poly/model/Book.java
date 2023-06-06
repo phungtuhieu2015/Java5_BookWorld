@@ -48,7 +48,7 @@ public class Book {
     Date createdDate;
 
     Double price;
-
+    
     Integer quantity;
 
     String image;

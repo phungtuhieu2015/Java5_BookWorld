@@ -97,8 +97,7 @@
                   <td th:text="${item.categoryName}"></td>
                   <td class="td-action ">
                     <a th:href="@{/admin/categories/edit/{id}(id=${item.id})}"
-                      class="btn action__btn-success btn-rounded"><span>Cập
-                        nhật</span> </a>
+                      class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
                     <a type="button" th:href="@{/admin/categories/delete/{id}(id=${item.id})}"
                       class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
                   </td>
@@ -112,7 +111,7 @@
         <!-- page -->
         <nav aria-label="Page navigation example" class="pagination-section">
           <div class="text">
-            <i th:text="${page.number +1}"></i> <strong>of</strong> <i th:text="${page.totalPages}">3</i>
+            <i th:text="${page.number +1}"></i> <strong th:text="'of  '+${page.totalPages}"></strong>
           </div>
           <ul class="pagination">
             <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
