@@ -17,19 +17,20 @@
       <div th:class="'tab-pane fade ' + (${form==true ? 'show active' : ''}) " id="nav-form" role="tabpanel"
         aria-labelledby="nav-form-tab" tabindex="0">
         <div class="form-wrapper form-center">
-          <form class="form-section" action="" method="post" enctype="multipart/form-data">
+          <form class="form-section" th:action="@{/authors/categories}" th:object="${item}" method="post"
+            enctype="multipart/form-data">
             <div class="row">
               <div class="form-group mb-3 ">
                 <input type="hidden" name="id" id="youtube-id" tabindex="1" class="form-control"
-                  placeholder="Mã tác giả " th:value="${id}">
+                  placeholder="Mã tác giả " th:value="${item.id}">
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control"
-                  placeholder="Tên tác giả" value="">
+                <input type="text" name="authorName" id="youtube-title" tabindex="2" class="form-control"
+                  placeholder="Tên tác giả" th:value="${item.authorName}">
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="date" name="views" id="view-count" tabindex="1" class="form-control"
-                  placeholder="Ngày sinh" value="">
+                <input type="date" name="dateOfBirth" id="view-count" tabindex="1" class="form-control"
+                  placeholder="Ngày sinh" th:value="${#dates.format(item.dateOfBirth, 'yyyy-MM-dd')}">
               </div>
               <div class="form-group mb-3 col-6">
                 <!-- <select class="form-select" >
@@ -39,8 +40,8 @@
                   <option value="3">Nga</option>
                 </select> -->
 
-                <input class="form-control input-datalist" style="border-radius:0;" list="DSQuocTich"
-                  placeholder="Quốc tịch...">
+                <input class="form-control input-datalist" name="nationality" th:value="${item.nationality}"
+                  style="border-radius:0;" list="DSQuocTich" placeholder="Quốc tịch...">
                 <datalist id="DSQuocTich">
                   <option value="Việt Nam">
                   <option value="Hoa Kỳ">
@@ -62,14 +63,18 @@
               </div> -->
             </div>
             <div class="form-group mb-3 text-black col-12">
-              <textarea class="form-control" name="description" id="description1" placeholder="Mô tả"
-                rows="4"></textarea>
+              <textarea class="form-control" name="description" th:text="${item.description}" id="description1"
+                placeholder="Mô tả" rows="4"></textarea>
             </div>
             <div class="form-group mb-3 d-flex justify-content-end">
-              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
-              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Update">
-              <input formaction="" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
-              <input type="submit" tabindex="4" class="form-control btn ms-2" value="Reset">
+              <input formaction="/admin/authors/create" type="submit" tabindex="4" class="form-control btn ms-2"
+                th:disabled="${isEdit==true}" value="Create">
+              <input formaction="/admin/authors/update" type="submit" tabindex="4" class="form-control btn ms-2"
+                th:disabled="${isEdit==false}" value="Update">
+              <input th:attr="formaction=@{/admin/authors/delete/{itemId}(itemId=${item.id})}" type="submit"
+                tabindex="4" class="form-control btn ms-2" th:disabled="${isEdit==false}" value="Delete">
+              <input type="submit" tabindex="4" class="form-control btn ms-2" formaction="/admin/authors/reset"
+                value="Reset">
             </div>
 
           </form>
@@ -125,8 +130,10 @@
                   <td th:text="${item.nationality}">4</td>
                   <td class="reduce-td" th:text="${item.description}">5</td>
                   <td class="td-action ">
-                    <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Cập nhật</span> </a>
-                    <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    <a th:href="@{/admin/authors/edit/{id}(id=${item.id})}"
+                      class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
+                    <a th:href="@{/admin/authors/delete/{id}(id=${item.id})}" type="button"
+                      class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
                   </td>
                 </tr>
 
@@ -137,8 +144,8 @@
 
         </div>
         <nav aria-label="Page navigation example" class="pagination-section">
-          <div class="text">
-            <i th:text="${page.number +1}"></i> <strong>of</strong> <i th:text="${page.totalPages}">3</i>
+          <div>
+            <i th:text="${page.number +1}"></i> <strong th:text="'of  '+${page.totalPages}"></strong>
           </div>
           <ul class="pagination">
             <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">

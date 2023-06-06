@@ -22,72 +22,82 @@ public class AuthorsController {
 
     @Autowired
     AuthorDAO dao;
-  
+
     Boolean form = false;
     Boolean isEdit = false;
-
+    Author item = new Author();
 
     @RequestMapping("/authors")
-    public String author(Model model,@RequestParam("p") Optional<Integer> p) {
-        model.addAttribute("pageName","authors products");
-        model.addAttribute("form", form);
+    public String author(Model model, @RequestParam("p") Optional<Integer> p) {
+        model.addAttribute("pageName", "authors products");
 
-        Author item = new Author();
+        if(p.isPresent()){
+            //check khi bấm phân trang khi đang sửa
+            if(isEdit == true){          
+                 form = false;
+            }
+            // check khi bấm phân trang sau khi bấm reset  
+             if(form == true ){
+                 form = false;
+                 isEdit = false;
+             }
+        }
+        // check mặc định tránh bị ghi đè 
+        if( (form == false && isEdit == false)  ){
+             form = false;
+             isEdit = false;
+        } 
+        if(item.getId() == null) {
+            item = new Author();
+        }
+
+        model.addAttribute("form", form);
+        model.addAttribute("isEdit", isEdit);
         model.addAttribute("item", item);
 
-
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
-        Page<Author> page = dao.findAll(pageable);
+        Page<Author> page = dao.findAll(pageable);   
         model.addAttribute("page", page);
-        
-        model.addAttribute("isEdit", isEdit);
+
         return "admin/index-admin";
     }
 
-
     @RequestMapping("/authors/edit/{id}")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("pageName","categories products");
-        model.addAttribute("form", true);
-
-        model.addAttribute("isEdit", true);
-
-        Author item = dao.findById(id).get();
-        model.addAttribute("item", item);
-        List<Author> items = dao.findAll();
-        model.addAttribute("items", items);    
-        return "admin/index-admin";
+    public String edit(@PathVariable("id") Long id) {
+        form = true;
+        isEdit = true;
+        item = dao.findById(id).get();
+        return "redirect:/admin/authors";
     }
 
     @RequestMapping("/authors/create")
     public String create(Author item) {
-        
         dao.save(item);
-        form = false;
+        this.item = new Author();
         return "redirect:/admin/authors";
     }
 
     @RequestMapping("/authors/update")
-    public String update(Author item,Model model) {
+    public String update(Author item, Model model) {
         dao.save(item);
         return "redirect:/admin/authors/edit/" + item.getId();
     }
 
-
     @RequestMapping("/authors/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
+        this.item = new Author();
+         form = false;
+         isEdit = false;
         dao.deleteById(id);
-        return "redirect:/admin/categories";
+        return "redirect:/admin/authors";
     }
 
     @RequestMapping("/authors/reset")
     public String reset(Model model) {
+        this.item = new Author();
         form = true;
-        
-        return "redirect:/admin/categories";
+        isEdit = false;
+        return "redirect:/admin/authors";
     }
-
-
-
 
 }
