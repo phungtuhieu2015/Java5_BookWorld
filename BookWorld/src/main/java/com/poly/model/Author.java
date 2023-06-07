@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,20 +34,21 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotBlank(message = "Author name is required")
+    @NotBlank(message = "(*) Vui lòng nhập tên tác giả")
+    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt ")
     String authorName;
     
     @Column(name = "date_of_birth")
-    @NotNull(message = "Date of birth is required")
+    @NotNull(message = "(*) Vui lòng nhập ngày sinh")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date dateOfBirth;
+    Date dateOfBirth = new Date();
 
-    @NotBlank(message = "Nationality is required")
+    @NotBlank(message = "(*) Vui lòng nhập quốc tịch")
     String nationality;
 
 
-    @NotBlank(message = "Description is required")
-    @Size(max = 255, message = "Description must be less than or equal to 255 characters")
+    @NotBlank(message = "(*) Vui lòng nhập mô tả")
+    @Size(max = 255, message = "(*) Vui lòng nhập mô tả phải nhỏ hơn hoặc bằng 255 ký tự")
     String description;
 
     @OneToMany(mappedBy = "author", cascade=CascadeType.REFRESH)

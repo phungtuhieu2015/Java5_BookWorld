@@ -17,7 +17,8 @@
     <!--  -->
     <div class="mainct mt-5 mb-5">
         <div class="basket">
-            <button th:onclick="removeCartAll()"  style="font-size: 18px; border-radius: 10px ;" class="btn btn-danger" >clear all</button>
+            <button th:onclick="removeCartAll()" style="font-size: 18px; border-radius: 10px ;"
+                class="btn btn-danger">clear all</button>
             <div class="basket-labels">
                 <ul>
 
@@ -28,31 +29,32 @@
 
                 </ul>
             </div>
-            <div class="basket-product" th:each="prod,pStat: ${cart.products}" >
+            <div class="basket-product" th:each="prod,pStat: ${cart.products}">
                 <div class="item">
                     <div class="product-image">
-                            <img th:src="@{/assets/img/__${prod.anh}__}"
-                            alt="Placholder Image 2" height="148px" class="product-frame">
+                        <img th:src="@{/assets/img/__${prod.anh}__}" alt="Placholder Image 2" height="148px"
+                            class="product-frame">
                     </div>
                     <div class="product-details">
                         <h1 class="td_titleBook"><strong th:text="${prod.ten}"> </strong>
                         </h1>
                     </div>
                 </div>
-                <div class="price"><span class="td-giaGiam"th:text="${prod.gia}"></span>
+                <div class="price"><span class="td-giaGiam" th:text="${prod.gia}"></span>
                     <!-- <p><del class="td-giaCu">86.000</del></p> -->
                 </div>
                 <div class="quantity">
-                    <input type="number" id="example" value="1" th:onchange="refreshCart([[${prod}]],[[${pStat}]])"  name="example" min="0" max="100" step="1" pattern="\d+"
-                        class="input-number">
+                    <input type="number" id="example" value="1" th:onchange="refreshCart([[${prod}]],[[${pStat}]])"
+                        name="example" min="0" max="100" step="1" pattern="\d+" class="input-number">
                 </div>
                 <div class="subtotal td-giaTong">0</div>
 
                 <div class="remove">
-                    <a  th:onclick="removeCart([[${prod}]],[[${pStat}]])" class="btn-delete"><i class="bi bi-trash3"></i></a >
+                    <a th:onclick="removeCart([[${prod}]],[[${pStat}]])" class="btn-delete"><i
+                            class="bi bi-trash3"></i></a>
                     <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  class="removeBtn"><i class="bi bi-trash3"></i></button > -->
-                     
-                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -92,11 +94,8 @@
                                 </div>
                             </label>
                         </div>
-<<<<<<< HEAD
-                    </div>
-                    <div class="td-khung2 ">
-=======
->>>>>>> huutai
+
+
                         <div class="fhs-radio-big-with-icon-container">
                             <label class="fhs-radio-big fhs-raido-big-with-icon">
                                 <div class="fhs-payment-name-with-icon-container">
@@ -111,8 +110,8 @@
                             </label>
                         </div>
 
-                    </div>
 
+                    </div>
 
                 </div>
                 <div class="summary-total">
@@ -130,7 +129,7 @@
     <th:block th:include="fragment/script-links.html"></th:block>
     <script th:src="@{/assets/js/gio-hang.js}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-   
+
 </body>
 
 </html>

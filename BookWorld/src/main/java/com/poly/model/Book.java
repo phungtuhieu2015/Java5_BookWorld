@@ -59,16 +59,16 @@ public class Book {
 
 
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
-    List<OrderDetail> orderDetail;
+    List<OrderDetail> orderDetails;
 
 
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
-    List<AuthorBook> authorBook;
+    List<AuthorBook> authorBooks;
 
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
-    List<Share> share;
+    List<Share> shares;
 
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
-    List<Favorite> favorite;
+    List<Favorite> favorites;
 
 }

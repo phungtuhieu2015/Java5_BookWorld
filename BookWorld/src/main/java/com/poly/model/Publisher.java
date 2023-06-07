@@ -30,23 +30,26 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     
-    @NotEmpty(message = "Publisher name is required")
+    @NotEmpty(message = "(*) Vui lòng nhập tên nhà xuất bản")
+    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt ")
+    
     String publisherName;
     
-    @NotBlank(message = "Address is required")
+    @NotBlank(message = "(*) Vui lòng nhập địa chỉ")    
     String address;
 
-    @NotBlank(message = "City is required")
+    @NotBlank(message = "(*) Vui lòng nhập công ty")
     String city;
 
-    @NotEmpty(message = "Country is required")
+    @NotEmpty(message = "(*) Vui lòng nhập quốc gia")
     String country;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
+    @NotBlank(message = "(*) Vui lòng nhập email")
+    @Email(message = "(*) Email không hợp lệ")
     String email;
     
-    @Pattern(regexp = "^(09|03)\\d{8}$", message = "Phone number must be 10 digits and start with 09 or 03")
+    
+    @Pattern(regexp = "^(09|03)\\d{8}$", message = "(*) Vui lòng nhập số điện thoại phải có 10 chữ số và bắt đầu bằng 09 hoặc 03")
     String phone;
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.REFRESH)

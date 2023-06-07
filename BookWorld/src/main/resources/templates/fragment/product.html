@@ -4,21 +4,24 @@
     <section class="featured spad1">
         <div class="container">
             <div class="row featured__filter">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="item : ${items}">
-                    <div class="featured__item">
+
+                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="item : ${page.content}">
+                    <div class=" featured__item">
                         <div class="featured__item__pic set-bg">
-                            <img th:src="@{/assets/img/__${item.anh}__}" alt="">
+                            <a th:href="@{/chitiet/{bookId}(bookId=${item.id})}"> <img
+                                    th:src="@{/assets/img/__${item.image}__}" alt=""> </a>
                             <ul class="featured__item__pic__hover">
 
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href=""><i class="fa-solid fa-share"></i></a></li>
-                                <li><a th:href="@{/cart/add/__${item.id}__}"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a><i class="fa fa-shopping-cart"></i></a>
+                                </li>
                             </ul>
 
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#" th:text="${item.ten}">Sách 1</a></h6>
-                            <h4>200.000 VNĐ</h4>
+                            <h6><a th:href="@{/chitiet/{bookId}(bookId=${item.id})}" th:text="${item.title}"></a></h6>
+                            <h4 th:text="${item.price}  +' VNĐ'"></h4>
                             <h5>100.000 VNĐ</h5>
                         </div>
                         <div class="ribben">
@@ -27,11 +30,31 @@
                     </div>
                 </div>
 
+                <nav aria-label="Page navigation example" class="pagination-section">
+                    <ul class="pagination">
+                        <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
+                            <a class="page-link" th:href="@{/index(p=0)}">First</a>
+                        </li>
+                        <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
+                            <a class="page-link" th:href="@{/index(p=${page.number-1})}">Prev</a>
+                        </li>
 
+                        <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
+                            <a class="page-link" th:href="@{/index(p=${page.number+1})}">Next</a>
+                        </li>
+                        <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
+                            <a class="page-link" th:href="@{/index(p=${page.totalPages-1})}">Last</a>
+                        </li>
+
+                    </ul>
+                </nav>
             </div>
+
 
         </div>
     </section>
+
+
     <!-- Featured Section End -->
 
 
@@ -572,6 +595,8 @@
             </div>
 
         </div>
+
+
     </section>
     <!-- Featured Section End -->
 

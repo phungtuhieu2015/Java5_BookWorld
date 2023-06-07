@@ -18,61 +18,34 @@
   margin: 0 auto;
   margin-top: 60px;
   height: 500px;
-  background-color: #efdada;
+  background-color: #f0f0f0;
   border-radius: 10px;
 }
 .product-imgs {
   position: relative;
   width: 40%;
   display: flex;
+  
 }
 /* slide */
-.container_tai img {
-  width: 100%;
-  display: block;
-}
+
 .td-img-display {
-  width: 85%;
-  overflow: hidden;
-  height: 420px;
-}
-.img-showcase {
   display: flex;
   width: 100%;
   transition: all 0.5s ease;
-}
-.img-showcase img {
-  padding: 1rem;
-  width: 401.9px;
-}
-
-.img-showcase img:hover {
-  transform: scale(1.2);
-}
-.img-select {
-  width: 15%;
-  display: flexbox;
-  padding-top: 10px;
-
   height: 420px;
+
 }
-.td-img-item {
-  margin: 0.3rem;
+.td-img-display img {
+  margin-left: 25px;
+  padding: 1rem;
+  width: 420px;
 }
-.td-img-item img {
-  width: 69px;
-  height: 97.7px;
-  border: 1px solid rgb(159, 155, 155);
-}
-.td-img-item:nth-child(1),
-.td-img-item:nth-child(2),
-.td-img-item:nth-child(3) {
-  margin-right: 0;
-}
-.td-img-item:hover {
-  opacity: 0.8;
-}
-/* /slide */
+
+/* .td-img-display img:hover {
+  transform: scale(1.2);
+} */
+
 
 /* info Right */
 .product-content {
@@ -119,39 +92,17 @@
   margin: 30px 0px 30px 0px;
 }
 
-.social-links {
-  display: flex;
-  align-items: center;
-}
-.social-links a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: #000;
-  border: 1px solid #000;
-  margin: 0 0.2rem;
-  border-radius: 50%;
-  text-decoration: none;
-  font-size: 0.8rem;
-  transition: all 0.5s ease;
-}
-.social-links a:hover {
-  background: #000;
-  border-color: transparent;
-  color: #fff;
-}
+
 /* /info Right */
 
 /* info supplier and author */
 
-.product-view-sa {
+/* .product-view-sa {
   margin: 35px 0px 30px;
 }
 .product-view-sa-supplier {
   display: inline-block;
-  width: 60%;
+  width: 45%;
   padding-right: 15px;
   white-space: nowrap;
   overflow: hidden;
@@ -167,7 +118,7 @@
 }
 .product-view-sa-author {
   display: inline-block;
-  width: 39%;
+  width: 50%;
   padding-left: 15px;
   border-left: 1px solid #c1c1c1;
   white-space: nowrap;
@@ -183,7 +134,7 @@
 }
 .product-view-sa-supplier span:nth-of-type(2) {
   font-weight: 600;
-}
+} */
 /*  /info supplier and author */
 /* price */
 .price {
@@ -243,6 +194,8 @@
   color: #fff;
   background: #c92127;
   border: none;
+  text-align: center;
+  padding-top: 10px;
 }
 .bi .bi-cart3 {
   height: 24px;
@@ -262,3 +215,38 @@
 }
 
 /*  */
+
+
+.text-span{
+  font-weight: 600;
+}
+
+/*  */
+/* Thanh cuộn */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Màu sắc của thanh cuộn */
+::-webkit-scrollbar-thumb {
+  background-color: #999999;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  background-image: linear-gradient(-45deg, #6a5af9, #d66efd); border-radius: 50px;
+}
+
+/* Màu sắc khi hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555555;
+}
+
+/* Màu sắc khi active */
+::-webkit-scrollbar-thumb:active {
+  background-color: #333333;
+}
+
+/* Màu sắc của thanh cuộn track */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}

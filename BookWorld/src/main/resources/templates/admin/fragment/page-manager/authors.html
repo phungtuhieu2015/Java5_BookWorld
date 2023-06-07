@@ -33,7 +33,7 @@
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="date" th:field="*{dateOfBirth}" id="view-count" tabindex="1" class="form-control"
-                  placeholder="Ngày sinh" th:value="${#dates.format(author.dateOfBirth, 'yyyy-MM-dd')}">
+                  placeholder="Ngày sinh" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
                 <!-- lỗi -->
                 <div class="alert alert-warning" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
                 </div>
@@ -146,6 +146,8 @@
                       class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
                     <a th:href="@{/admin/authors/delete/{id}(id=${item.id})}" type="button"
                       class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    <!-- <a type="button" class="btn action__btn-info btn-rounded" data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"><span>Xem chi tiết</span></a> -->
                   </td>
                 </tr>
 

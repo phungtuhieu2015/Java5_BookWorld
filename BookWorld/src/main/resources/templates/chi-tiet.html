@@ -24,73 +24,60 @@
       <!-- card left -->
       <div class="product-imgs">
         <div class="td-img-display">
-          <div class="img-showcase">
-            <img src="https://cdn0.fahasa.com/media/catalog/product/t/h/thao-t_ng-v_-ti_n---b_a-1.jpg" alt="shoe image">
-            <img
-              src="https://cdn0.fahasa.com/media/flashmagazine/images/page_images/thao_tung_ve_tien/2023_05_15_14_53_31_1-390x510.jpg"
-              alt="shoe image">
-            <img
-              src="https://cdn0.fahasa.com/media/flashmagazine/images/page_images/thao_tung_ve_tien/2023_05_15_14_53_31_2-390x510.jpg"
-              alt="shoe image">
-            <img
-              src="https://cdn0.fahasa.com/media/flashmagazine/images/page_images/thao_tung_ve_tien/2023_05_15_14_53_31_3-390x510.jpg"
-              alt="shoe image">
-          </div>
+
+          <img th:src="@{/assets/img/__${book.image}__}" alt="shoe image">
+
         </div>
-        <div class="img-select">
-          <div class="td-img-item">
-            <a href="#" data-id="1">
-              <img src="https://cdn0.fahasa.com/media/catalog/product/t/h/thao-t_ng-v_-ti_n---b_a-1.jpg"
-                alt="shoe image">
-            </a>
-          </div>
-          <div class="td-img-item">
-            <a href="#" data-id="2">
-              <img
-                src="https://cdn0.fahasa.com/media/flashmagazine/images/page_images/thao_tung_ve_tien/2023_05_15_14_53_31_1-390x510.jpg"
-                alt="shoe image">
-            </a>
-          </div>
-          <div class="td-img-item">
-            <a href="#" data-id="3">
-              <img
-                src="https://cdn0.fahasa.com/media/flashmagazine/images/page_images/thao_tung_ve_tien/2023_05_15_14_53_31_2-390x510.jpg"
-                alt="shoe image">
-            </a>
-          </div>
-          <div class="td-img-item">
-            <a href="#" data-id="4">
-              <img
-                src="https://cdn0.fahasa.com/media/flashmagazine/images/page_images/thao_tung_ve_tien/2023_05_15_14_53_31_3-390x510.jpg"
-                alt="shoe image">
-            </a>
-          </div>
-        </div>
+
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
         <div class="btn-cart">
-          <button type="button" title="Thêm vào giỏ hàng" class="btn-cart-to-cart"><span class="bi bi-cart3">
-          
-            <a th:href="@{/bookworld/giohang}">  </span><span>Thêm vào giỏ hàng</span></button></a>
-  <a th:href="@{/bookworld/giohang}"><button type="button" title="Mua ngay" class="btn-cart-to-cart btn-buy-now"><span>Mua
-    ngay</span></button></a>
+
+          <a th:href="@{/giohang}" class="btn-cart-to-cart">
+            <span class="bi bi-cart3">
+            </span><span>Thêm vào giỏ hàng</span>
+          </a>
+
+          <a th:href="@{#}" class="btn-cart-to-cart">
+            <span>Mua
+              ngay</span>
+          </a>
+
+
         </div>
 
       </div>
       <!-- card right -->
       <div class="product-content">
-        <h2 class="product-title">Tuổi Trẻ Đáng Giá Bao Nhiêu (Tái Bản 2021)</h2>
+        <h2 class="product-title" th:text="${book.title}"></h2>
 
         <!--  -->
-        <div class="product-view-sa">
-          <div class="product-view-sa_one">
-            <div class="product-view-sa-supplier"><span>Nhà cung cấp:</span><a>Nhã Nam</a></div>
-            <div class="product-view-sa-author"><span>Tác giả:</span><span>Rosie Nguyễn</span></div>
+
+        <div class="row">
+          <div class="col-lg-5 ">
+            <label>Danh mục: </label> <span class="text-span" th:text="${book.category.categoryName}"></span>
+            <br>
+            <label>Nhà xuất bản: </label> <span class="text-span" th:text="${book.publisher.publisherName}"></span>
           </div>
-          <div class="product-view-sa_two">
-            <div class="product-view-sa-supplier"><span>Nhà xuất bản:</span><span>NXB Hội Nhà Văn</span></div>
-            <div class="product-view-sa-author"><span>Hình thức bìa:</span><span>Bìa Mềm</span></div>
+          <div class="col-lg-7 ">
+            <div class="row">
+              <div class="col-auto ">Tác giả:</div>
+              <div class="col-lg-9" style="height: 100px; overflow: scroll;">
+
+                <ul style="padding-left: 10px; padding-top: 5px;" th:each="tg, iterStat :${book.authorBooks}">
+                  <li style="list-style-type: none; font-weight: 600; " th:text="'- '+${tg.author.authorName}"></li>
+
+                </ul>
+              </div>
+
+            </div>
+
           </div>
         </div>
+
+
+        <!--  -->
+
+
         <!--  -->
         <div class="product-rating">
           <i class="fas fa-star"></i>
@@ -102,8 +89,8 @@
         </div>
         <!--  -->
         <div class="khung">
-          <span class="price" id="product-price-371714">72.000&nbsp;đ</span>
-          <span class="price-old" id="old-price-371714">90.000&nbsp;đ</span>
+          <span class="price" th:text="${book.price}+ ' VNĐ'"></span>
+          <span class="price-old">90.000&nbsp;VNĐ</span>
         </div>
         <!-- -->
 
@@ -118,24 +105,7 @@
 
 
 
-        <div class="social-links">
-          <p>Share At: </p>
-          <a href="#">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="#">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="#">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="#">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-          <a href="#">
-            <i class="fab fa-pinterest"></i>
-          </a>
-        </div>
+
 
       </div>
     </div>
