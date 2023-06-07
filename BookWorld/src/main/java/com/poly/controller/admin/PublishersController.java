@@ -92,7 +92,18 @@ public class PublishersController {
     }
 
     @RequestMapping("/publishers/update")
-    public String update(Publisher publisher, Model model) {
+    public String update(@Valid Publisher publisher, BindingResult result, Model model) {
+        if(result.hasErrors()){
+            model.addAttribute("pageName", "publishers products");
+            model.addAttribute("form", true);
+            model.addAttribute("isEdit", true);
+            Optional<Integer> p = Optional.of(0);
+            Pageable pageable = PageRequest.of(p.orElse(0), 5);
+            Page<Publisher> page = dao.findAll(pageable);     
+            model.addAttribute("page", page);
+            return "admin/index-admin";
+        }
+
         dao.save(publisher);
         return "redirect:/admin/publishers/edit/" + publisher.getId();
     }
