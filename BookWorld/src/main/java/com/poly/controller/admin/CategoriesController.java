@@ -93,7 +93,18 @@ public class CategoriesController {
     }
 
     @RequestMapping("/categories/update")
-    public String update(Category category) {
+    public String update(@Valid Category category, BindingResult result, Model model) {
+        if(result.hasErrors()){     
+            model.addAttribute("pageName", "categories products");
+            model.addAttribute("form", true);
+            model.addAttribute("isEdit", true);
+            Optional<Integer> p = Optional.of(0);
+            Pageable pageable = PageRequest.of(p.orElse(0), 5);
+            Page<Category> page = dao.findAll(pageable);     
+            model.addAttribute("page", page);
+            return "admin/index-admin";
+        }
+
         dao.save(category);
         return "redirect:/admin/categories/edit/" + category.getId();
     }

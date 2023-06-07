@@ -93,7 +93,18 @@ public class AuthorsController {
     }
 
     @RequestMapping("/authors/update")
-    public String update(Author author, Model model) {
+    public String update(@Valid Author author, BindingResult result, Model model) {
+        if(result.hasErrors()){
+            model.addAttribute("pageName", "authors products");
+            model.addAttribute("form", true);
+            model.addAttribute("isEdit", true);
+            Optional<Integer> p = Optional.of(0);
+            Pageable pageable = PageRequest.of(p.orElse(0), 5);
+            Page<Author> page = dao.findAll(pageable);     
+            model.addAttribute("page", page);
+            return "admin/index-admin";
+        }
+
         dao.save(author);
         return "redirect:/admin/authors/edit/" + author.getId();
     }
