@@ -17,18 +17,21 @@
       <div th:class="'tab-pane fade ' + (${form==true ? 'show active' : ''}) " id="nav-form" role="tabpanel"
         aria-labelledby="nav-form-tab" tabindex="0">
         <div class="form-wrapper form-center">
-          <form class="form-section" th:action="@{/admin/categories}" th:object="${item}" method="post"
+          <form class="form-section" th:action="@{/admin/categories}" th:object="${category}" method="post"
             enctype="multipart/form-data">
             <div class="row justify-content-center">
               <div class="col-6 mb-3">
                 <div class="form-group mb-3 col-12">
-                  <input type="text" tabindex="1" class="form-control" name="id" th:value="${item.id}" hidden
+                  <input type="text" tabindex="1" class="form-control" th:field="*{id}" th:value="${category.id}" hidden
                     placeholder="Mã danh mục">
                 </div>
                 <div class="form-group mb-3 col-12">
-                  <input type="text" name="categoryName" id="youtube-title" th:value="${item.categoryName}" tabindex="2"
-                    class="form-control" placeholder="Tên danh mục">
-
+                  <input type="text" th:field="*{categoryName}" id="youtube-title" th:value="${category.categoryName}"
+                    tabindex="2" class="form-control" placeholder="Tên danh mục">
+                  <!-- lỗi -->
+                  <div class="alert alert-warning " th:if="${#fields.hasErrors('categoryName')}"
+                    th:errors="*{categoryName}">
+                  </div>
                 </div>
               </div>
 
@@ -38,7 +41,7 @@
                 class="form-control btn ms-2" value="Create">
               <input formaction="/admin/categories/update" type="submit" tabindex="4" th:disabled="${isEdit==false}"
                 class="form-control btn ms-2" value="Update">
-              <input th:attr="formaction=@{/admin/categories/delete/{itemId}(itemId=${item.id})}"
+              <input th:attr="formaction=@{/admin/categories/delete/{itemId}(itemId=${category.id})}"
                 th:disabled="${isEdit==false}" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
 
 

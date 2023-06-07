@@ -17,20 +17,26 @@
       <div th:class="'tab-pane fade ' + (${form==true ? 'show active' : ''}) " id="nav-form" role="tabpanel"
         aria-labelledby="nav-form-tab" tabindex="0">
         <div class="form-wrapper form-center">
-          <form class="form-section" th:action="@{/authors/categories}" th:object="${item}" method="post"
+          <form class="form-section" th:action="@{/authors/categories}" th:object="${author}" method="post"
             enctype="multipart/form-data">
             <div class="row">
               <div class="form-group mb-3 ">
-                <input type="hidden" name="id" id="youtube-id" tabindex="1" class="form-control"
-                  placeholder="Mã tác giả " th:value="${item.id}">
+                <input type="hidden" th:field="*{id}" id="youtube-id" tabindex="1" class="form-control"
+                  placeholder="Mã tác giả " th:value="${author.id}">
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="text" name="authorName" id="youtube-title" tabindex="2" class="form-control"
-                  placeholder="Tên tác giả" th:value="${item.authorName}">
+                <input type="text" th:field="*{authorName}" id="youtube-title" tabindex="2" class="form-control"
+                  placeholder="Tên tác giả" th:value="${author.authorName}">
+                <!-- lỗi -->
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}">
+                </div>
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="date" name="dateOfBirth" id="view-count" tabindex="1" class="form-control"
-                  placeholder="Ngày sinh" th:value="${#dates.format(item.dateOfBirth, 'yyyy-MM-dd')}">
+                <input type="date" th:field="*{dateOfBirth}" id="view-count" tabindex="1" class="form-control"
+                  placeholder="Ngày sinh" th:value="${#dates.format(author.dateOfBirth, 'yyyy-MM-dd')}">
+                <!-- lỗi -->
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
+                </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <!-- <select class="form-select" >
@@ -40,8 +46,11 @@
                   <option value="3">Nga</option>
                 </select> -->
 
-                <input class="form-control input-datalist" name="nationality" th:value="${item.nationality}"
+                <input class="form-control input-datalist" th:field="*{nationality}" th:value="${author.nationality}"
                   style="border-radius:0;" list="DSQuocTich" placeholder="Quốc tịch...">
+                <!-- lỗi -->
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}">
+                </div>
                 <datalist id="DSQuocTich">
                   <option value="Việt Nam">
                   <option value="Hoa Kỳ">
@@ -63,15 +72,18 @@
               </div> -->
             </div>
             <div class="form-group mb-3 text-black col-12">
-              <textarea class="form-control" name="description" th:text="${item.description}" id="description1"
+              <textarea class="form-control" th:field="*{description}" th:text="${author.description}" id="description1"
                 placeholder="Mô tả" rows="4"></textarea>
+              <!-- lỗi -->
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+              </div>
             </div>
             <div class="form-group mb-3 d-flex justify-content-end">
               <input formaction="/admin/authors/create" type="submit" tabindex="4" class="form-control btn ms-2"
                 th:disabled="${isEdit==true}" value="Create">
               <input formaction="/admin/authors/update" type="submit" tabindex="4" class="form-control btn ms-2"
                 th:disabled="${isEdit==false}" value="Update">
-              <input th:attr="formaction=@{/admin/authors/delete/{itemId}(itemId=${item.id})}" type="submit"
+              <input th:attr="formaction=@{/admin/authors/delete/{itemId}(itemId=${author.id})}" type="submit"
                 tabindex="4" class="form-control btn ms-2" th:disabled="${isEdit==false}" value="Delete">
               <input type="submit" tabindex="4" class="form-control btn ms-2" formaction="/admin/authors/reset"
                 value="Reset">

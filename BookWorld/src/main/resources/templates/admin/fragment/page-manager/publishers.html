@@ -17,32 +17,48 @@
       <div th:class="'tab-pane fade ' + (${form==true ? 'show active' : ''}) " id="nav-form" role="tabpanel"
         aria-labelledby="nav-form-tab" tabindex="0">
         <div class="form-wrapper form-center">
-          <form class="form-section" th:action="@{/admin/publishers}" th:object="${item}" method="post"
+          <form class="form-section" th:action="@{/admin/publishers}" th:object="${publisher}" method="post"
             enctype="multipart/form-data">
             <div class="row">
               <div class="form-group mb-3 ">
                 <input type="hidden" tabindex="1" class="form-control" th:field="*{id}" placeholder="Mã NXB "
-                  th:value="${item.id}">
+                  th:value="${publisher.id}">
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{publisherName}" id="youtube-title" tabindex="2" class="form-control"
-                  placeholder="Tên NXB" th:value="${item.publisherName}">
+                  placeholder="Tên NXB" th:value="${publisher.publisherName}">
+                <!-- lỗi -->
+                <div class="alert alert-warning " th:if="${#fields.hasErrors('publisherName')}"
+                  th:errors="*{publisherName}">
+                </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{address}" tabindex="1" class="form-control" placeholder="Địa chi"
-                  th:value="${item.address}">
+                  th:value="${publisher.address}">
+                <!-- lỗi -->
+                <div class="alert alert-warning " th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{city}" tabindex="1" class="form-control" placeholder="Thành phố"
-                  th:value="${item.city}">
+                  th:value="${publisher.city}">
+                <!-- lỗi -->
+                <div class="alert alert-warning " th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                </div>
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="email" th:field="*{email}" tabindex="1" class="form-control" placeholder="Email"
-                  th:value="${item.email}">
+                <input type="text" th:field="*{email}" tabindex="1" class="form-control" placeholder="Email"
+                  th:value="${publisher.email}">
+                <!-- lỗi -->
+                <div class="alert alert-warning " th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{phone}" tabindex="1" class="form-control" placeholder="Số điện thoại"
-                  th:value="${item.phone}">
+                  th:value="${publisher.phone}">
+                <!-- lỗi -->
+                <div class="alert alert-warning " th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                </div>
               </div>
               <div class="form-group mb-3 col-12">
                 <!-- <select class="form-select" >
@@ -53,7 +69,10 @@
                 </select> -->
 
                 <input class="form-control input-datalist" th:field="*{country}" style="border-radius:0;"
-                  list="DSQuocTich" th:value="${item.country}" placeholder="Quốc tịch...">
+                  list="DSQuocTich" th:value="${publisher.country}" placeholder="Quốc tịch...">
+                <!-- lỗi -->
+                <div class="alert alert-warning " th:if="${#fields.hasErrors('country')}" th:errors="*{country}">
+                </div>
                 <datalist id="DSQuocTich">
                   <option value="Việt Nam">
                   <option value="Hoa Kỳ">
@@ -80,7 +99,7 @@
                 th:disabled="${isEdit==true}" value="Create">
               <input formaction="/admin/publishers/update" type="submit" tabindex="4" class="form-control btn ms-2"
                 th:disabled="${isEdit==false}" value="Update">
-              <input th:attr="formaction=@{/admin/publishers/delete/{itemId}(itemId=${item.id})}" type="submit"
+              <input th:attr="formaction=@{/admin/publishers/delete/{itemId}(itemId=${publisher.id})}" type="submit"
                 tabindex="4" class="form-control btn ms-2" th:disabled="${isEdit==false}" value="Delete">
 
 

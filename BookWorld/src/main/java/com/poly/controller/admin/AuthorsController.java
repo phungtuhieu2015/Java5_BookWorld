@@ -1,6 +1,5 @@
 package com.poly.controller.admin;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.AuthorDAO;
 import com.poly.model.Author;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,7 +27,7 @@ public class AuthorsController {
 
     Boolean form = false;
     Boolean isEdit = false;
-    Author item = new Author();
+    Author author = new Author();
 
     @RequestMapping("/authors")
     public String author(Model model, @RequestParam("p") Optional<Integer> p) {
@@ -47,13 +49,13 @@ public class AuthorsController {
              form = false;
              isEdit = false;
         } 
-        if(item.getId() == null) {
-            item = new Author();
+        if(author.getId() == null) {
+            author = new Author();
         }
 
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
-        model.addAttribute("item", item);
+        model.addAttribute("author", author);
 
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page<Author> page = dao.findAll(pageable);   
@@ -66,26 +68,39 @@ public class AuthorsController {
     public String edit(@PathVariable("id") Long id) {
         form = true;
         isEdit = true;
-        item = dao.findById(id).get();
+        author = dao.findById(id).get();
         return "redirect:/admin/authors";
     }
 
     @RequestMapping("/authors/create")
-    public String create(Author item) {
-        dao.save(item);
-        this.item = new Author();
+    public String create(@Valid Author author, BindingResult result,Model model) {
+
+        if(result.hasErrors()){
+            model.addAttribute("pageName", "authors products");
+            model.addAttribute("form", true);
+            model.addAttribute("isEdit", false);
+            Optional<Integer> p = Optional.of(0);
+            Pageable pageable = PageRequest.of(p.orElse(0), 5);
+            Page<Author> page = dao.findAll(pageable);     
+            model.addAttribute("page", page);
+            return "admin/index-admin";
+        }
+
+
+        dao.save(author);
+        this.author = new Author();
         return "redirect:/admin/authors";
     }
 
     @RequestMapping("/authors/update")
-    public String update(Author item, Model model) {
-        dao.save(item);
-        return "redirect:/admin/authors/edit/" + item.getId();
+    public String update(Author author, Model model) {
+        dao.save(author);
+        return "redirect:/admin/authors/edit/" + author.getId();
     }
 
     @RequestMapping("/authors/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
-        this.item = new Author();
+        this.author = new Author();
          form = false;
          isEdit = false;
         dao.deleteById(id);
@@ -94,7 +109,7 @@ public class AuthorsController {
 
     @RequestMapping("/authors/reset")
     public String reset(Model model) {
-        this.item = new Author();
+        this.author = new Author();
         form = true;
         isEdit = false;
         return "redirect:/admin/authors";
