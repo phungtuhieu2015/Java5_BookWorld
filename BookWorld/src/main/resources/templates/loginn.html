@@ -5,13 +5,42 @@
 </head>
 <body>
     <h1>Login</h1>
-    <form method="post" action="/account/login">
+    <form method="post" action="/account/login" onsubmit="return validateForm()">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br><br>
+        <input type="text" id="username" name="username"><br>
+        <span id="usernameError" style="color: red;"></span><br>
+
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br><br>
+        <input type="password" id="password" name="password"><br>
+        <span id="passwordError" style="color: red;"></span><br>
+
         <input type="submit" value="Login">
     </form>
     <p th:text="${message}"></p>
+
+    <script>
+        function validateForm() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            var usernameError = document.getElementById("usernameError");
+            var passwordError = document.getElementById("passwordError");
+
+            usernameError.textContent = ""; // Xóa thông báo lỗi cũ
+            passwordError.textContent = ""; // Xóa thông báo lỗi cũ
+
+            if (username.trim() === "") {
+                usernameError.textContent = "Username is required!";
+                return false; // Ngăn form submit nếu có lỗi
+            }
+
+            if (password.trim() === "") {
+                passwordError.textContent = "Password is required!";
+                return false; // Ngăn form submit nếu có lỗi
+            }
+
+            return true; // Cho phép form submit nếu không có lỗi
+        }
+    </script>
 </body>
 </html>

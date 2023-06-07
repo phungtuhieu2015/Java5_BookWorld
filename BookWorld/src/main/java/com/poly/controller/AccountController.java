@@ -42,23 +42,24 @@ public class AccountController {
             User user = dao.getOne(username);
             if (!user.getPassword().equals(password)) {
                 model.addAttribute("message", "Invalid password!");
-
             } else {
                 String uri = session.get("security-uri");
-                
+    
                 if (uri != null) {
                     return "redirect:" + uri;
-                } 
-                else {
-                    if (username.equals("admin")) {
-                        user.setAdmin(true);
-                 
-                    } else {
-                        user.setAdmin(false);
-                     
-                    }
-            
-                    model.addAttribute("message", "Login Success!");
+                }
+    
+                if (user.getAdmin()) {
+                    // Đăng nhập với vai trò admin
+                    // Thực hiện các thao tác cho admin
+                    
+                    model.addAttribute("message", "Login Success! (Admin)");
+                    return "redirect:/admin/index";
+                } else {
+                    // Đăng nhập với vai trò user
+                    // Thực hiện các thao tác cho user
+                    model.addAttribute("message", "Login Success! (User)");
+                    return "redirect:/index";
                 }
             }
         } catch (Exception e) {
@@ -66,8 +67,8 @@ public class AccountController {
         }
         return "loginn";
     }
+    
 }
-
     //  @RequestMapping("/login/save")
     //  public String postLogin(@Valid @ModelAttribute("user") User account ,BindingResult result,Model model,RedirectAttributes params){
     //      System.out.println(account.getId());
