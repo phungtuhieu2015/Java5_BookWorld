@@ -423,3 +423,11 @@
     width: 700px;
 }
 
+.td-box-img {
+    height: 100%;
+}
+.td-box-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}

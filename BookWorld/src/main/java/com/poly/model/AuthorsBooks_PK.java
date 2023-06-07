@@ -7,9 +7,9 @@ import jakarta.persistence.Embeddable;
 public class AuthorsBooks_PK {
 
     @Column(name = "author_id" ,insertable = false, updatable = false)
-    Long authorId;
+    String authorId;
     
     @Column(name = "book_id" ,insertable = false, updatable = false)
-    Long bookId;
+    String bookId;
 }
  

@@ -4,6 +4,8 @@ package com.poly.model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +16,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +35,8 @@ public class Book {
     
     @Id
     String id;
-
+  
+    @NotEmpty(message = "Title is required")
     String title;
 
     @ManyToOne
@@ -44,6 +49,7 @@ public class Book {
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd") 
     Date createdDate;
 
     Double price;
@@ -57,17 +63,17 @@ public class Book {
     String description;
 
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<OrderDetail> orderDetail;
 
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
-    List<AuthorBook> authorBook;
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
+    List<AuthorBook> authorBooks;
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Share> share;
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Favorite> favorite;
 
 }
