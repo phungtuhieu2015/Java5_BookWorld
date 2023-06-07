@@ -39,7 +39,7 @@ public class UsersController {
   Boolean form = false;
   Boolean isEdit = false;
 
-  User item = new User();
+  User user = new User();
 
   @RequestMapping("/users")
   public String Users(Model model, @RequestParam("p") Optional<Integer> p) {
@@ -60,12 +60,12 @@ public class UsersController {
       form = false;
       isEdit = false;
     }
-    if (item.getUsername() == null) {
-      item = new User();
+    if (user.getUsername() == null) {
+      user = new User();
     }
     model.addAttribute("form", true);
     model.addAttribute("isEdit", isEdit);
-    model.addAttribute("item", item);
+    model.addAttribute("user", user);
 
     Pageable pageable = PageRequest.of(p.orElse(0), 5);
     Page<User> page = dao.findAll(pageable);
@@ -78,7 +78,7 @@ public class UsersController {
   public String edit(@PathVariable("username") String username) {
     form = true;
     isEdit = true;
-    item = dao.findById(username).get();
+    user = dao.findById(username).get();
     return "redirect:/admin/users";
   }
 
@@ -101,25 +101,25 @@ public class UsersController {
   }
 
   // @RequestMapping("/users/update")
-  // public String update(User item, RedirectAttributes redirectAttributes) {
-  // if (item == null || StringUtils.isEmpty(item.getPassword())) {
+  // public String update(User user, RedirectAttributes redirectAttributes) {
+  // if (user == null || StringUtils.isEmpty(user.getPassword())) {
   // redirectAttributes.addFlashAttribute("error", "Password is required");
   // return "redirect:/admin/users/edit";
   // }
 
   // try {
-  // dao.save(item);
-  // return "redirect:/admin/users/edit/" + item.getUsername();
+  // dao.save(user);
+  // return "redirect:/admin/users/edit/" + user.getUsername();
   // } catch (Exception e) {
-  // redirectAttributes.addFlashAttribute("error", "Failed to update item");
-  // return "redirect:/admin/users/edit/" + item.getUsername();
+  // redirectAttributes.addFlashAttribute("error", "Failed to update user");
+  // return "redirect:/admin/users/edit/" + user.getUsername();
   // }
 
   // }
 
   @RequestMapping("/users/reset")
   public String reset(Model model) {
-    this.item = new User();
+    this.user = new User();
     form = true;
     isEdit = false;
     return "redirect:/admin/users";
