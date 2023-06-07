@@ -29,13 +29,17 @@
               </div>
               <div class="form-group mb-3 col-6">
                 <input  type="text" name="title" id="youtube-title" tabindex="2" class="form-control"
-                  placeholder="Mật khẩu" th:field="*{password}">
+                  placeholder="Mật khẩu" th:field="*{password}" >
+               
+                 
               </div>
 
 
               <div class="form-group mb-3 col-6">
                 <input  type="text" name="views" id="view-count" tabindex="1"
                   class="form-control" placeholder="Họ và tên" th:field="*{fullName}">
+                  <span th:if="${#fields.hasErrors('fullName')}"
+                  th:errors="*{fullName}"></span>
               </div>
               <div class="form-group mb-3 col-6">
                 <input  type="text" name="views" id="view-count" tabindex="1" class="form-control"
@@ -174,7 +178,7 @@
                    -->
                    <img th:src="${item.image}" alt="User Image">
                   </td>
-                  >
+                  
                   <td class="td-action ">
                     <a th:href="@{/admin/users/edit/{username}(username=${item.username})}"
                       class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
