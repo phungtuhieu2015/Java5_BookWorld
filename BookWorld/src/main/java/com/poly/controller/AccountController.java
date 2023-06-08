@@ -33,7 +33,7 @@ public class AccountController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("message", ""); // Thêm dòng này để tránh lỗi khi trang được render lần đầu
-        return "loginn";
+        return "login";
     }
 
     @PostMapping("/login")
@@ -65,7 +65,7 @@ public class AccountController {
         } catch (Exception e) {
             model.addAttribute("message", "Invalid username!");
         }
-        return "loginn";
+        return "login";
     }
     
 }
