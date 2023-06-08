@@ -17,6 +17,8 @@
         <input type="submit" value="Login">
     </form>
     <p th:text="${message}"></p>
+    <p th:if="${loginSuccess}" class="success-message">Login successful!</p>
+    <p th:if="${loginError}" class="error-message" th:text="${loginError}"></p>
 
     <script>
         function validateForm() {
