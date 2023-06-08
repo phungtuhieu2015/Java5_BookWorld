@@ -13,7 +13,8 @@
                             <ul class="featured__item__pic__hover">
 
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href=""><i class="fa-solid fa-share"></i></a></li>
+                                <li><a href="" data-bs-toggle="modal" th:data-bs-target="'#modal_'+${item.id}"><i
+                                            class="fa-solid fa-share"></i></a></li>
                                 <li><a><i class="fa fa-shopping-cart"></i></a>
                                 </li>
                             </ul>
@@ -28,7 +29,38 @@
                             <p>NEW</p>
                         </div>
                     </div>
+                    <!-- Modal -->
+                    <div class=" modal fade" th:id="'modal_'+${item.id}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Email </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="email" name="emailShare" required>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button th:attr="formaction=@{/share/{bookId}(bookId=${item.id})}" type="submit"
+                                            class="btn btn-primary">Save
+                                            changes</button>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <!-- /model -->
                 </div>
+
+
 
                 <nav aria-label="Page navigation example" class="pagination-section">
                     <ul class="pagination">
@@ -54,8 +86,16 @@
         </div>
     </section>
 
+    <!-- Button trigger modal -->
+
+
+
+
+
 
     <!-- Featured Section End -->
+
+
 
 
     <div class="card">
