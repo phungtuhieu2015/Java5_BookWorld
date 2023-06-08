@@ -212,7 +212,7 @@
     background-color: #fff !important;
 }
 .card.page-wrapper  .table thead{
-    background: var(--mau-bg-header-table) ;
+    background: var(--mau-dong-bo) ;
     border-bottom: 1px solid #E9ECEF;
 }
 
@@ -241,8 +241,8 @@
 }
 .table thead th {
     font-weight: 600;
-    color: #212B36;
-    padding: 10px;
+    color: #fff;
+    padding: 10px 20px;
     white-space: nowrap;
 }
 
@@ -430,4 +430,7 @@
     height: 100%;
     width: 100%;
     object-fit: contain;
+}
+.book-title-modal {
+    color: var(--mau-dong-bo);
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,56 +90,13 @@ public class ProductsController {
         model.addAttribute("page", page);
         return "admin/index-admin"; 
     }
-    // String oldImg ;
-    // @RequestMapping("/products/forerror")
-    // public String products(Model model,@RequestParam("p") Optional<Integer> p) {
-    //     File dir = new File(app.getRealPath("/img")) ;
-	// 	if(!dir.exists()){
-	// 		dir.mkdirs();
-	// 	}
-    //     model.addAttribute("pageName", "products products");
-    //     if(p.isPresent()){  
-    //         // check phân trang khi đang edit
-    //         if(isEdit) {
-    //             form = false;
-    //         }
-    //         //check phân trang sau khi reset form
-    //         if(form){
-    //             form = false;
-    //             isEdit = false;
-    //         }
-    //     }
-    //     // check mặc định tránh bị ghi đè
-    //     if( (form == false && isEdit == false)){
-    //         form = false;
-    //         isEdit = false;
-    //     } 
-    //     // if(book.getId() == null) {
-    //         if( book.getId() == null){
-    //             book = new Book();
-    //         }
-    //     // }
-    //     model.addAttribute("form", form);
-    //     model.addAttribute("isEdit", isEdit);
-    //     Pageable pageable = PageRequest.of( p.orElse(0), 5);
-    //     Page page = dao.findAll(pageable);
-    //     List<Category> listCat = daoCat.findAll();
-    //     List<Publisher> listPub = daoPub.findAll();
-    //     model.addAttribute("listPub", listPub);
-    //     model.addAttribute("listCat", listCat);
-    //     model.addAttribute("book", book);
-    //     model.addAttribute("page", page);
-    //     System.out.println(page.getContent());
-    //     return "admin/index-admin"; 
-    // }
-   
-    @RequestMapping("/products/create")
-    public String create(@Valid Book book,BindingResult result,Model model,@RequestParam("p") Optional<Integer> p) {
+ 
+    @RequestMapping("/products/form-errors")
+    public String formErrors(@Valid Book book,BindingResult result,Model model) {
         model.addAttribute("pageName", "products products");
-       
         model.addAttribute("form", true); 
-        model.addAttribute("isEdit", true);
-        Pageable pageable = PageRequest.of( p.orElse(0), 5);
+        model.addAttribute("isEdit", false);
+        Pageable pageable = PageRequest.of( 0, 5);
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();
@@ -146,12 +104,33 @@ public class ProductsController {
         model.addAttribute("listCat", listCat);
         model.addAttribute("book", book);
         model.addAttribute("page", page);
-        System.out.println(result.hasErrors());
-        if (result.hasErrors()) {
-            model.addAttribute("message", "lỗi");
-        }
-      
         return "admin/index-admin";  
+    }
+    @RequestMapping("/products/create")
+    public String create(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage) {
+        if (result.hasErrors()) {
+            if(dao.existsById(book.getId())){
+                model.addAttribute("isExist", "(*) Mã sách đã tồn tại");
+            }
+            if(fileImage.isEmpty() ){
+                model.addAttribute("errorImg", "(*) Vui lòng chọn ảnh");
+            }
+            return "forward:/admin/products/form-errors";
+        }
+         if(!fileImage.isEmpty()) {
+            String fileName = fileImage.getOriginalFilename();
+            String uploadDirectory = "static/admin/img/";
+            try {
+                Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
+                fileImage.transferTo(path.resolve(fileName).toFile());
+                System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
+                book.setImage(fileName);
+                dao.save(book);
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        } 
+        return "redirect:/admin/products";  
     }
 
     @RequestMapping("/products/edit/{id}")
@@ -171,8 +150,11 @@ public class ProductsController {
         return "redirect:/admin/products"; 
     }
     @RequestMapping("/products/update")
-    public String update(Book book,@RequestParam("fileImage") MultipartFile fileImage) {
-     
+    public String update(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage) {
+        if (result.hasErrors()) {
+            return "forward:/admin/products/form-errors";
+        }
+        book.setCreatedDate(new Date());
         if(fileImage.isEmpty()) {
                 book.setImage(oldImg);
                 dao.save(book);

@@ -14,11 +14,13 @@
             <form  class="form-section" action="/admin/products/create" method="post" th:object="${book}" enctype="multipart/form-data">
               <div class="row">
               <div class="form-group mb-3 col-6">
-                <input type="text" th:field="*{id}" id="youtube-id" tabindex="1"  class="form-control" placeholder="Mã sách" th:value="${id}">
+                <input type="text" th:field="*{id}" id="youtube-id" tabindex="1" th:disabled="${isEdit}"  class="form-control" placeholder="Mã sách" th:value="${id}">
+                <div class="message-errors" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+                <div class="message-errors" th:text="${isExist}"></div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text"  th:field="*{title}" id="youtube-title" tabindex="2" class="form-control" placeholder="Tên sách" value="">
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                <div class="message-errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
               </div>
               <div class="form-group mb-3 col-6">
                   <select class="form-select" th:field="*{category}" >
@@ -34,32 +36,43 @@
 
               <div class="form-group mb-3 col-6">
                 <input type="text" name="views" id="view-count"  th:field="*{price}" tabindex="1" class="form-control" placeholder="Đơn giá" value="" >
+                <div class="message-errors" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="text" name="views" id="view-count" th:field="*{quantity}" tabindex="1" class="form-control" placeholder="Số lượng" value="" >
+                <input type="number" name="views" id="view-count" th:field="*{quantity}" tabindex="1" class="form-control" placeholder="Số lượng" value="" >
+                <div class="message-errors"  th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="date" th:field="*{createdDate}" class="form-control ">
+                <input type="date" th:field="*{createdDate}" readonly  class="form-control ">
               </div>
               <div class="mb-3 col-6">
                 <div class="input-group mb-3">
                   <input type="file" name="fileImage"  class="form-control" id="inputGroupFile02">
-                  <label class="input-group-text" for="inputGroupFile02">Hình ảnh</label>
+                  <label class="input-group-text" for="inputGroupFile02">Hình ảnh  </label>
                 </div>
+                <div class="message-errors"  th:text="${errorImg}"></div>
               </div>
               </div>
-              <div class="mb-3">
-                <div class="form-group text-black">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:field="*{available}" value="true" checked id="available" 
-                      >
-                    <label class="form-check-label" for="available">Còn hàng</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:field="*{available}" id="available2" value="false">
-                    <label class="form-check-label" for="available2">Hết hàng</label>
-                  </div>
+              
+              <div class="mb-3 row">
+                <div class="col-auto">
+                  <label class="form-label " for="">Trạng thái: </label>
                 </div>
+                <div class="col-auto">
+                  <div class="form-group text-black">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" th:field="*{available}" value="true" checked id="available">
+                      <label class="form-check-label" for="available">Còn hàng</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" th:field="*{available}" id="available2" value="false">
+                      <label class="form-check-label" for="available2">Hết hàng</label>
+                    </div>
+                </div>
+                
+                  <div class="message-errors" th:if="${#fields.hasErrors('available')}" th:errors="*{available}"></div>
+                </div>
+              
               </div>
               <div class="form-group mb-3 text-black col-12">
                  <textarea class="form-control" th:field="*{description}" id="description1" placeholder="Mô tả" rows="4"></textarea>
@@ -138,18 +151,55 @@
                     </td>
                     <td  th:text="${item.available}"></td>
                     <td  th:text="${item.description}"></td>
-                  
                     <td class="td-action ">
-                        <a href="" class="btn action__btn-info btn-rounded"><span>Chi tiết</span> </a>
+                        <a href="" class="btn action__btn-info btn-rounded " data-bs-toggle="modal" th:data-bs-target="'#modal_'+${item.id}"><span>Chi tiết</span> </a>
                         <a th:href="@{/admin/products/edit/{id} (id = ${item.id})}" class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
                         <a th:href="@{/admin/products/delete/{id} (id = ${item.id})}"  class="btn action__btn-danger btn-rounded"><span>Xóa</span></a>
+                    </td>
+                    <td >
+                      <!-- Chi tiết tác giả -->
+                      <div class="modal fade" th:id="'modal_'+${item.id}" tabindex="-1"  aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Tác giả</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <strong class="book-title-modal" ></strong>
+                             <span th:text="${item.title}" class="badge bg-danger mb-3">New</span>
+                              <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">ID</th>
+                                      <th scope="col">Tên tác giả</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr class="" th:each="t : ${item.authorBooks}">
+                                      <td th:text="${t.author.id}">Item</td>
+                                      <td th:text="${t.author.authorName}">Item</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                          <!-- /Chi tiết tác giả -->
                     </td>
                   </tr>
                 </tbody>
               </table>
+              
             </div>
         </div>
-        <nav aria-label="Page navigation example" class="pagination-section">
+        <nav aria-label="Page navigation example" class="pagination-section mt-2" >
           <ul class="pagination" >
             <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}" >
               <a class="page-link" th:href="@{/admin/products(p=0)}">First</a>
@@ -168,6 +218,6 @@
       </div>
      <!-- /Danh sách -->
     </div>
-    
+    <!-- Modal -->
   </div>
 </div>
