@@ -36,12 +36,17 @@
                             <form method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Email </h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Chia sẻ sách: <strong
+                                                th:text="${item.title}"></strong> </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <input type="email" name="emailShare" required>
+                                        <div class="form-group">
+                                            <label class="label" for="email">Email Address</label>
+                                            <input type="email" class="form-control" name="emailShare" id="email"
+                                                placeholder="Email" required>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
 
@@ -62,8 +67,12 @@
 
 
 
-                <nav aria-label="Page navigation example" class="pagination-section">
-                    <ul class="pagination">
+                <nav aria-label="Page navigation example" class="pagination-section"
+                    style=" position: relative; height: 50px;">
+                    <div style="  position: absolute; right: 320px; top: 13px;">
+                        <i th:text="${page.number +1}"></i> <strong th:text="'of  '+${page.totalPages}"></strong>
+                    </div>
+                    <ul class=" pagination" style=" position: absolute; padding-top: 10px; right: 50px;">
                         <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
                             <a class="page-link" th:href="@{/index(p=0)}">First</a>
                         </li>
@@ -98,7 +107,7 @@
 
 
 
-    <div class="card">
+    <div class="card ">
         <div class="card-header btn" data-toggle="collapse" data-target="#noidungcard">
             Xem Thêm
         </div>

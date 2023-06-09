@@ -1,6 +1,7 @@
 package com.poly.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.dao.UserDAO;
 import com.poly.model.User;
+import com.poly.service.MailerServiceImpl;
 import com.poly.service.ParamService;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -27,6 +30,11 @@ public class AccountController {
 
     @Autowired
     UserDAO dao;
+
+    @Autowired
+    MailerServiceImpl mailer;
+
+    User user = new User();
 
     @ResponseBody
     @RequestMapping("/dinhdaubuoirerach")
@@ -61,17 +69,51 @@ public class AccountController {
 
 
     @RequestMapping("/forgot-password")
-    public String doForgotPassword( @ModelAttribute("user") User account,Model model){
+    public String doForgotPassword(User account,Model model){
 
         return "forgot-password";
     }
     @RequestMapping("/forgot-password/save")
-    public String postForgotPassword(@Valid @ModelAttribute("user") User account ,BindingResult result){
+    public String postForgotPassword( User account ){
+        for (User u : dao.findAll()) {
+            if(u.getEmail().equalsIgnoreCase(account.getEmail())){
+                user = dao.findById(u.getUsername()).get();
+                System.out.println("resetttttttttttttttttttttttttt: "+generateRandomString());
+                user.setPassword(generateRandomString());
+                dao.save(user);
+                try {
+                    mailer.send(user.getEmail(), "RESET PASSWORD", "MẬT KHẨU CỦA BẠN LÀ: "+ user.getPassword());
 
-        if(result.hasErrors()){
-            return"forgot-password";
+
+
+                } catch (MessagingException e) {
+
+                    e.printStackTrace();
+                }
+
+                break;
+            }else{
+                System.out.println("khôngkhôngkhôngkhôngkhôngkhôngkhông đã tìm thấy");
+            }
         }
+        
+
         return"forgot-password";
+    }
+  
+    public String generateRandomString() {
+        int length = 20;
+        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
     }
 
 

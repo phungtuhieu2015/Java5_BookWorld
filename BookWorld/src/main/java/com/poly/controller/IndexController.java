@@ -29,8 +29,11 @@ public class IndexController {
     @Autowired
     BookDAO dao;
     
-    Book book = new Book();
+   
+    @Autowired
+    MailerServiceImpl mailer;
 
+    Book book = new Book();
     @RequestMapping("/index")
     public String index(Model model, @RequestParam("p") Optional<Integer> p){
 
@@ -41,12 +44,11 @@ public class IndexController {
         return "index";
         
     }
-    @Autowired
-    MailerServiceImpl mailer;
+    
 
     @ResponseBody
     @RequestMapping("/share/{bookId}")
-    public String edit(@PathVariable("bookId") String bookId,Model model) {
+    public String edit(@PathVariable("bookId") String bookId,Model model,@RequestParam("emailShare") String to) {
 
         System.out.println(bookId);
         book = dao.findById(bookId).get();
@@ -80,7 +82,7 @@ public class IndexController {
                 +"</div>");
 
             System.out.println(mail.getBody());
-            mailer.send("nguyentaint979@gmail.com", "Gửi Email mè", mail.getBody() );
+            mailer.send(to, "Gửi Email mè", mail.getBody() );
         } catch (MessagingException e) {
             e.printStackTrace();
         }
