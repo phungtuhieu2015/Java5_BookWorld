@@ -100,22 +100,6 @@ public class UsersController {
 
   }
 
-  // @RequestMapping("/users/update")
-  // public String update(User user, RedirectAttributes redirectAttributes) {
-  // if (user == null || StringUtils.isEmpty(user.getPassword())) {
-  // redirectAttributes.addFlashAttribute("error", "Password is required");
-  // return "redirect:/admin/users/edit";
-  // }
-
-  // try {
-  // dao.save(user);
-  // return "redirect:/admin/users/edit/" + user.getUsername();
-  // } catch (Exception e) {
-  // redirectAttributes.addFlashAttribute("error", "Failed to update user");
-  // return "redirect:/admin/users/edit/" + user.getUsername();
-  // }
-
-  // }
 
   @RequestMapping("/users/reset")
   public String reset(Model model) {

@@ -1,8 +1,11 @@
 package com.poly.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,133 +35,100 @@ public class AccountController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("message", ""); // Thêm dòng này để tránh lỗi khi trang được render lần đầu
+        model.addAttribute("message", "");
+        model.addAttribute("user", new User());
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(Model model, @RequestParam("username") String username, @RequestParam("password") String password) {
-        try {
-            User user = dao.getOne(username);
-            if (!user.getPassword().equals(password)) {
-                model.addAttribute("message", "Invalid password!");
-            } else {
-                String uri = session.get("security-uri");
-    
-                if (uri != null) {
-                    return "redirect:" + uri;
-                }
-    
-                if (user.getAdmin()) {
-                    // Đăng nhập với vai trò admin
-                    // Thực hiện các thao tác cho admin
-                    
-                    model.addAttribute("message", "Login Success! (Admin)");
-                    return "redirect:/admin/index";
-                } else {
-                    // Đăng nhập với vai trò user
-                    // Thực hiện các thao tác cho user
-                    model.addAttribute("message", "Login Success! (User)");
-                    return "redirect:/index";
+    public String login(@Valid User user, BindingResult bindingResult,
+            @RequestParam("username") String username, @RequestParam("password") String password) {
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+        List<User> users = dao.findAll();
+        for (User user2 : users) {
+            if (username.equalsIgnoreCase(user2.getUsername())) {
+                if (password.equalsIgnoreCase(user2.getPassword())) {
+                    if (user2.getAdmin()) {
+                        session.set("user", user2);
+                        return "redirect:/admin/index";
+                    } else {
+                        session.set("user", user2);
+                        return "redirect:/index";
+                    }
                 }
             }
-        } catch (Exception e) {
-            model.addAttribute("message", "Invalid username!");
         }
+    
+        // Khi không tìm thấy người dùng hoặc mật khẩu không khớp
+        bindingResult.rejectValue("username", "error.user", "Invalid username or password");
         return "login";
     }
     
+    
+    @RequestMapping("/sign-up")
+    public String doSignUp(@Valid  User user,BindingResult result,Model model) {
+
+        if (result.hasErrors()) {
+
+            return "sign-up";
+        }
+
+        return "sign-up";
+    }
+
+
+
+   
 }
-    //  @RequestMapping("/login/save")
-    //  public String postLogin(@Valid @ModelAttribute("user") User account ,BindingResult result,Model model,RedirectAttributes params){
-    //      System.out.println(account.getId());
-    //      System.out.println(account.getPassword());
-    //      if(result.hasErrors()){
-    //          if(account.getId().equalsIgnoreCase("admin") && account.getPassword().equalsIgnoreCase("admin")){
-    //              return "redirect:/admin/index";
-    //          }else{
-    //            if(!account.getId().isBlank() && !account.getPassword().isBlank()){
 
-    //              model.addAttribute("checkLG", true);
-    //              return"/index";
-    //            }
-    //          }
-    //      }
-    //      return"login";
-    //  }
+// @RequestMapping("/forgot-password")
+// public String doForgotPassword( @ModelAttribute("user") User account,Model
+// model){
 
+// return "forgot-password";
+// }
+// @RequestMapping("/forgot-password/save")
+// public String postForgotPassword(@Valid @ModelAttribute("user") User account
+// ,BindingResult result){
 
-//     @RequestMapping("/forgot-password")
-//     public String doForgotPassword( @ModelAttribute("user") User account,Model model){
+// if(result.hasErrors()){
+// return"forgot-password";
+// }
+// return"forgot-password";
+// }
 
-//         return "forgot-password";
-//     }
-//     @RequestMapping("/forgot-password/save")
-//     public String postForgotPassword(@Valid @ModelAttribute("user") User account ,BindingResult result){
+// @RequestMapping("/change-password")
+// public String doChangePassword(@ModelAttribute("user") User account,Model
+// model){
 
-//         if(result.hasErrors()){
-//             return"forgot-password";
-//         }
-//         return"forgot-password";
-//     }
+// return "change-password";
+// }
+// @RequestMapping("/change-password/save")
+// public String postChangePassword(@Valid @ModelAttribute("user") User account
+// ,BindingResult result,Model model){
 
+// if(result.hasErrors()){
 
+// String newPass = paramService.getString("newPassword", "");
+// String confirmPass = paramService.getString("confirmPassword", "");
 
-//     @RequestMapping("/change-password")
-//     public String doChangePassword(@ModelAttribute("user") User account,Model model){
+// if(newPass.trim().isBlank()){
+// model.addAttribute("mesNP", false);
+// }
+// if(confirmPass.trim().isBlank()){
+// model.addAttribute("mesCP", false);
+// }else{
+// if(!newPass.equals(confirmPass)){
+// model.addAttribute("message", false);
+// }
+// }
 
-//         return "change-password";
-//     } 
-//     @RequestMapping("/change-password/save")
-//     public String postChangePassword(@Valid @ModelAttribute("user") User account ,BindingResult result,Model model){
+// return"change-password";
+// }
 
-//         if(result.hasErrors()){
-            
-//             String newPass = paramService.getString("newPassword", "");
-//             String confirmPass = paramService.getString("confirmPassword", "");
-
-//             if(newPass.trim().isBlank()){
-//                  model.addAttribute("mesNP", false);
-//             }
-//             if(confirmPass.trim().isBlank()){
-//                 model.addAttribute("mesCP", false);
-//             }else{
-//                 if(!newPass.equals(confirmPass)){
-//                     model.addAttribute("message", false);
-//                 }
-//             }
-          
-
-            
-//             return"change-password";
-//         }
-
-
-
-//         return"change-password";
-//     }
-
-
-
-
-
-//     @RequestMapping("/sign-up")
-//     public String doSignUp( @ModelAttribute("user") User account,Model model){
-
-//         return "sign-up";
-//     }
-//     @RequestMapping("/sign-up/save")
-//     public String doSignUp(@Valid @ModelAttribute("user") User account ,BindingResult result){
-
-//         if(result.hasErrors()){
-//             return"sign-up";
-//         }
-//         return"sign-up";
-//     }
-//     @RequestMapping("/profile")
-//     public String doMyProfile(Model model){
-
-//         return"edit-profile";
-//     }
+// return"change-password";
+// }
 
 // }

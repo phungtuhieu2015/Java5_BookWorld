@@ -12,12 +12,10 @@
 </head>
 
 <body>
-    <!-- preloder-loader -->
-    <div th:replace="fragment/preloder-loader.html :: #preloder "></div>
-    <!-- /preloder-loader -->
     <!-- Header -->
     <div th:replace="fragment/header.html :: #header "></div>
     <!-- /Header -->
+    
     <div class="container py-5  d-flex justify-content-center align-items-center" style="height: 65vh;">
         <div class="form-wrapper w-100 d-flex justify-content-center align-items-center">
             <div class="card" style="width: 500px;">
@@ -42,23 +40,28 @@
                                     aria-labelledby="nav-home-tab">
                                     <form class="form-section" th:action="@{/account/login}" th:object="${user}"
                                         method="post">
-                                        <!--  -->
+                                      
                                         <div class="form-group mb-3">
-                                            <input type="text" name="username" th:field="*{username}" id="username" tabindex="1"
-                                                class="form-control" placeholder="Tên đăng nhập" value="">
-                                                <div class="alert alert-warning" th:if="${#fields.hasErrors('username')}"
-                                                th:errors="*{username}"></div>
-                                        </div>
-                                
-                                        <!--  -->
-                                        <!--  -->
-                                        <div class="form-group mb-3">
-                                            <input type="password" name="password" th:field="*{password}" id="password"
-                                                tabindex="2" class="form-control" placeholder="Mật khẩu">
+                                            <input type="text" name="username"  id="username"
+                                                tabindex="1" class="form-control" placeholder="Tên đăng nhập" th:field="*{username}">
+                                            <!-- lỗi -->
+                                         
+                                          - <div class="alert alert-warning " th:if="${#fields.hasErrors('username')}"
+                                                th:errors="*{username}">
+                                            </div> 
                                         </div>
 
-                                        <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}"
-                                            th:errors="*{password}"></div>
+                                        <!--  -->
+                                        <!--  -->
+                                        <div class="form-group mb-3">
+                                            <input  type="password" name="password" id="password"
+                                                tabindex="2" class="form-control" placeholder="Mật khẩu" th:field="*{password}">
+                                        </div>
+                                     
+                                        <!-- lỗi -->
+                                         <div class="alert alert-warning " th:if="${#fields.hasErrors('password')}"
+                                            th:errors="*{password}">
+                                        </div> 
                                         <!--  -->
                                         <div class="form-group mb-3 d-flex justify-content-center">
                                             <div class="form-check">
@@ -72,31 +75,30 @@
                                         <div class="form-group mb-3">
                                             <div class="row">
                                                 <div class="col-sm-12 d-flex justify-content-center">
-                                                    <input type="submit" name="login-submit" id="login-submit"
+                                                    <input formaction="/account/login" type="submit" name="login-submit" id="login-submit"
                                                         tabindex="4" class="form-control btn btn-login"
                                                         value="Đăng nhập">
                                                 </div>
                                             </div>
                                         </div>
-                                       
+
                                     </form>
-                                    <p th:text="${message}"></p>
+                                    <p th:text="${message}" style="color: red; text-align: center;"></p>
                                     <!-- /Login -->
                                     <div class="form-group mb-3">
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="text-center">
-                                                    <a th:href="@{/account/forgot-password}"
-                                                        tabindex="5"
+                                                    <a th:href="@{/account/forgot-password}" tabindex="5"
                                                         class="forgot-password text-decoration-none text-black">Quên
                                                         mật khẩu?</a>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="text-center">
-                                                    <a th:href="@{/account/sign-up}"
-                                                        tabindex="5"
-                                                        class="forgot-password text-decoration-none text-black">Đăng ký</a>
+                                                    <a th:href="@{/account/sign-up}" tabindex="5"
+                                                        class="forgot-password text-decoration-none text-black">Đăng
+                                                        ký</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -121,5 +123,4 @@
     <!--/footer  -->
     <th:block th:include="fragment/script-links.html"></th:block>
 </body>
-
 </html>

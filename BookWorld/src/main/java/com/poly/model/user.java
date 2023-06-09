@@ -30,24 +30,26 @@ import lombok.Setter;
 public class User {
 	
   @Id
+  @NotBlank(message = "(*)Tên người dùng là bắt buộc" )
+  @Size(min = 5, message = "(*)mật khẩu phải ít nhất 8 kí tự")
   String username;
   
-  //@NotBlank(message = "Category name is required" )
-  // @Size(min = 8, message = "{Password needs at least 8 characters}")
+  @NotBlank(message = "(*) Mật khẩu là bắt buộc" )
+   @Size(min = 8, message = "(*)mật khẩu phải ít nhất 8 kí tự")
   String password;
   
-   @NotBlank(message = "fullName is required")
+   @NotBlank(message = "(*)Tên Là Bắt buộc")
   String fullName;
 
-  // @NotBlank(message = "phone is required")
-  // @Pattern(regexp = "^(09|03)\\d{8}$", message = "Phone number must be 10 digits and start with 09 or 03")
+   @NotBlank(message = "(*)Số điện thoại là bắt buộc")
+   @Pattern(regexp = "^(09|03)\\d{8}$", message = "(*)Số điện thoại phải có 10 chữ số và bắt đầu bằng 09 hoặc 03")
   String phone;
 
-  // @NotBlank(message = "Email is required")
-  // @Email(message = "Invalid email format")
+  @NotBlank(message = "(*)email là bắt buộc")
+  @Email(message = "Email phải đúng định dạng")
   String email;
 
-  // @NotBlank(message = "address is required")
+  @NotBlank(message = "(*)Địa chỉ là bắt buộc")
   String address;
 
   String image;
