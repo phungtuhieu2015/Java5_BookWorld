@@ -12,8 +12,9 @@ import com.poly.model.User;
 public interface CategoryDAO extends JpaRepository<Category,Long> {
 
 
-    @Query("SELECT c FROM Category c WHERE c.categoryName=:categoryName")
-    Category findByCategoryName(@Param("categoryName") String categoryName);
+    // @Query("SELECT c FROM Category c WHERE c.categoryName=:categoryName")
+    // Category findByCategoryName(@Param("categoryName") String categoryName);
 
     
+    Category  findByCategoryName( String categoryName);
 }

@@ -10,7 +10,7 @@ import com.poly.model.User;
 
 public interface UserDAO extends JpaRepository<User,String> {
 
-    @Query("SELECT u FROM User u WHERE u.email=:email")
-    User  findByEmaill(@Param("email") String email);
+  
+    User  findByEmail( String email);
    
 }

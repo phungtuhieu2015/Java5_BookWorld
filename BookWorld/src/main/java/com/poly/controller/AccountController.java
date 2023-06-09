@@ -93,7 +93,7 @@ public class AccountController {
 
         System.out.println(account.getEmail());
 
-        User user1 = dao.findByEmaill(account.getEmail());
+        User user1 = dao.findByEmail(account.getEmail());
 
 
        // System.out.println("check12312312312: "+user1.getEmail());
@@ -115,7 +115,7 @@ public class AccountController {
                        +"         "+user1.getPassword()+"</p>"
                        +"     <li>Tiếp theo, bấm vào <a href='http://localhost:8081/account/login'"
                        +"             style='text-decoration: none; background-color: #4CAF50; color: white; padding: 8px 20px; border-radius: 5px; font-weight: bold;'>đăng"
-                       +"             nhập</a> để tiếp tục</li>"
+                       +"             nhập</a></li>"
                        +" </ol>"
                        +" <p>Để đảm bảo an toàn cho tài khoản của bạn, hãy thay đổi mật khẩu ngay sau khi đăng nhập.</p>"
                        +" <p>Nếu bạn không khởi tạo yêu cầu đặt lại mật khẩu này, xin vui lòng bỏ qua email này. Tài khoản của bạn vẫn an"
