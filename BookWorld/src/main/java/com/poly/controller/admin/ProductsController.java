@@ -108,16 +108,19 @@ public class ProductsController {
     }
     @RequestMapping("/products/create")
     public String create(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage) {
-        if (result.hasErrors()) {
-            if(dao.existsById(book.getId())){
-                model.addAttribute("isExist", "(*) Mã sách đã tồn tại");
-            }
-            if(fileImage.isEmpty() ){
-                model.addAttribute("errorImg", "(*) Vui lòng chọn ảnh");
-            }
-            return "forward:/admin/products/form-errors";
+        boolean isError  = false;
+        if(dao.existsById(book.getId())){
+             isError = true;    
+            model.addAttribute("isExist", "(*) Mã sách đã tồn tại");
         }
-         if(!fileImage.isEmpty()) {
+        if(fileImage.isEmpty() ){
+             isError = true;    
+            model.addAttribute("errorImg", "(*) Vui lòng chọn ảnh");
+        }
+        if(isError || result.hasErrors()) {
+             return "forward:/admin/products/form-errors";
+        }
+         if(!fileImage.isEmpty()) {        
             String fileName = fileImage.getOriginalFilename();
             String uploadDirectory = "static/admin/img/";
             try {
