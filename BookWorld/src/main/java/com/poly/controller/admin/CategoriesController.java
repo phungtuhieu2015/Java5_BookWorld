@@ -3,6 +3,8 @@ package com.poly.controller.admin;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,39 +73,52 @@ public class CategoriesController {
         return "redirect:/admin/categories";
     }
 
-    @RequestMapping("/categories/create")
-    public String create(@Valid Category category,BindingResult result,Model model) {   
-
-        if(result.hasErrors()){     
-            model.addAttribute("pageName", "categories products");
+    public String formError(Category category,BindingResult result,Model model, Boolean isEdit, Boolean CheckCategoryName){
+             model.addAttribute("pageName", "categories products");
             model.addAttribute("form", true);
-            model.addAttribute("isEdit", false);
+            model.addAttribute("isEdit", isEdit);
             Optional<Integer> p = Optional.of(0);
             Pageable pageable = PageRequest.of(p.orElse(0), 5);
             Page<Category> page = dao.findAll(pageable);     
             model.addAttribute("page", page);
+            model.addAttribute("CheckCategoryName", CheckCategoryName);
             return "admin/index-admin";
-        }
+    }
 
-        dao.save(category);
-        this.category = new Category();
+    @RequestMapping("/categories/create")
+    public String create(@Valid Category category,BindingResult result,Model model) {   
+
+        if(result.hasErrors()){     
+            return this.formError(category, result, model,false,false);
+        }
+      
+        Category cCheckName = dao.findByCategoryName(category.getCategoryName());
+         if(cCheckName != null){
+             return this.formError(category, result, model,false,true);
+         }else{
+            dao.save(category);
+            this.category = new Category();
+         }
+        
+       
         return "redirect:/admin/categories";
     }
 
     @RequestMapping("/categories/update")
     public String update(@Valid Category category, BindingResult result, Model model) {
-        if(result.hasErrors()){     
-            model.addAttribute("pageName", "categories products");
-            model.addAttribute("form", true);
-            model.addAttribute("isEdit", true);
-            Optional<Integer> p = Optional.of(0);
-            Pageable pageable = PageRequest.of(p.orElse(0), 5);
-            Page<Category> page = dao.findAll(pageable);     
-            model.addAttribute("page", page);
-            return "admin/index-admin";
+          if(result.hasErrors()){     
+            return this.formError(category, result, model,true,false);
         }
 
-        dao.save(category);
+        Category cCheckName = dao.findByCategoryName(category.getCategoryName());
+         if(cCheckName != null){
+             return this.formError(category, result, model,true,true);
+         }else{
+            dao.save(category);
+            
+         }
+
+       // dao.save(category);
         return "redirect:/admin/categories/edit/" + category.getId();
     }
 

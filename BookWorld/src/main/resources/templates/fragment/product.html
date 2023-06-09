@@ -73,18 +73,21 @@
                         <i th:text="${page.number +1}"></i> <strong th:text="'of  '+${page.totalPages}"></strong>
                     </div>
                     <ul class=" pagination" style=" position: absolute; padding-top: 10px; right: 50px;">
-                        <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
-                            <a class="page-link" th:href="@{/index(p=0)}">First</a>
+                        <li style="width: 50px;" th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
+                            <a class="page-link" th:href="@{/index(p=0)}"><i class="bi bi-chevron-double-left"></i></a>
                         </li>
-                        <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
-                            <a class="page-link" th:href="@{/index(p=${page.number-1})}">Prev</a>
+                        <li style="width: 50px;" th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
+                            <a class="page-link" th:href="@{/index(p=${page.number-1})}"><i
+                                    class="bi bi-chevron-left"></i></a>
                         </li>
 
-                        <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
-                            <a class="page-link" th:href="@{/index(p=${page.number+1})}">Next</a>
+                        <li style="width: 50px;" th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
+                            <a class="page-link" th:href="@{/index(p=${page.number+1})}"><i
+                                    class="bi bi-chevron-right"></i></a>
                         </li>
-                        <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
-                            <a class="page-link" th:href="@{/index(p=${page.totalPages-1})}">Last</a>
+                        <li style="width: 50px;" th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
+                            <a class="page-link" th:href="@{/index(p=${page.totalPages-1})}"><i
+                                    class="bi bi-chevron-double-right"></i></a>
                         </li>
 
                     </ul>

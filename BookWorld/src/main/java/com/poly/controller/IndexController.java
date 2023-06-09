@@ -46,7 +46,7 @@ public class IndexController {
     }
     
 
-    @ResponseBody
+    
     @RequestMapping("/share/{bookId}")
     public String edit(@PathVariable("bookId") String bookId,Model model,@RequestParam("emailShare") String to) {
 
@@ -75,9 +75,9 @@ public class IndexController {
                 +"    <!-- Các dòng dữ liệu khác -->"
                 +" </tbody>"
                 +" </table>"
-                +" <div style='width: 15%;margin: 0 auto; margin-top: 20px;'>"
+                +" <div style='width: 80%;margin: 0 auto; margin-top: 20px;'>"
                 +" <a href='http://localhost:8081/chitiet/"+book.getId()+ "' "
-                +"    style='display: inline-block; padding: 10px 20px; background-color: #FF0000; color: #FFFFFF; text-decoration: none; border-radius: 4px; font-weight: bold;'>Chi"
+                +"    style='display: inline-block; font-size: 16px; padding: 10px 20px; background-color: #FF0000; color: #FFFFFF; text-decoration: none; border-radius: 4px; font-weight: bold;'>Chi"
                 +"    tiết sản phẩm</a>"
                 +"</div>");
 
@@ -87,6 +87,6 @@ public class IndexController {
             e.printStackTrace();
         }
        
-        return "Mail của bạn sẽ được gửi đi trong giây lát";
+        return "redirect:/index";
     }
 }
