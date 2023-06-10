@@ -28,7 +28,7 @@
 
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="text" name="title" id="youtube-title" tabindex="2" class="form-control"
+                <input type="password" name="title" id="youtube-title" tabindex="2" class="form-control"
                   placeholder="Mật khẩu" th:field="*{password}">
                 <!-- lỗi -->
                 <div class="alert alert-warning " th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
@@ -180,8 +180,8 @@
                 <td th:text="${item.address}"></td>
                 <td th:text="${item.activated ? 'Active' : 'inactive'}"></td>
                 <td th:text="${item.admin ? 'Admin' : 'User'}"></td>
-                <td class="p-0">               
-                   <img th:src="@{/admin/img/__${item.image}__}" alt="">
+                <td class="p-0" >               
+                   <img th:src="@{/admin/img/__${item.image}__}"  >
                 </td>
 
                 <td class="td-action ">
@@ -225,16 +225,15 @@
 
     <!-- /Danh sách -->
   </div>
-
-</div>
-</div>
-<section class="message-section ">
-  <div th:class="'toast my-3  align-items-center text-white bg-primary border-0 ' + ${message != null ? 'fade show' :''}" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        <tb:block th:text="${message}"></tb:block>
+  <section class="message-section ">
+    <div th:class="'toast my-3  align-items-center text-white bg-primary border-0 ' + ${message != null ? 'fade show' :''}" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <tb:block th:text="${message}"></tb:block>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-  </div>
-</section>
+  </section>
+</div>
+</div>

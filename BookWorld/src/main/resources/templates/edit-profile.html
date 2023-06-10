@@ -13,14 +13,14 @@
 
 <body>
 
-       
-    <main >
-          <!-- preloder-loader -->
 
-  <!-- /preloder-loader -->
-      <!-- Header -->
-      <div th:replace="fragment/header.html :: #header "></div>
-      <!-- /Header -->
+    <main>
+        <!-- preloder-loader -->
+
+        <!-- /preloder-loader -->
+        <!-- Header -->
+        <div th:replace="fragment/header.html :: #header "></div>
+        <!-- /Header -->
         <div class="container-xl px-4 mt-5 mb-5 d-flex justify-content-center ">
             <!-- Account page navigation-->
             <div class="row w-75">
@@ -30,7 +30,7 @@
                     <div class="card mb-4 ">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
-                            <form>
+                            <form id="editProfileForm"  th:action="@{/account/profile}" method="post" th:object="${user}">
                                 <div class="mb-3">
                                     <form action="" method="post" enctype="multipart/form-data">
                                         <div class="avatar-upload">
@@ -47,49 +47,45 @@
                                     </form>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="fullName">Họ và tên <span
-                                            class="text-danger">*</span>
+                                    <label class="small mb-1" for="fullName">Họ và tên <span>
                                     </label>
                                     <input class="form-control" id="fullName" type="text"
-                                        placeholder="Enter your fullname" name="fullname">
+                                        placeholder="Enter your fullName" name="fullName" th:field="*{fullName}">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="phone">Số điện thoại<span
-                                            class="text-danger">*</span>
+                                    <label class="small mb-1" for="phone">Số điện thoại<span>
                                     </label>
-                                    <input class="form-control" id="phone" type="text" placeholder="Enter your phone">
+                                    <input class="form-control" id="phone" type="text" placeholder="Enter your phone"
+                                        th:field="*{phone}">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="email">Email <span
-                                            class="text-danger">*</span></label>
+                                    <label class="small mb-1" for="email">Email <span></label>
                                     <input class="form-control" id="email" type="email" placeholder="Enter your email"
-                                        name="email">
+                                        name="email" th:field="*{email}">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="address">Địa chỉ<span class="text-danger">*</span>
+                                    <label class="small mb-1" for="address">Địa chỉ<span>
                                     </label>
                                     <input class="form-control" id="address" type="text" placeholder="Enter your phone"
-                                        name="address">
+                                        name="address" th:field="*{address}">
                                 </div>
 
 
                                 <div class="row gx-3 mb-3">
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="UserName">UserName<span
-                                                class="text-danger">*</span></label>
+                                        <label class="small mb-1" for="UserName">UserName<span></label>
                                         <input class="form-control" id="UserName" type="text"
-                                            placeholder="Enter your username" value="">
+                                            placeholder="Enter your username" th:field="*{username}">
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="password">Password <span
-                                                class="text-danger">*</span></label>
-                                        <input class="form-control" id="password" type="password"
-                                            placeholder="Enter your password" value="">
+                                        <label class="small mb-1" for="UserName">Mật Khẩu</label>
+                                        <input type="password" name="password" id="youtube-title" tabindex="2"
+                                            class="form-control" placeholder="***********" th:field="*{password}" readonly>
                                     </div>
                                 </div>
 
@@ -109,6 +105,49 @@
     </main>
 
     <script th:src="@{/assets/js/edit-profile.js}"></script>
+    <script>
+        const form = document.getElementById('editProfileForm');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn form gửi đi mặc định
+
+            // Lấy giá trị từ các trường nhập liệu
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const username = document.getElementById('UserName').value;
+            const password = document.getElementById('youtube-title').value;
+
+            // Kiểm tra và hiển thị lỗi nếu không nhập các trường bắt buộc
+            let hasError = false;
+
+            if (fullName.trim() === '') {
+                hasError = true;
+                alert('Vui lòng nhập họ và tên.');
+            } else if (phone.trim() === '') {
+                hasError = true;
+                alert('Vui lòng nhập số điện thoại.');
+            } else if (email.trim() === '') {
+                hasError = true;
+                alert('Vui lòng nhập email.');
+            } else if (address.trim() === '') {
+                hasError = true;
+                alert('Vui lòng nhập địa chỉ.');
+            } else if (username.trim() === '') {
+                hasError = true;
+                alert('Vui lòng nhập username.');
+            } else if (password.trim() === '') {
+                hasError = true;
+                alert('Vui lòng nhập mật khẩu.');
+            }
+
+            // Nếu không có lỗi, gửi form đi
+            if (!hasError) {
+                form.submit();
+            }
+        });
+    </script>
 </body>
 
 </html>
