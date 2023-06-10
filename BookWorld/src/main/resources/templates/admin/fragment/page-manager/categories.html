@@ -29,10 +29,10 @@
                   <input type="text" th:field="*{categoryName}" id="youtube-title" th:value="${category.categoryName}"
                     tabindex="2" class="form-control" placeholder="Tên danh mục">
                   <!-- lỗi -->
-                  <div class="alert alert-warning " th:if="${#fields.hasErrors('categoryName')}"
-                    th:errors="*{categoryName}" th:value="${baoLoi}">
+                  <div class="message-errors " th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"
+                    th:value="${baoLoi}">
                   </div>
-                  <div class="alert alert-warning "
+                  <div class="message-errors "
                     th:style="${CheckCategoryName==false || CheckCategoryName==null  ? 'display: none;':''}"
                     th:text="${CheckCategoryName==true?'(*) Tên danh mục đã tồn tại':''}"></div>
 

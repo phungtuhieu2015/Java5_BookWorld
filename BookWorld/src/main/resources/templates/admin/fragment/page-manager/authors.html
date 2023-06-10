@@ -28,14 +28,14 @@
                 <input type="text" th:field="*{authorName}" id="youtube-title" tabindex="2" class="form-control"
                   placeholder="Tên tác giả" th:value="${author.authorName}">
                 <!-- lỗi -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}">
+                <div class="message-errors" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="date" th:field="*{dateOfBirth}" id="view-count" tabindex="1" class="form-control"
                   placeholder="Ngày sinh" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
                 <!-- lỗi -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
+                <div class="message-errors" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
@@ -49,7 +49,7 @@
                 <input class="form-control input-datalist" th:field="*{nationality}" th:value="${author.nationality}"
                   style="border-radius:0;" list="DSQuocTich" placeholder="Quốc tịch...">
                 <!-- lỗi -->
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}">
+                <div class="message-errors" th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}">
                 </div>
                 <datalist id="DSQuocTich">
                   <option value="Việt Nam">
@@ -75,7 +75,7 @@
               <textarea class="form-control" th:field="*{description}" th:text="${author.description}" id="description1"
                 placeholder="Mô tả" rows="4"></textarea>
               <!-- lỗi -->
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+              <div class="message-errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
               </div>
             </div>
             <div class="form-group mb-3 d-flex justify-content-end">
