@@ -125,7 +125,7 @@ public class AccountController {
                        +"     <p>Success 202 - BOOKWORLD</p>"
                        +"     <p>&copy; 2023 Tất cả các quyền được bảo lưu.</p>"
                        +" </div>"
-                   +" </div>");
+                   +" </div>","");
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }

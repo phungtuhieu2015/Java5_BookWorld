@@ -28,7 +28,7 @@ public class AuthorsController {
     Boolean form = false;
     Boolean isEdit = false;
     Author author = new Author();
-
+    String isSuccess = "false";
     @RequestMapping("/authors")
     public String author(Model model, @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "authors products");
@@ -52,7 +52,14 @@ public class AuthorsController {
         if(author.getId() == null) {
             author = new Author();
         }
-
+        if(isSuccess.equals("trueCreate")){
+            model.addAttribute("message", "Thêm tác giả thành công");
+        }else if(isSuccess.equals("trueUpdate")){
+            model.addAttribute("message", "Cập nhật tác giả thành công");
+        }else if(isSuccess.equals("trueDelete")){
+            model.addAttribute("message", "Xóa tác giả thành công");
+        }
+        isSuccess = "false";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("author", author);
@@ -89,6 +96,7 @@ public class AuthorsController {
 
         dao.save(author);
         this.author = new Author();
+        isSuccess = "trueCreate";
         return "redirect:/admin/authors";
     }
 
@@ -106,6 +114,7 @@ public class AuthorsController {
         }
 
         dao.save(author);
+        isSuccess = "trueUpdate";
         return "redirect:/admin/authors/edit/" + author.getId();
     }
 
@@ -115,6 +124,7 @@ public class AuthorsController {
          form = false;
          isEdit = false;
         dao.deleteById(id);
+        isSuccess = "trueDelete";
         return "redirect:/admin/authors";
     }
 

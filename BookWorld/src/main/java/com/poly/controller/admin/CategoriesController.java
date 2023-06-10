@@ -32,6 +32,8 @@ public class CategoriesController {
 
     Category category = new Category();
 
+    String isSuccess = "false";
+
     @RequestMapping("/categories")
     public String categories(Model model, @RequestParam("p") Optional<Integer> p ) {
         model.addAttribute("pageName", "categories products");
@@ -54,6 +56,16 @@ public class CategoriesController {
         if(category.getId() == null) {
             category = new Category();
         }
+
+        if(isSuccess.equals("trueCreate")){
+            model.addAttribute("message", "Thêm danh mục thành công");
+        }else if(isSuccess.equals("trueUpdate")){
+            model.addAttribute("message", "Cập nhật danh mục thành công");
+        }else if(isSuccess.equals("trueDelete")){
+            model.addAttribute("message", "Xóa danh mục thành công");
+        }
+
+        isSuccess = "false";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("category", category);
@@ -98,6 +110,7 @@ public class CategoriesController {
          }else{
             dao.save(category);
             this.category = new Category();
+            isSuccess = "trueCreate";
          }
         
        
@@ -115,7 +128,7 @@ public class CategoriesController {
              return this.formError(category, result, model,true,true);
          }else{
             dao.save(category);
-            
+             isSuccess = "trueUpdate";
          }
 
        // dao.save(category);
@@ -128,6 +141,7 @@ public class CategoriesController {
         form = false;
         isEdit = false;
         dao.deleteById(id);
+        isSuccess = "trueDelete";
         return "redirect:/admin/categories";
     }
 

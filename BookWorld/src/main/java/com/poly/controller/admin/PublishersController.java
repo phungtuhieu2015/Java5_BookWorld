@@ -29,7 +29,7 @@ public class PublishersController {
     Boolean isEdit = false;
 
     Publisher publisher = new Publisher();
-
+    String isSuccess = "false"; 
     @RequestMapping("/publishers")
     public String publisher(Model model, @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "publishers products");
@@ -52,6 +52,14 @@ public class PublishersController {
         if(publisher.getId() == null) {
             publisher = new Publisher();
         }
+        if(isSuccess.equals("trueCreate")){
+            model.addAttribute("message", "Thêm nhà xuất bản thành công");
+        }else if(isSuccess.equals("trueUpdate")){
+            model.addAttribute("message", "Cập nhật nhà xuất bản thành công");
+        }else if(isSuccess.equals("trueDelete")){
+            model.addAttribute("message", "Xóa nhà xuất bản thành công");
+        }
+        isSuccess = "false";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("publisher", publisher);
@@ -88,6 +96,7 @@ public class PublishersController {
 
         dao.save(publisher);
         this.publisher = new Publisher();
+        isSuccess = "trueCreate";
         return "redirect:/admin/publishers";
     }
 
@@ -105,6 +114,7 @@ public class PublishersController {
         }
 
         dao.save(publisher);
+        isSuccess = "trueUpdate";
         return "redirect:/admin/publishers/edit/" + publisher.getId();
     }
 
@@ -114,6 +124,7 @@ public class PublishersController {
         form = false;
         isEdit = false;
         dao.deleteById(id);
+        isSuccess = "trueDelete";
         return "redirect:/admin/publishers";
     }
 

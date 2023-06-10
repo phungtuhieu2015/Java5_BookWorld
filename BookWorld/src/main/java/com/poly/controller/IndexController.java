@@ -21,72 +21,69 @@ import com.poly.service.MailerServiceImpl;
 
 import jakarta.mail.MessagingException;
 
-
 @Controller
 
 public class IndexController {
 
     @Autowired
     BookDAO dao;
-    
-   
+
     @Autowired
     MailerServiceImpl mailer;
 
     Book book = new Book();
+
     @RequestMapping("/index")
-    public String index(Model model, @RequestParam("p") Optional<Integer> p){
+    public String index(Model model, @RequestParam("p") Optional<Integer> p) {
 
         Pageable pageable = PageRequest.of(p.orElse(0), 8);
-        Page<Book> page = dao.findAll(pageable);   
+        Page<Book> page = dao.findAll(pageable);
         model.addAttribute("page", page);
 
         return "index";
-        
-    }
-    
 
-    
+    }
+
     @RequestMapping("/share/{bookId}")
-    public String edit(@PathVariable("bookId") String bookId,Model model,@RequestParam("emailShare") String to) {
+    public String edit(@PathVariable("bookId") String bookId, Model model, @RequestParam("emailShare") String to) {
 
         System.out.println(bookId);
         book = dao.findById(bookId).get();
-        System.out.println(book.getTitle());
-      
         try {
             MailInfo mail = new MailInfo();
-            mail.setBody("<table style='border-collapse: collapse; width: 80%; margin: 0 auto; border: 1px solid #000;'>"
-            +" <thead>"
-                +"<tr> "
-                +"<th style=' border: 1px solid #000; padding: 8px;'>Id sách</th>"
-                +"<th style='border: 1px solid #000; padding: 8px;'>Tên sách</th>"
-                +"<th style='border: 1px solid #000; padding: 8px;'>Giá</th>"
-                +"<th style='border: 1px solid #000; padding: 8px;'>Mô tả sách</th>"
-                +"</tr>"
-                +"</thead>"
-                +"<tbody>"
-                +"    <tr>"
-                +"        <td style='border: 1px solid #000; padding: 8px;'>"+book.getId()+"</td>"
-                +"        <td style='border: 1px solid #000; padding: 8px;'>"+book.getTitle()+"</td>"
-                +"        <td style='border: 1px solid #000; padding: 8px;'>"+book.getPrice()+"</td>"
-                +"        <td style='border: 1px solid #000; padding: 8px;'>"+book.getDescription()+"</td>"
-                +"    </tr>"
-                +"    <!-- Các dòng dữ liệu khác -->"
-                +" </tbody>"
-                +" </table>"
-                +" <div style='width: 80%;margin: 0 auto; margin-top: 20px;'>"
-                +" <a href='http://localhost:8081/chitiet/"+book.getId()+ "' "
-                +"    style='display: inline-block; font-size: 16px; padding: 10px 20px; background-color: #FF0000; color: #FFFFFF; text-decoration: none; border-radius: 4px; font-weight: bold;'>Chi"
-                +"    tiết sản phẩm</a>"
-                +"</div>");
+            mail.setAnh(book.getImage());
+            mail.setBody("<html><body>"
+                    + "<div"
+                    + " style='font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;'>"
+                    + "<h2 style='margin-top: 0;'>Chia sẻ sản phẩm sách</h2>"
+                    + " <p>Xin chào,  <strong>"+to+"</strong></p>"
+                    + "<p>Tôi muốn chia sẻ với bạn một sản phẩm sách thú vị. Dưới đây là thông tin về sách:</p>"
+                    + "<div style='display: flex; align-items: center; margin-bottom: 20px; '>"
+                    + "<img style='width: 165px; height: auto; margin-right: 20px;'"
+                    + "   src='cid:image' alt='Lỗi hình ảnh'>"
+                    + " <div style=' width: auto;  margin-bottom: 30px;'>"
+                    + "    <h3 style='font-size: 18px; font-weight: bold; margin: 0; '>"+book.getTitle()+"</h3>"
+                    + "   <p style='font-size: 14px; color: #c71b1b; margin: 0; margin-top: 10px;'>Giá: "+book.getPrice()+" VNĐ</p>"
+                    + "     <div"
+                    + "          style='margin-top: 30px; height: 51.2px;  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'>"
+                    + "          "+book.getDescription()+""
+                    + "       </div>"
+                    + "    </div>"
+                    + " </div>"
+                    + " <p>Bạn có thể tìm hiểu thêm về sách này và đặt mua tại <a href='http://localhost:8081/chitiet/"+book.getId()+"'>đường dẫn"
+                    + "          sách</a>.</p>"
+                    + " <p>Hy vọng bạn sẽ thích quyển sách này! Nếu bạn có bất kỳ câu hỏi hoặc cần thêm thông tin, hãy liên hệ với tôi."
+                    + " </p>"
+                    + "<p>Trân trọng,<br><strong>Success 202 - BOOKWORLD</strong> </p>"
+                    + " <p>&copy; 2023 Tất cả các quyền được bảo lưu.</p>"
+                    + "</div>"
+                    + "</body></html>");
 
-            System.out.println(mail.getBody());
-            mailer.send(to, "Gửi Email mè", mail.getBody() );
+            mailer.send(to, "Gửi Email", mail.getBody(), mail.getAnh());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-       
+
         return "redirect:/index";
     }
 }
