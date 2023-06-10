@@ -57,6 +57,7 @@
               <table class="table table-hover w-50">
                 <thead>
                   <tr class="tb-header">
+                    <th scope="col" >STT</th>
                     <th scope="col" >Số lượng đơn hàng</th>
                     <th scope="col">Số lượng sản phẩm</th>
                     <th scope="col">Ngày bán</th>
@@ -64,16 +65,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>3</td>
+                  <tr class="" th:each="item, iStat : ${page.content}">
+                    <td th:text="${iStat.index}"></td>
+                    <td th:text="${item.numOrders}">2</td>
+                    <td th:text="${item.numBooksSold}">2</td>
+                    <td th:text="${item.createdDate}">2</td>
+                    <td th:text="${item.totalPrice}">2</td>
                   </tr>
                 </tbody>
               </table>
-            </div>
-            
+            </div> 
         </div>
       </div>
      <!-- /Danh sách -->

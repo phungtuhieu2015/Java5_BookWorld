@@ -101,7 +101,6 @@
                      </div>
                      <div class="modal-footer">
                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                       <a th:href="@{/admin/orders-pending/{id} (id=${item.id})}" class="btn btn-primary">Giao hàng</a>
                      </div>
                    </div>
                  </div>
@@ -110,6 +109,22 @@
                <!-- / Chi tiết -->
              </th:block>
           </div>
+          <nav aria-label="Page navigation example" class="pagination-section mt-2" >
+            <ul class="pagination" >
+              <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}" >
+                <a class="page-link" th:href="@{/admin/products(p=0)}">First</a>
+              </li>
+              <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
+                <a class="page-link" th:href="@{/admin/products(p=${page.number-1})}" >Prev</a>
+              </li>
+              <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
+                <a class="page-link"  th:href="@{/admin/products(p=${page.number+1})}">Next</a>
+              </li>
+              <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
+                <a class="page-link" th:href="@{/admin/products(p=${page.totalPages-1})}">Last</a>
+              </li>
+            </ul>
+        </nav>
         </div>
        <!-- /Danh sách -->
       </div>
