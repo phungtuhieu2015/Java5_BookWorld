@@ -53,6 +53,6 @@ public class Author {
     String description;
 
     @OneToMany(mappedBy = "author", cascade=CascadeType.REFRESH)
-    List<AuthorBook> AuthorBook;
+    List<AuthorBook> authorBooks;
 
 }

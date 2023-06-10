@@ -214,7 +214,7 @@
     background-color: #fff !important;
 }
 .card.page-wrapper  .table thead{
-    background: var(--mau-bg-header-table) ;
+    background: var(--mau-dong-bo) !important ;
     border-bottom: 1px solid #E9ECEF;
 }
 
@@ -243,8 +243,8 @@
 }
 .table thead th {
     font-weight: 600;
-    color: #212B36;
-    padding: 10px;
+    color: #fff;
+    padding: 10px 20px;
     white-space: nowrap;
 }
 
@@ -433,4 +433,25 @@
 
     min-width: 120px;
     max-width: 120px;
+}
+.td-box-img {
+    height: 100%;
+}
+.td-box-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.book-title-modal {
+    color: var(--mau-dong-bo);
+}
+.message-section {
+    margin: 10px 0px;
+    right: 10px;
+    bottom: 10px;
+    position: fixed !important;
+}
+
+.custom-modal{
+    max-width:  1000px !important;
 }

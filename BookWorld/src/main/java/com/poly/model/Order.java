@@ -31,8 +31,7 @@ import lombok.Setter;
 public class Order {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    String id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -44,16 +43,16 @@ public class Order {
 
     Integer status;
 
-    Integer paymentMethod;
+    Boolean paymentMethod;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "cancellation_date")
-    Date cancellationDate;
+    Date cancellationDate ;
 
     String cancellationReason;
 
 
-    @OneToMany(mappedBy = "order", cascade=CascadeType.REFRESH)
-    List<OrderDetail> orderDetail;
+    @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
+    List<OrderDetail> orderDetails;
 
 }

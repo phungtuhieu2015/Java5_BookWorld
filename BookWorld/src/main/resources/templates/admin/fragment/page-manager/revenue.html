@@ -7,30 +7,21 @@
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-      
       <!-- Danh sách -->
       <div class="tab-pane fade  show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
         <div class="table-top row px-0 mx-0">
-          <div class="table-top__search-set col-6 px-0 d-flex justify-content-center align-items-center">
-            <form action="" class="form-section">
+          <div class="table-top__search-set col-6 px-0 d-flex justify-content-end align-items-center">
+            <form action="" class="form-section mt-3">
               <div class="row">
-                <div class="col-6">
-                <select class="form-select " style="width: 300px;" aria-label="Default select example">
-                  <option selected>Từ ngày</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>
-                <div class="col-6">
-                <select class="form-select " style="width: 300px;" aria-label="Default select example">
-                  <option selected>Đến ngày</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>
-              
+                <div class="form-group mb-3 col-4  ">
+                  <input type="date" name="startDate"   class="form-control ">
+                </div>
+                <div class="form-group mb-3 col-4">
+                  <input type="date" name="endDate"   class="form-control ">
+                </div>
+                <div class="form-group mb-3 col-4">
+                  <input  type="submit" tabindex="4" class="form-control btn ms-2" style="padding: 6px 15px;" value="Search">
+                </div>
               </div>
             </form>
           </div>  
@@ -56,9 +47,10 @@
         </div>
         <div class="table-bottom">
             <div class="table-responsive d-flex justify-content-center ">
-              <table class="table table-hover w-50">
+              <table class="table table-hover w-75">
                 <thead>
                   <tr class="tb-header">
+                    <th scope="col" >STT</th>
                     <th scope="col" >Số lượng đơn hàng</th>
                     <th scope="col">Số lượng sản phẩm</th>
                     <th scope="col">Ngày bán</th>
@@ -66,22 +58,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="">
-                    <td scope="row">1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>3</td>
+                  <tr class="" th:each="item, iStat : ${page.content}">
+                    <td th:text="${iStat.index}"></td>
+                    <td th:text="${item.numOrders}">2</td>
+                    <td th:text="${item.numBooksSold}">2</td>
+                    <td th:text="${item.createdDate}">2</td>
+                    <td th:text="${item.totalPrice}">2</td>
                   </tr>
                 </tbody>
               </table>
-            </div>
-            
+            </div> 
         </div>
       </div>
      <!-- /Danh sách -->
     </div>
-
-
-
   </div>
 </div>

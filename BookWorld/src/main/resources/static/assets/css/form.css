@@ -27,6 +27,8 @@
 .form-section  input[type= "email"],
 .form-section  input[type= "text"],
 .form-section  input[type= "password"],
+.form-section  input[type= "number"],
+.form-section  input[type= "date"],
 .form-section  .input-datalist,
 .form-section .form-select
 {
@@ -71,4 +73,9 @@
 {
     box-shadow: none !important;
     border-color: var( --mau-border-input-focus)  !important;
+}
+.message-errors {
+    margin-top: 5px;
+    font-size: .875em;
+    color:  #FF0000;
 }

@@ -49,7 +49,6 @@
                   <th scope="col">Ngày thích mới nhất</th>
                 </tr>
               </thead>
-<<<<<<< HEAD
               <tbody>
                 <tr class="" th:each="item :${page.content}">
                   <td scope="row" th:text="${item.tenSach}">1</td>
@@ -59,28 +58,6 @@
                   <td th:text="${#dates.format(item.ngayMoi, 'dd-MM-yyyy')}">5</td>
                 </tr>
               </tbody>
-=======
-              <table class="table table-hover">
-                <thead>
-                  <tr class="tb-header">
-                    <th scope="col">Tên sách</th>
-                    <th scope="col">Danh mục</th>
-                    <th scope="col">SL thích</th>
-                    <th scope="col">Ngày thích cũ nhất</th>
-                    <th scope="col">Ngày thích mới nhất</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="" th:each="item :${items}">
-                    <td scope="row" th:text="${item.tenSach}">1</td>
-                    <td th:text="${item.danhMuc}">2</td>
-                    <td th:text="${item.soLuongThich}">3</td>
-                    <td th:text="${#dates.format(item.ngayCu, 'dd-MM-yyyy')}">4</td>
-                    <td th:text="${#dates.format(item.ngayMoi, 'dd-MM-yyyy')}">5</td>
-                  </tr>
-                </tbody>
-              </table>
->>>>>>> hoangdinh
             </table>
           </div>
 
