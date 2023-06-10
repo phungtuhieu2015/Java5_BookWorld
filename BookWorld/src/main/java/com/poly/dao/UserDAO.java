@@ -9,8 +9,5 @@ import org.springframework.data.repository.query.Param;
 import com.poly.model.User;
 
 public interface UserDAO extends JpaRepository<User,String> {
-
-  
-    User  findByEmail( String email);
-   
+    User findByEmail( String email);
 }

@@ -14,7 +14,7 @@
   <!-- Header -->
   <div th:replace="fragment/header.html :: #header "></div>
   <!-- /Header -->
-  <div class="container py-5  d-flex justify-content-center align-items-center" style="height: 65vh;">
+  <div class="container py-5  d-flex justify-content-center align-items-center" style="height: 110vh;">
     <div class="form-wrapper w-100  d-flex justify-content-center align-items-center">
       <div class="card w-50">
         <div class="card-header">
@@ -28,6 +28,11 @@
             </nav>
           </div>
         </div>
+
+        <div th:if="${message}" class="success-message">
+          <p th:text="${message}"></p>
+      </div>
+      
         <div class="card-body">
 
           <div class="row">
@@ -36,36 +41,51 @@
               <div class="tab-content active" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-profile" role="tabpanel"
                   aria-labelledby="nav-profile-tab">
-                  <form class="form-account form-section" th:action="@{/account/sign-up/save}" th:object="${user}"
+                  <form class="form-account form-section" th:action="@{/account/sign-up}" th:object="${user}"
                     method="post">
                     <!--  -->
                     <div class="form-group mb-3">
-                      <input type="text" name="id" th:field="*{id}" id="username" tabindex="1" class="form-control"
-                        placeholder="Tên đăng nhập" value="">
-                      <div class="alert alert-warning" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+                      <input type="text" name="username" th:field="*{username}" id="username" tabindex="1" class="form-control"
+                        placeholder="Tên đăng nhập" >
+                      <div class="alert alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div> 
+                      
                     </div>
                     <!--  -->
                     <!--  -->
                     <div class="form-group mb-3">
-                      <input type="text" name="fullName" th:field="*{fullName}" id="full-name" tabindex="1"
-                        class="form-control" placeholder="Họ tên" value="">
+                      <input type="text" name="fullName" th:field="*{fullName}" id="fullName" tabindex="1"
+                        class="form-control" placeholder="Họ tên">  
                       <div class="alert alert-warning" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
                       </div>
                     </div>
-                    <!--  -->
-                    <!--  -->
+
                     <div class="form-group mb-3">
-                      <input type="email" name="email" th:field="*{email}" id="email" tabindex="1" class="form-control"
-                        placeholder="Địa chỉ email" value="">
-                      <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                      <input type="phone" name="phone" th:field="*{phone}" id="phone" tabindex="1"
+                        class="form-control" placeholder="Phone">
+                      <div class="alert alert-warning" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                      </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                      <input type="phone" name="address" th:field="*{address}" id="address" tabindex="1"
+                        class="form-control" placeholder="Địa chỉ">
+                      <div class="alert alert-warning" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                      </div>
                     </div>
                     <!--  -->
                     <!--  -->
                     <div class="form-group mb-3">
-                      <input type="password" name="password" th:field="*{password}" id="password2" tabindex="2"
+                      <input type="email" name="email"  id="email" tabindex="1" class="form-control"
+                        placeholder="Địa chỉ email"  th:field="*{email}">
+                        <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div> 
+                    </div>
+                      
+                    <!--  -->
+                    <div class="form-group mb-3">
+                      <input type="password" name="password" th:field="*{password}" id="password" tabindex="2"
                         class="form-control" placeholder="Mật khẩu">
                       <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
-                      </div>
+                      </div> 
                     </div>
                     <!--  -->
                     <div class="form-group mb-3">

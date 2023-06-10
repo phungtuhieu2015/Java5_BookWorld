@@ -48,12 +48,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="">
-                      <td scope="row">1</td>
-                      <td>2</td>
-                      <td>3</td>
-                      <td>4</td>
-                      <td>5</td>
+                    <tr class="" th:each="item :${items}">
+                      <td scope="row" th:text="${item.tenSach}">1</td>
+                      <td th:text="${item.danhMuc}">2</td>
+                      <td th:text="${item.soLuongBan}">3</td>
+                      <td th:text="${#dates.format(item.ngayCu, 'dd-MM-yyyy')}">4</td>
+                      <td th:text="${#dates.format(item.ngayMoi, 'dd-MM-yyyy')}">5</td>
                     </tr>
                   </tbody>
                 </table>

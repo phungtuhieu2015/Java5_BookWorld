@@ -10,11 +10,79 @@
     <link rel="stylesheet" th:href="@{/assets/css/form.css}">
     <th:block th:include="fragment/css-links.html"></th:block>
 </head>
+<style>
+    @charset "UTF-8";
+.dialog-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-end;
+	z-index: 9999;
+}
 
+.dialog-content {
+	border-radius: 10px;
+	font-weight: bolder;
+	color: white;
+	background-color: #429A43;
+	margin: 20px;
+	padding: 10px;
+	padding-top: 25px;
+	max-width: 1000px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	color: white;
+}
+
+.dialog-content-failed {
+	border-radius: 10px;
+	font-weight: bolder;
+	color: white;
+	background-color: #FF0000;
+	margin: 20px;
+	padding: 10px;
+	padding-left: 100px;
+	padding-right: 100px;
+	padding-top: 25px;
+	max-width: 1000px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	color: white;
+}
+</style>
 <body>
     <!-- Header -->
     <div th:replace="fragment/header.html :: #header "></div>
     <!-- /Header -->
+    <div id="successMessage" class="success-message"></div>
+    <div id="errorMessage" class="error-message"></div>
+
+<script>
+  // Kiểm tra xem có thông báo thành công hay không
+  var message = document.getElementById("successMessage");
+  if (message.innerText !== "") {
+    // Hiển thị thông báo thành công trong một khoảng thời gian nhất định
+    message.style.display = "block";
+    setTimeout(function() {
+      message.style.display = "none";
+    }, 3000); // 3 giây
+  }
+</script>
+
+<div id="errorMessage" class="error-message"></div>
+
+<script>
+  // Kiểm tra xem có thông báo lỗi hay không
+  var error = document.getElementById("errorMessage");
+  if (error.innerText !== "") {
+    // Hiển thị thông báo lỗi
+    error.style.display = "block";
+  }
+</script>
+
+
     <div class="container py-5  d-flex justify-content-center align-items-center" style="height: 65vh;">
         <div class="form-wrapper w-100 d-flex justify-content-center align-items-center">
             <div class="card" style="width: 500px;">
@@ -37,24 +105,32 @@
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                     aria-labelledby="nav-home-tab">
-                                    <form class="form-section" th:action="@{/account/login/save}" th:object="${user}"
+                                    <form class="form-section" th:action="@{/account/login}" th:object="${user}"
                                         method="post">
-                                        <!--  -->
+                                      <span th:text="${failed}">
+
+                                      </span>
                                         <div class="form-group mb-3">
-                                            <input type="text" name="id" th:field="*{id}" id="username1" tabindex="1"
-                                                class="form-control" placeholder="Tên đăng nhập" value="">
-                                        </div>
-                                        <div class="alert alert-warning" th:if="${#fields.hasErrors('id')}"
-                                            th:errors="*{id}"></div>
-                                        <!--  -->
-                                        <!--  -->
-                                        <div class="form-group mb-3">
-                                            <input type="password" name="password" th:field="*{password}" id="password"
-                                                tabindex="2" class="form-control" placeholder="Mật khẩu">
+                                            <input type="text" name="username"  id="username"
+                                                tabindex="1" class="form-control" placeholder="Tên đăng nhập" th:field="*{username}">
+                                            <!-- lỗi -->
+                                         
+                                          - <div class="alert alert-warning " th:if="${#fields.hasErrors('username')}"
+                                                th:errors="*{username}">
+                                            </div> 
                                         </div>
 
-                                        <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}"
-                                            th:errors="*{password}"></div>
+                                        <!--  -->
+                                        <!--  -->
+                                        <div class="form-group mb-3">
+                                            <input  type="password" name="password" id="password"
+                                                tabindex="2" class="form-control" placeholder="Mật khẩu" th:field="*{password}">
+                                        </div>
+                                     
+                                        <!-- lỗi -->
+                                         <div class="alert alert-warning " th:if="${#fields.hasErrors('password')}"
+                                            th:errors="*{password}">
+                                        </div> 
                                         <!--  -->
                                         <div class="form-group mb-3 d-flex justify-content-center">
                                             <div class="form-check">
@@ -74,24 +150,24 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       
+
                                     </form>
+                                    <p th:text="${message}" style="color: red; text-align: center;"></p>
                                     <!-- /Login -->
                                     <div class="form-group mb-3">
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="text-center">
-                                                    <a th:href="@{/account/forgot-password}"
-                                                        tabindex="5"
+                                                    <a th:href="@{/account/forgot-password}" tabindex="5"
                                                         class="forgot-password text-decoration-none text-black">Quên
                                                         mật khẩu?</a>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="text-center">
-                                                    <a th:href="@{/account/sign-up}"
-                                                        tabindex="5"
-                                                        class="forgot-password text-decoration-none text-black">Đăng ký</a>
+                                                    <a th:href="@{/account/sign-up}" tabindex="5"
+                                                        class="forgot-password text-decoration-none text-black">Đăng
+                                                        ký</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,11 +186,21 @@
             </div>
         </div>
     </div>
+    <div th:if="${successMessage}" id="successDialog"
+    class="dialog-overlay">
+    <div class="dialog-content">
+        <p th:text="${successMessage}"></p>
+    </div>
+</div>
+<div th:if="${failed}" id="successDialog" class="dialog-overlay">
+    <div class="dialog-content-failed">
+        <p th:text="${failed}"></p>
+    </div>
+</div>
 
     <!--footer  -->
     <div th:replace="fragment/footer.html :: #footer"></div>
     <!--/footer  -->
     <th:block th:include="fragment/script-links.html"></th:block>
 </body>
-
 </html>

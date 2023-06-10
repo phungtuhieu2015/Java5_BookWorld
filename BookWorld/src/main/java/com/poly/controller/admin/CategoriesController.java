@@ -77,6 +77,8 @@ public class CategoriesController {
         return "admin/index-admin";
     }
 
+    
+
     @RequestMapping("/categories/edit/{id}")
     public String edit(@PathVariable("id") Long id) {
         form = true;
