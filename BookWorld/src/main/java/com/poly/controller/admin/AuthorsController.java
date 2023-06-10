@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.AuthorDAO;
 import com.poly.model.Author;
+import com.poly.model.Category;
 
 import jakarta.validation.Valid;
 
@@ -28,7 +29,7 @@ public class AuthorsController {
     Boolean form = false;
     Boolean isEdit = false;
     Author author = new Author();
-    String isSuccess = "false";
+    String isSuccess = "";
     @RequestMapping("/authors")
     public String author(Model model, @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "authors products");
@@ -52,14 +53,14 @@ public class AuthorsController {
         if(author.getId() == null) {
             author = new Author();
         }
-        if(isSuccess.equals("trueCreate")){
+        if(isSuccess.equals("Create")){
             model.addAttribute("message", "Thêm tác giả thành công");
-        }else if(isSuccess.equals("trueUpdate")){
+        }else if(isSuccess.equals("Update")){
             model.addAttribute("message", "Cập nhật tác giả thành công");
-        }else if(isSuccess.equals("trueDelete")){
+        }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa tác giả thành công");
         }
-        isSuccess = "false";
+        isSuccess = "";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("author", author);
@@ -92,11 +93,9 @@ public class AuthorsController {
             model.addAttribute("page", page);
             return "admin/index-admin";
         }
-
-
         dao.save(author);
         this.author = new Author();
-        isSuccess = "trueCreate";
+        isSuccess = "Create";
         return "redirect:/admin/authors";
     }
 
@@ -114,8 +113,9 @@ public class AuthorsController {
         }
 
         dao.save(author);
-        isSuccess = "trueUpdate";
-        return "redirect:/admin/authors/edit/" + author.getId();
+        isSuccess = "Update";
+        this.author = author;
+        return "redirect:/admin/authors";
     }
 
     @RequestMapping("/authors/delete/{id}")
@@ -124,7 +124,7 @@ public class AuthorsController {
          form = false;
          isEdit = false;
         dao.deleteById(id);
-        isSuccess = "trueDelete";
+        isSuccess = "Delete";
         return "redirect:/admin/authors";
     }
 

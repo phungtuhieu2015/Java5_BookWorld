@@ -1,14 +1,19 @@
 package com.poly.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.BookDAO;
-import com.poly.model.BookFavorite;
+import com.poly.model.FavoriteBook;
 
 @Controller
 @RequestMapping("/admin")
@@ -18,11 +23,11 @@ public class FavoriteBooksController {
     @Autowired 
     BookDAO dao;
     @RequestMapping("/favorite-books")
-    public String favoriteBooks(Model model) {
+    public String favoriteBooks(Model model,@RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName","favorite-books statistical");
-
-        List<BookFavorite> items = dao.getBookFavorite();
-        model.addAttribute("items", items);
+        Pageable pageable = PageRequest.of(p.orElse(0),  5);
+        Page page = dao.getBookFavorite(pageable);
+        model.addAttribute("page", page);
         
         return "admin/index-admin";
     }

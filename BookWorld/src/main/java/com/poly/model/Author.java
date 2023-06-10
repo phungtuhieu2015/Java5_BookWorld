@@ -44,6 +44,7 @@ public class Author {
     Date dateOfBirth = new Date();
 
     @NotBlank(message = "(*) Vui lòng nhập quốc tịch")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "(*) Không chưa ký tự đặc biệt")
     String nationality;
 
 

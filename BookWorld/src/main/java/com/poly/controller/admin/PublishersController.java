@@ -29,7 +29,7 @@ public class PublishersController {
     Boolean isEdit = false;
 
     Publisher publisher = new Publisher();
-    String isSuccess = "false"; 
+    String isSuccess = ""; 
     @RequestMapping("/publishers")
     public String publisher(Model model, @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "publishers products");
@@ -52,14 +52,14 @@ public class PublishersController {
         if(publisher.getId() == null) {
             publisher = new Publisher();
         }
-        if(isSuccess.equals("trueCreate")){
+        if(isSuccess.equals("Create")){
             model.addAttribute("message", "Thêm nhà xuất bản thành công");
-        }else if(isSuccess.equals("trueUpdate")){
+        }else if(isSuccess.equals("Update")){
             model.addAttribute("message", "Cập nhật nhà xuất bản thành công");
-        }else if(isSuccess.equals("trueDelete")){
+        }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa nhà xuất bản thành công");
         }
-        isSuccess = "false";
+        isSuccess = "";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("publisher", publisher);
@@ -96,7 +96,7 @@ public class PublishersController {
 
         dao.save(publisher);
         this.publisher = new Publisher();
-        isSuccess = "trueCreate";
+        isSuccess = "Create";
         return "redirect:/admin/publishers";
     }
 
@@ -114,8 +114,9 @@ public class PublishersController {
         }
 
         dao.save(publisher);
-        isSuccess = "trueUpdate";
-        return "redirect:/admin/publishers/edit/" + publisher.getId();
+        isSuccess = "Update";
+        this.publisher = publisher;
+        return "redirect:/admin/publishers";
     }
 
     @RequestMapping("/publishers/delete/{id}")
@@ -124,7 +125,7 @@ public class PublishersController {
         form = false;
         isEdit = false;
         dao.deleteById(id);
-        isSuccess = "trueDelete";
+        isSuccess = "Delete";
         return "redirect:/admin/publishers";
     }
 

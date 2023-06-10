@@ -32,7 +32,7 @@ public class CategoriesController {
 
     Category category = new Category();
 
-    String isSuccess = "false";
+    String isSuccess = "";
 
     @RequestMapping("/categories")
     public String categories(Model model, @RequestParam("p") Optional<Integer> p ) {
@@ -57,15 +57,15 @@ public class CategoriesController {
             category = new Category();
         }
 
-        if(isSuccess.equals("trueCreate")){
+        if(isSuccess.equals("Create")){
             model.addAttribute("message", "Thêm danh mục thành công");
-        }else if(isSuccess.equals("trueUpdate")){
+        }else if(isSuccess.equals("Update")){
             model.addAttribute("message", "Cập nhật danh mục thành công");
-        }else if(isSuccess.equals("trueDelete")){
+        }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa danh mục thành công");
         }
 
-        isSuccess = "false";
+        isSuccess = "";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("category", category);
@@ -110,7 +110,7 @@ public class CategoriesController {
          }else{
             dao.save(category);
             this.category = new Category();
-            isSuccess = "trueCreate";
+            isSuccess = "Create";
          }
         
        
@@ -128,11 +128,10 @@ public class CategoriesController {
              return this.formError(category, result, model,true,true);
          }else{
             dao.save(category);
-             isSuccess = "trueUpdate";
+            isSuccess = "Update";
+            this.category = category;
          }
-
-       // dao.save(category);
-        return "redirect:/admin/categories/edit/" + category.getId();
+        return "redirect:/admin/categories" ;
     }
 
     @RequestMapping("/categories/delete/{id}")
@@ -141,7 +140,7 @@ public class CategoriesController {
         form = false;
         isEdit = false;
         dao.deleteById(id);
-        isSuccess = "trueDelete";
+        isSuccess = "Delete";
         return "redirect:/admin/categories";
     }
 
