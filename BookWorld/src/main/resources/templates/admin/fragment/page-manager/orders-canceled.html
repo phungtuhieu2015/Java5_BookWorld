@@ -7,7 +7,6 @@
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
-        
         <!-- Danh sách -->
         <div class="tab-pane fade  show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
           <div class="table-top row px-0 mx-0">
@@ -41,7 +40,6 @@
                   <thead>
                     <tr class="tb-header">
                       <th scope="col">ID </th>
-                      <th scope="col" >Tên sách</th>
                       <th scope="col">Tên người dùng</th>
                       <th scope="col">Ngày đặt</th>
                       <th scope="col" >Phương thức TT</th>
@@ -52,32 +50,68 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="">
-                      <td scope="row">1</td>
-                      <td>2</td>
-                      <td>3</td>
-                      <td>4</td>
-                      <td>5</td>
-                      <td>5</td>
-                      <td>5</td>
-                      <td>5</td>
-                      <td class="td-action ">
-                        <a type="button" class="btn action__btn-info btn-rounded" data-bs-toggle="modal" data-bs-target="#exampleModal"><span>Xem chi tiết</span></a>
-                        <!-- <a href="/admin/edit" class="btn action__btn-success btn-rounded"><span>Giao hàng</span> </a> -->
-                      </td>
-                      <div th:replace="/admin/fragment/page-manager/order-detail.html :: .modal"></div> 
-                    </tr>
+                      <tr class="" th:each="item : ${page.content}">
+                        <td scope="row" th:text="${item.id}"></td>
+                        <td th:text="${item.user.fullName}" ></td>
+                        <td th:text="${item.orderDate}" ></td>
+                        <td th:text="${item.paymentMethod == true?'Tiền mặt': 'Online'}" ></td>
+                        <td th:text="${item.cancellationDate}" ></td>
+                        <td th:text="${item.cancellationReason}" ></td>
+                        <td th:text="${item.status == 3? 'Đã hủy' :''}"></td>
+                        <td class="td-action ">
+                          <a type="button" class="btn action__btn-info btn-rounded" data-bs-toggle="modal" th:data-bs-target="'#modal_det'+${item.id}"><span>Xem chi tiết</span></a>
+                        </td>
+                      </tr>
                   </tbody>
                 </table>
               </div>
-              
+              <th:block th:each="item : ${page.content}">
+                <!-- Chi tiết -->
+                <div class="modal fade" th:id="'modal_det'+${item.id}" tabindex="-1"  aria-hidden="true">
+                 <div class="modal-dialog  modal-dialog-centered custom-modal" >
+                   <div class="modal-content  " >
+                     <div class="modal-header">
+                       <h5 class="modal-title">Chi tiết đơn hàng</h5>
+                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+                     <div class="modal-body">
+                          <span th:text="${item.id}" class="badge bg-danger mb-3">New</span>
+                          <div class="table-responsive">
+                            <table class="table table-hover text-center">
+                              <thead>
+                                <tr>
+                                  <th scope="col">ID</th>
+                                  <th scope="col">Tên sách</th>
+                                  <th scope="col">Giá sách</th>
+                                  <th scope="col">Số lượng mua</th>
+                                  <th scope="col">Tổng tiền sản phẩm</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr class="" th:each="i : ${item.orderDetails}">
+                                  <td th:text="${i.id}"></td>
+                                  <td th:text="${i.book.title}"></td>
+                                  <td th:text="${i.book.price}"></td>
+                                  <td th:text="${i.quantity}"></td>
+                                  <td th:text="${i.totalPrice}"></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                     </div>
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                       <a th:href="@{/admin/orders-pending/{id} (id=${item.id})}" class="btn btn-primary">Giao hàng</a>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+              </div>
+               <!-- / Chi tiết -->
+             </th:block>
           </div>
         </div>
        <!-- /Danh sách -->
       </div>
-
-
-
     </div>
   </div>
-  

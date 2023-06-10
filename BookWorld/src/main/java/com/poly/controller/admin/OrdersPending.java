@@ -33,8 +33,7 @@ public class OrdersPending {
         }
         Pageable pageable = PageRequest.of( p.orElse(0), 5);
         Page page = dao.findByStatus(StatusOrder.PENDING,pageable);
-        Order order = new Order();
-        model.addAttribute("order", order);
+       
         model.addAttribute("page", page);
         isSuccess = false;
         return "admin/index-admin";

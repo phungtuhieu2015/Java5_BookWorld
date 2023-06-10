@@ -212,7 +212,7 @@
     background-color: #fff !important;
 }
 .card.page-wrapper  .table thead{
-    background: var(--mau-dong-bo) ;
+    background: var(--mau-dong-bo) !important ;
     border-bottom: 1px solid #E9ECEF;
 }
 

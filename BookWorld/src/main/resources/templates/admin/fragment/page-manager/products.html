@@ -14,7 +14,7 @@
             <form  class="form-section" action="/admin/products/create" method="post" th:object="${book}" enctype="multipart/form-data">
               <div class="row">
               <div class="form-group mb-3 col-6">
-                <input type="text" th:field="*{id}" id="youtube-id" tabindex="1" th:disabled="${isEdit}"  class="form-control" placeholder="Mã sách" th:value="${id}">
+                <input type="text" th:field="*{id}" id="youtube-id" tabindex="1" th:readonly="${isEdit}"  class="form-control" placeholder="Mã sách" th:value="${id}">
                 <div class="message-errors" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
                 <div class="message-errors" th:text="${isExist}"></div>
               </div>

@@ -73,20 +73,18 @@ public class ProductsController {
             form = false;
             isEdit = false;
         } 
-        // if(book.getId() == null) {
-            if( book.getId() == null){
-                book = new Book();
+            if( this.book.getId() == null){
+                this.book = new Book();
             }
-        // }
-        model.addAttribute("form", form);
-        model.addAttribute("isEdit", isEdit);
+        model.addAttribute("form", this.form);
+        model.addAttribute("isEdit", this.isEdit);
         Pageable pageable = PageRequest.of( p.orElse(0), 5);
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();
         model.addAttribute("listPub", listPub);
         model.addAttribute("listCat", listCat);
-        model.addAttribute("book", book);
+        model.addAttribute("book",this.book);
         model.addAttribute("page", page);
         return "admin/index-admin"; 
     }
@@ -139,17 +137,17 @@ public class ProductsController {
     @RequestMapping("/products/edit/{id}")
     public String edit(@PathVariable("id") String id) {
         this.book = dao.findById(id).get();
-        oldImg = this.book.getImage();
-        form = true;
-        isEdit = true;
+        this.oldImg = this.book.getImage();
+        this.form = true;
+        this.isEdit = true;
         return "redirect:/admin/products"; 
     }
 
     @RequestMapping("/products/reset")
     public String reset() {
         this.book = new Book();
-        form = true;
-        isEdit = false;
+        this.form = true;
+        this.isEdit = false;
         return "redirect:/admin/products"; 
     }
     @RequestMapping("/products/update")
@@ -184,8 +182,8 @@ public class ProductsController {
         book = dao.findById(id).get();
         dao.delete(book);
         book = new Book();
-        form = false;
-        isEdit = false;
+        this.form = false;
+        this.isEdit = false;
         return "redirect:/admin/products"; 
     }
     

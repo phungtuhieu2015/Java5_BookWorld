@@ -39,7 +39,7 @@ public class Order {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "order_date")
-    Date orderDate = new Date();
+    Date orderDate;
 
     Integer status;
 
@@ -47,7 +47,7 @@ public class Order {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "cancellation_date")
-    Date cancellationDate;
+    Date cancellationDate ;
 
     String cancellationReason;
 
