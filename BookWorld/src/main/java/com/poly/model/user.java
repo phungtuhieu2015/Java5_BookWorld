@@ -20,9 +20,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-//@Data
+ @Getter
+ @Setter
+// @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -31,18 +31,18 @@ public class User {
 	
   @Id
   @NotBlank(message = "(*)Tên người dùng là bắt buộc" )
-  @Size(min = 5, message = "(*)mật khẩu phải ít nhất 8 kí tự")
+  @Size(min = 5, message = "(*)Tên Người Dùng phải ít nhất 5 kí tự")
   String username;
   
   @NotBlank(message = "(*) Mật khẩu là bắt buộc" )
-   @Size(min = 8, message = "(*)mật khẩu phải ít nhất 8 kí tự")
+    @Size(min = 8, message = "(*)mật khẩu phải ít nhất 8 kí tự")
   String password;
   
    @NotBlank(message = "(*)Tên Là Bắt buộc")
   String fullName;
 
    @NotBlank(message = "(*)Số điện thoại là bắt buộc")
-   @Pattern(regexp = "^(09|03)\\d{8}$", message = "(*)Số điện thoại phải có 10 chữ số và bắt đầu bằng 09 hoặc 03")
+  //  @Pattern(regexp = "^(09|03)\\d{8}$", message = "(*)Số điện thoại phải có 10 chữ số và bắt đầu bằng 09 hoặc 03")
   String phone;
 
   @NotBlank(message = "(*)email là bắt buộc")

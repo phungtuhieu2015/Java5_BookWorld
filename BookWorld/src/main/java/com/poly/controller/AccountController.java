@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.dao.UserDAO;
 import com.poly.model.User;
-import com.poly.service.ParamService;
 import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;
@@ -30,57 +25,85 @@ public class AccountController {
     @Autowired
     UserDAO dao;
 
+    Boolean isSuccess = false;
     @Autowired
     SessionService session;
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("message", "");
         model.addAttribute("user", new User());
         return "login";
     }
 
     @PostMapping("/login")
     public String login(@Valid User user, BindingResult bindingResult,
-            @RequestParam("username") String username, @RequestParam("password") String password) {
-        if (bindingResult.hasErrors()) {
-            return "login";
+            @RequestParam("username") String username, @RequestParam("password") String password, Model model) {
+        if (isSuccess.equals("login")) {
+
         }
+        // if (bindingResult.hasErrors()) {
+        // // System.out.println(bindingResult.getFieldValue(password));
+        // return "login";
+        // }
         List<User> users = dao.findAll();
         for (User user2 : users) {
             if (username.equalsIgnoreCase(user2.getUsername())) {
                 if (password.equalsIgnoreCase(user2.getPassword())) {
                     if (user2.getAdmin()) {
                         session.set("user", user2);
+                        isSuccess = true;
                         return "redirect:/admin/index";
                     } else {
                         session.set("user", user2);
+                        isSuccess = true;
                         return "redirect:/index";
                     }
                 }
             }
         }
-    
+        model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác!");
+
         // Khi không tìm thấy người dùng hoặc mật khẩu không khớp
-        bindingResult.rejectValue("username", "error.user", "Invalid username or password");
+        // bindingResult.rejectValue("username", "error.user", "Tài Khoản là bắt buộc");
+        // bindingResult.rejectValue("password", "error.user", "Mật Khẩu là bắt buộc");
         return "login";
     }
-    
-    
-    @RequestMapping("/sign-up")
-    public String doSignUp(@Valid  User user,BindingResult result,Model model) {
 
+    @GetMapping("/sign-up")
+    public String doSignUp(@ModelAttribute("user") User user, BindingResult result, Model model) {
+
+        return "sign-up";
+    }
+
+    @PostMapping("/sign-up")
+    public String douSignUp(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
 
             return "sign-up";
         }
 
-        return "sign-up";
+        List<User> users = dao.findAll();
+        for (User b : users) {
+            if (b.getUsername().equalsIgnoreCase(user.getUsername())) {
+                String successMessage = "ID đã tồn tại !";
+                model.addAttribute("failed", successMessage);
+                return "sign-up";
+            }
+
+        }
+        for (User b : users) {
+            if (b.getEmail().equalsIgnoreCase(user.getEmail())) {
+                String successMessage = "gmail đã tồn tại !";
+                model.addAttribute("failed", successMessage);
+                return "sign-up";
+            }
+        }
+        user.setActivated(true);
+        dao.save(user);
+
+        return "login";
     }
 
-
-
-   
 }
 
 // @RequestMapping("/forgot-password")

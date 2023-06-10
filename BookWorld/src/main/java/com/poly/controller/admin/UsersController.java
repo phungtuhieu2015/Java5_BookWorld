@@ -30,6 +30,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/admin")
 public class UsersController {
 
+  Boolean isSuccess = false;
+
   @Autowired
   UserDAO dao;
   @Autowired
@@ -85,21 +87,26 @@ public class UsersController {
   @RequestMapping("/users/update")
   public String update(@Valid User user, BindingResult result, Model model) {
     if (result.hasErrors()) {
-
+   if (isSuccess) {
+        model.addAttribute("message", "Update Thành công!");
+      }
+      
+      isSuccess =false;
       Optional<Integer> p = Optional.of(0);
       model.addAttribute("pageName", "users user");
       model.addAttribute("form", true);
       model.addAttribute("isEdit", true);
+   
       Pageable pageable = PageRequest.of(p.orElse(0), 5);
       Page<User> page = dao.findAll(pageable);
       model.addAttribute("page", page);
       return "admin/index-admin";
     }
+    isSuccess = true;
     dao.save(user);
     return "redirect:/admin/users/edit/" + user.getUsername();
 
   }
-
 
   @RequestMapping("/users/reset")
   public String reset(Model model) {
