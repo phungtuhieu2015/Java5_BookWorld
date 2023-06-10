@@ -26,7 +26,7 @@ public class FavoriteBooksController {
     public String favoriteBooks(Model model,@RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName","favorite-books statistical");
         Pageable pageable = PageRequest.of(p.orElse(0),  5);
-        Page page = dao.getBookFavorite(pageable);
+        Page page = dao.getFavoriteBook(pageable);
         model.addAttribute("page", page);
         
         return "admin/index-admin";
