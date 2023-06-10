@@ -17,7 +17,7 @@ public interface BookDAO extends JpaRepository<Book, String> {
         + " FROM Book b JOIN b.favorites f "
         + " GROUP BY b.category.categoryName, b"
         + " ORDER BY COUNT(f) DESC")
-    Page getBookFavorite(Pageable pageable);
+    Page getFavoriteBook(Pageable pageable);
 
     @Query("SELECT new com.poly.model.SoldBooks(od.book.title, c.categoryName, COUNT(od.book), MIN(od.order.orderDate), MAX(od.order.orderDate)) "
     + " FROM OrderDetail od JOIN od.book.category c"
