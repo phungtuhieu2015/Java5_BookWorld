@@ -41,10 +41,6 @@ public class AccountController {
         if (isSuccess.equals("login")) {
 
         }
-        // if (bindingResult.hasErrors()) {
-        // // System.out.println(bindingResult.getFieldValue(password));
-        // return "login";
-        // }
         List<User> users = dao.findAll();
         for (User user2 : users) {
             if (username.equalsIgnoreCase(user2.getUsername())) {
@@ -103,6 +99,17 @@ public class AccountController {
 
         return "login";
     }
+
+
+        @RequestMapping("/profile")
+    public String doMyProfile(Model model){
+
+
+        User users = session.get("user");
+        
+        return"edit-profile";
+    }
+
 
 }
 

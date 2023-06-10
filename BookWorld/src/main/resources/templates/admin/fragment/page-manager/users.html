@@ -67,7 +67,7 @@
             </div>
             <div class="mb-3">
               <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02" value="">
+                <input type="file" class="form-control" id="inputGroupFile02" name="fileImage">
 
                 <label class="input-group-text" for="inputGroupFile02">Hình ảnh</label>
               </div>
@@ -180,13 +180,8 @@
                 <td th:text="${item.address}"></td>
                 <td th:text="${item.activated ? 'Active' : 'inactive'}"></td>
                 <td th:text="${item.admin ? 'Admin' : 'User'}"></td>
-                <td class="p-0">
-                  <!-- 
-<div class="td-box-img">
-  <img th:src="${/img/__${item.image__}}" alt="">
-</div>
-                   -->
-                  <img th:src="${item.image}" alt="User Image">
+                <td class="p-0">               
+                   <img th:src="@{/admin/img/__${item.image}__}" alt="">
                 </td>
 
                 <td class="td-action ">

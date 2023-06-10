@@ -2,9 +2,13 @@ package com.poly.controller.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +36,7 @@ public class UsersController {
 
   Boolean isSuccess = false;
 
+  String oldImg;
   @Autowired
   UserDAO dao;
   @Autowired
@@ -65,7 +70,11 @@ public class UsersController {
     if (user.getUsername() == null) {
       user = new User();
     }
-    model.addAttribute("form", true);
+    if (isSuccess) {
+      model.addAttribute("message", "Update Thành công!");
+    }
+    isSuccess = false;
+    model.addAttribute("form", form);
     model.addAttribute("isEdit", isEdit);
     model.addAttribute("user", user);
 
@@ -78,6 +87,7 @@ public class UsersController {
 
   @RequestMapping("/users/edit/{username}")
   public String edit(@PathVariable("username") String username) {
+    this.oldImg =this.user.getImage();
     form = true;
     isEdit = true;
     user = dao.findById(username).get();
@@ -85,26 +95,40 @@ public class UsersController {
   }
 
   @RequestMapping("/users/update")
-  public String update(@Valid User user, BindingResult result, Model model) {
+  public String update(@Valid User user, BindingResult result, Model model, @RequestParam("fileImage") MultipartFile fileImage)  {
     if (result.hasErrors()) {
-   if (isSuccess) {
-        model.addAttribute("message", "Update Thành công!");
-      }
-      
-      isSuccess =false;
+
+      isSuccess = false;
       Optional<Integer> p = Optional.of(0);
       model.addAttribute("pageName", "users user");
-      model.addAttribute("form", true);
+      model.addAttribute("form", false);
       model.addAttribute("isEdit", true);
-   
+      
       Pageable pageable = PageRequest.of(p.orElse(0), 5);
       Page<User> page = dao.findAll(pageable);
       model.addAttribute("page", page);
       return "admin/index-admin";
     }
-    isSuccess = true;
-    dao.save(user);
-    return "redirect:/admin/users/edit/" + user.getUsername();
+
+        if(fileImage.isEmpty()) {
+                user.setImage(oldImg);
+                dao.save(user);
+        } else {
+            String fileName = fileImage.getOriginalFilename();
+            String uploadDirectory = "static/admin/img/";
+            try {
+                Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
+                fileImage.transferTo(path.resolve(fileName).toFile());
+                System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
+                user.setImage(fileName);
+                isSuccess = true;
+                dao.save(user);
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        } 
+         this.user = user;
+    return "redirect:/admin/users";
 
   }
 
