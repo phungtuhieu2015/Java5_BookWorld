@@ -19,13 +19,16 @@ public class LienHeController {
 
     @GetMapping("/lienhe")
     public String lienHe(Model model, @RequestParam("p") Optional<Integer> p) {
-        User user = session.get("user");
+       User user = session.get("user");
+        // System.out.println(user.getUsername()+"sssssssssssss");
         if (user == null)
 
         {
-
+             model.addAttribute("user", user);
             model.addAttribute("checkLG", false);
         } else {
+             model.addAttribute("user", user);
+            
             model.addAttribute("checkLG", true);
         }
         return "lien-he";

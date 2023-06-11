@@ -30,27 +30,28 @@
                     <div class="card mb-4 ">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
-                            <form id="editProfileForm"  th:action="@{/account/profile}" method="post" th:object="${user}">
-                                <div class="mb-3">
-                                    <form action="" method="post" enctype="multipart/form-data">
-                                        <div class="avatar-upload">
-                                            <div class="avatar-preview">
-                                                <img id="avatar-img" src="https://i.ibb.co/bs6s3QT/luf.jpg"
-                                                    alt="Avatar Preview" />
-                                            </div>
-                                            <div class="avatar-edit">
-                                                <input type="file" name="avatar" id="avatar"
-                                                    accept=".jpg, .jpeg, .png, .webp" />
-                                                <label for="avatar">Chọn ảnh</label>
-                                            </div>
-                                        </div>
-                                    </form>
+                            <form class="form-section" th:action="@{/account/profile}" method="post" th:object="${user}"
+                                enctype="multipart/form-data">
+                                <div class="avatar-upload">
+
+                                    <div class="avatar-edit">
+                                        <input type="file" class="form-control" id="inputGroupFile02" name="fileImage">
+
+                                        <label class="" for="inputGroupFile02">Hình ảnh</label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <img id="avatar-img" th:src="@{/assets/img/__${user.image}__}" alt="" />
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="fullName">Họ và tên <span>
                                     </label>
                                     <input class="form-control" id="fullName" type="text"
                                         placeholder="Enter your fullName" name="fullName" th:field="*{fullName}">
+                                    <!-- lỗi -->
+                                    <div class="alert alert-warning " th:if="${#fields.hasErrors('fullName')}"
+                                        th:errors="*{fullName}">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -58,6 +59,9 @@
                                     </label>
                                     <input class="form-control" id="phone" type="text" placeholder="Enter your phone"
                                         th:field="*{phone}">
+                                    <div class="alert alert-warning " th:if="${#fields.hasErrors('phone')}"
+                                        th:errors="*{phone}">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -84,13 +88,14 @@
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="UserName">Mật Khẩu</label>
-                                        <input type="password" name="password" id="youtube-title" tabindex="2"
-                                            class="form-control" placeholder="***********" th:field="*{password}" readonly>
+                                        <input type="text" name="password" id="youtube-title" tabindex="2"
+                                            class="form-control" placeholder="password" th:field="*{password}" readonly>
                                     </div>
                                 </div>
 
                                 <div class="cardbtn">
-                                    <button class="btn btn-primary" type="submit">Save changes</button>
+                                    <button class="btn btn-primary">Save changes</button>
+
                                     <a class="btnCP" th:href="@{/account/change-password}">Change password</a>
                                 </div>
                             </form>
@@ -105,49 +110,7 @@
     </main>
 
     <script th:src="@{/assets/js/edit-profile.js}"></script>
-    <script>
-        const form = document.getElementById('editProfileForm');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Ngăn form gửi đi mặc định
-
-            // Lấy giá trị từ các trường nhập liệu
-            const fullName = document.getElementById('fullName').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            const address = document.getElementById('address').value;
-            const username = document.getElementById('UserName').value;
-            const password = document.getElementById('youtube-title').value;
-
-            // Kiểm tra và hiển thị lỗi nếu không nhập các trường bắt buộc
-            let hasError = false;
-
-            if (fullName.trim() === '') {
-                hasError = true;
-                alert('Vui lòng nhập họ và tên.');
-            } else if (phone.trim() === '') {
-                hasError = true;
-                alert('Vui lòng nhập số điện thoại.');
-            } else if (email.trim() === '') {
-                hasError = true;
-                alert('Vui lòng nhập email.');
-            } else if (address.trim() === '') {
-                hasError = true;
-                alert('Vui lòng nhập địa chỉ.');
-            } else if (username.trim() === '') {
-                hasError = true;
-                alert('Vui lòng nhập username.');
-            } else if (password.trim() === '') {
-                hasError = true;
-                alert('Vui lòng nhập mật khẩu.');
-            }
-
-            // Nếu không có lỗi, gửi form đi
-            if (!hasError) {
-                form.submit();
-            }
-        });
-    </script>
 </body>
 
 </html>
