@@ -80,7 +80,7 @@ public class UsersController {
     model.addAttribute("isEdit", isEdit);
     model.addAttribute("user", user);
 
-    Pqageable pageable;
+    Pageable pageable;
 
         if(field.isPresent()){
               Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
