@@ -107,7 +107,7 @@ public class ProductsController {
     public String create(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage) {
         boolean isError  = false;
         if(dao.existsById(book.getId())){
-            isError = true;    
+             isError = true;    
             model.addAttribute("isExist", "(*) Mã sách đã tồn tại");
         }
         if(fileImage.isEmpty() ){
