@@ -3502,3 +3502,11 @@ ol {
 		font-size: 24px;
 	}
 }
+
+
+.message-section {
+    margin: 10px 0px;
+    right: 10px;
+    bottom: 10px;
+    position: fixed !important;
+}

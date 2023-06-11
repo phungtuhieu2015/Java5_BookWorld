@@ -24,4 +24,6 @@ public interface BookDAO extends JpaRepository<Book, String> {
     + " GROUP BY od.book.title, c.categoryName"
     + " ORDER BY COUNT(od.book) DESC")
     List<SoldBooks> getSoldBooks();
+
+    
 }

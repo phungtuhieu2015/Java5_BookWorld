@@ -1,6 +1,8 @@
 package com.poly.model;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,6 +42,7 @@ public class Favorite {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "liked_date")
-    Date likedDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date likedDate = new Date();
 
 }
