@@ -71,7 +71,9 @@ public class AuthorsController {
         model.addAttribute("author", author);
 
         Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
+
+        Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
+
         session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
 
         Pageable pageable = PageRequest.of(p.orElse(0), 5 ,sort);

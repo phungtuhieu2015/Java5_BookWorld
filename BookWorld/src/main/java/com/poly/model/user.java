@@ -36,7 +36,7 @@ public class User {
   
   @NotBlank(message = "(*) Mật khẩu là bắt buộc" )
     @Size(min = 8, message = "(*)mật khẩu phải ít nhất 8 kí tự")
-  String password;
+  String password; 
   
    @NotBlank(message = "(*)Tên Là Bắt buộc")
   String fullName;

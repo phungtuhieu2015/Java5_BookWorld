@@ -21,14 +21,14 @@
 
 
     <!-- Featured Section Begin -->
-    <section class="featured spad1" style="height: 513px;">
+    <section class="featured spad1">
 
         <div class="container">
 
             <div class="row featured__filter">
 
                 <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="item :${page.content}">
-                    <div class="featured__item">
+                    <div class="featured__item">q
                         <div class="featured__item__pic set-bg">
                             <a th:href="@{/chitiet/{bookId}(bookId=${item.book.id})}"><img
                                     th:src="@{/assets/img/__${item.book.image}__}" alt=""></a>
@@ -88,7 +88,7 @@
                     <!-- /model -->
 
                 </div>
-                git
+
                 <!-- page -->
                 <nav aria-label="Page navigation example" class="pagination-section"
                     style=" position: relative; height: 50px;">
