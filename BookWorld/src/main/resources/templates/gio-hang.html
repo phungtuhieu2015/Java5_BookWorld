@@ -20,11 +20,10 @@
     <!--  -->
     <div class="mainct mt-5 mb-5">
         <div class="basket">
-            <button th:onclick="removeCartAll()" style="font-size: 18px; border-radius: 10px ;"
-                class="btn btn-danger">clear all</button>
+            <a th:href="@{/cart/clear}" style="font-size: 18px; border-radius: 10px ;"
+                class="btn btn-danger">clear all</a>
             <div class="basket-labels">
                 <ul>
-
                     <li class="item item-heading">Sản phẩm</li>
                     <li class="price">Giá</li>
                     <li class="quantity">Số lượng</li>
@@ -43,20 +42,22 @@
                         </h1>
                     </div>
                 </div>
-                <div class="price"><span class="td-giaGiam" th:text="${prod.quantity}"></span>
+                <div class="price"><span class="td-giaGiam" th:text="${prod.book.price}"></span>
                     <!-- <p><del class="td-giaCu">86.000</del></p> -->
                 </div>
-                <div class="quantity">
-                    <input type="number" id="example" value="1"
-                        name="example" min="0" max="100" step="1" pattern="\d+" class="input-number">
-                </div>
-                <div class="subtotal td-giaTong">0</div>
-
+                <form th:action="@{/cart/update/{id} (id = ${prod.id})}" method="post">
+                    <div class="quantity">
+                        <input type="number" id="example"
+                            name="qty" min="0" max="100" step="1"
+                            th:onblur="this.form.submit()"
+                            th:value="${prod.quantity}"
+                            pattern="\d+" class="input-number">
+                    </div>
+                    <div class="subtotal td-giaTong" th:text="${prod.totalPrice}">0</div>
+<!--   -->      </form>
                 <div class="remove">
-                    <!-- <a th:onclick="removeCart([[${prod}]],[[${pStat}]])" class="btn-delete"><i
-                            class="bi bi-trash3"></i></a>  th:onchange="refreshCart([[${prod}]],[[${pStat}]]) -->
-                    <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  class="removeBtn"><i class="bi bi-trash3"></i></button > -->
-
+                    <!-- <a  class="btn-delete"><i class="bi bi-trash3"></i></a>   -->
+                    <a  th:href="@{/cart/remove/{id}(id=${prod.id})}"  class="removeBtn"><i class="bi bi-trash3"></i></a > 
                 </div>
             </div>
 

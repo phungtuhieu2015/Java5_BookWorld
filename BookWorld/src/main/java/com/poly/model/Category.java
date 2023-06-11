@@ -2,6 +2,8 @@ package com.poly.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +36,7 @@ public class Category {
     @Pattern(regexp = "^[\\p{L}\\s]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt ")
     String categoryName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade=CascadeType.REFRESH)
     List<Book> book;
 }

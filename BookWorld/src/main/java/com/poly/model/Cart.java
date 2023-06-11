@@ -1,5 +1,7 @@
 package com.poly.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,13 +26,19 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
-
+  
     @ManyToOne
     @JoinColumn(name = "book_id")
     Book book;
 
+    Integer quantity; 
+
     Double totalPrice;
-    
-    Integer quantity;
-   
+
+    public Cart(User user, Book book, Integer quantity, Double totalPrice) {
+        this.user = user;
+        this.book = book;
+        this.totalPrice = totalPrice;
+        this.quantity = quantity;
+    }
 }

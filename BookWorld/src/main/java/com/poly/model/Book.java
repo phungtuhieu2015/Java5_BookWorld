@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -76,19 +78,24 @@ public class Book {
     String description;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<OrderDetail> orderDetails;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<AuthorBook> authorBooks;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Share> shares;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Favorite> favorites;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Cart> carts;
 

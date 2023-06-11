@@ -1,29 +1,25 @@
 // Bài 4
 package com.poly.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import com.poly.model.DB;
-import com.poly.model.Order;
-import com.poly.model.OrderDetail;
 import com.poly.dao.BookDAO;
-import com.poly.dao.OrderDetailDAO;
+import com.poly.dao.CartDAO;
 import com.poly.model.Book;
+import com.poly.model.Cart;
 import com.poly.model.User;
 @SessionScope
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService  {
-    Map<String, OrderDetail> map = new HashMap<>();
+    Map<Long, Cart> map = new HashMap<>();
     @Autowired 
     SessionService session ;
 
@@ -32,48 +28,63 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
     BookDAO daoBook;
 
     @Autowired
-    OrderDetailDAO daoDet;
+    CartDAO daoCart;
     @Override
-    public Book add(String id) {
+    public Cart add(String id) {
         Book book = null;
+        Cart cart ;
         this.user = session.get("user");
-        OrderDetail orderDet ;
-         book = daoBook.findById(id).get() ;
-         System.out.println("======================="+ this.user);
+        book = daoBook.findById(id).get() ;
         if(this.user == null) {
-            orderDet = new OrderDetail(null, book, 1, book.getPrice() * 1);
-            map.put(id, orderDet);
+            cart = new Cart(Long.parseLong(id.substring(1)),this.user, book, 1, book.getPrice() * 1);
+            map.put(Long.parseLong(id.substring(1)), cart);
         } else {
-            Order order = new Order();
-            System.out.println("+==++++++++++++++++++++++++++++++=");
-            orderDet = new OrderDetail(null, book, 1, (book.getPrice() * 1));
-            daoDet.save(orderDet);
+            cart = new Cart( this.user, book, 1, book.getPrice() * 1);
+            daoCart.save(cart);
         }
-        return book;
+        return cart;
     }
 
     @Override
-    public boolean remove(String id) {
-        map.remove(id) ;
-        return map.get(id) == null?true: false;
+    public void remove(Long id) {
+        if(this.user != null) {
+           Cart crm =  daoCart.findById(id).get();
+           daoCart.delete(crm);
+        } else {
+             map.remove( id) ;
+        }
+        
     }
 
     @Override
-    public Book update(String id, int qty) {
-        // map.get(id).setSoLuong(qty);
-        return new Book();
+    public Cart update(Long id, Integer qty) {
+        if(this.user !=null) {
+            Cart cart = daoCart.findById(id).get();
+            cart.setQuantity(qty);
+            cart.setTotalPrice(qty * cart.getBook().getPrice());
+            daoCart.save(cart);
+            return cart;
+        } 
+            map.get(id).setQuantity(qty);
+            map.get(id).setTotalPrice(qty * map.get(id).getBook().getPrice());
+        return  map.get(id);
     }
 
     @Override
-    public boolean clear() {
-        map.clear();
-        return map.isEmpty();
+    public void clear() {
+        if(this.user != null) {
+            daoCart.deleteAll();
+        } else {
+            map.clear();
+        }
+       
     }
 
     @Override
-    public Collection<OrderDetail> getOrderDetails() {
+    public Collection<Cart> getOrderDetails() {
+        this.user = session.get("user");
         if(user != null) {
-            List<OrderDetail> list = daoDet.findAll();
+            List<Cart> list = daoCart.findAll();
             return list;
         } 
         return map.values();
@@ -87,8 +98,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
     @Override
     public double getAmount() {
         double amount = 0;
-        for (OrderDetail OrderDetail : map.values()) {
-            // amount += Book.getGia() * Book.getSoLuong();
+        for (Cart cart : map.values()) {
+            // amount += Cart.getGia() * Cart.getSoLuong();
         }
         return amount;
     }

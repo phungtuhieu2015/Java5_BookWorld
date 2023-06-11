@@ -50,6 +50,7 @@ public class ProductsController {
     boolean form = false;
     boolean isEdit = false;
 
+    String uploadDirectory = "static/assets/img/";
     String oldImg ;
     @RequestMapping("/products")
     public String products(Model model,@RequestParam("p") Optional<Integer> p) {
@@ -118,7 +119,7 @@ public class ProductsController {
         }
          if(!fileImage.isEmpty()) {        
             String fileName = fileImage.getOriginalFilename();
-            String uploadDirectory = "static/admin/img/";
+            
             try {
                 Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
                 fileImage.transferTo(path.resolve(fileName).toFile());
@@ -158,7 +159,6 @@ public class ProductsController {
                 dao.save(book);
         } else {
             String fileName = fileImage.getOriginalFilename();
-            String uploadDirectory = "static/admin/img/";
             try {
                 Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
                 fileImage.transferTo(path.resolve(fileName).toFile());

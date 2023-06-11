@@ -2,26 +2,20 @@
 package com.poly.service;
 
 import java.util.Collection;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import com.poly.model.Book;
-import com.poly.model.OrderDetail;
+import com.poly.model.Cart;
 
 public interface ShoppingCartService {
    
-    Book add(String id);
+    Cart add(String id);
 
-    boolean remove(String id);
+    void remove(Long id);
 
-    Book update(String id, int qty);
+    Cart update(Long id, Integer qty);
 
-    boolean clear();
+    void clear();
 
  
-    Collection<OrderDetail> getOrderDetails();
+    Collection<Cart> getOrderDetails();
 
     int getCount();
 

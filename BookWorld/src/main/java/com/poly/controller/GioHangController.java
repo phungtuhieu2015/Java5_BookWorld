@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.poly.model.Cart;
 import com.poly.model.Product;
 import com.poly.service.ShoppingCartService;
 
@@ -34,14 +35,14 @@ public class GioHangController {
 
     @RequestMapping("/cart/remove/{id}")
     public String remove(@PathVariable("id") String id) {
-        cart.remove(id);
+        cart.remove(Long.parseLong(id) );
         return "redirect:/giohang";
     }
 
     @RequestMapping("/cart/update/{id}")
     public String update(@PathVariable("id") String id,
             @RequestParam("qty") Integer qty) {
-        cart.update(id, qty);
+        cart.update(Long.parseLong(id), qty);
         return "redirect:/giohang";
     }
 
@@ -50,29 +51,5 @@ public class GioHangController {
         cart.clear();
         return "redirect:/giohang";
     }
-
-    // @ResponseBody
-    // @PostMapping("/cart/item/update")
-    // public Product updateCardItem(@RequestBody Product item) {
-    //     Product updatedItem = cart.update(item.getId(), item.getSoLuong());
-    //     return updatedItem;
-    // }
-    @ResponseBody
-    @PostMapping("/cart/item/remove")
-    public String removeCardItem(@RequestBody Product item) {
-        if( cart.remove(item.getId())) 
-            return "Đã xóa thành công"; 
-                else
-                    return "Xóa thất bại";
-    }
-    @ResponseBody
-    @PostMapping("/cart/item/removeall")
-    public String removeCardItemAll() {
-        if( cart.clear() )
-            return "Đã xóa thành công"; 
-                else
-                    return "Xóa thất bại";
-    }
-
 
 }

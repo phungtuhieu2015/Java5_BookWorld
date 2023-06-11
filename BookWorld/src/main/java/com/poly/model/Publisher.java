@@ -2,6 +2,8 @@ package com.poly.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +32,7 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     
+
     @NotEmpty(message = "(*) Vui lòng nhập tên nhà xuất bản")
     @Pattern(regexp = "^[\\p{L}\\s]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt ")
     String publisherName;
@@ -54,6 +57,7 @@ public class Publisher {
     @Pattern(regexp = "^(09|03)\\d{8}$", message = "(*) Vui lòng nhập số điện thoại phải có 10 chữ số và bắt đầu bằng 09 hoặc 03")
     String phone;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.REFRESH)
     List<Book> book;
 
