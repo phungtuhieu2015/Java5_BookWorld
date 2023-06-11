@@ -126,11 +126,12 @@
             <table class="table table-hover">
               <thead>
                 <tr class="tb-header">
-                  <th scope="col">ID </th>
-                  <th scope="col" style="width: 300px;">Tên tác giả</th>
-                  <th scope="col">Ngày sinh</th>
-                  <th scope="col">Quốc tịch</th>
-                  <th scope="col" style="width: 300px;">Mô tả</th>
+                  <th scope="col"><a th:href="@{/admin/authors(field='id')}">ID </a></th>
+                  <th scope="col"><a th:href="@{/admin/authors(field='authorName')}">Tên tác giả</a></th>
+                  <th scope="col"><a th:href="@{/admin/authors(field='dateOfBirth')}">Ngày sinh</a></th>
+                  <th scope="col"><a th:href="@{/admin/authors(field='nationality')}">Quốc tịch</a></th>
+                  <th scope="col" style="width: 300px;"><a th:href="@{/admin/authors(field='description')}">Mô tả</a>
+                  </th>
                   <th scope="col">Thao tác</th>
                 </tr>
               </thead>

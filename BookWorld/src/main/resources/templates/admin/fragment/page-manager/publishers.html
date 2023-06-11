@@ -144,13 +144,13 @@
             <table class="table table-hover">
               <thead>
                 <tr class="tb-header">
-                  <th scope="col">ID </th>
-                  <th scope="col">Tên NXB</th>
-                  <th scope="col">Địa chỉ</th>
-                  <th scope="col">Thành phố</th>
-                  <th scope="col">Quốc gia</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">SĐT</th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='id')}">ID </a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='publisherName')}">Tên NXB</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='address')}">Địa chỉ</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='city')}">Thành phố</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='country')}">Quốc gia</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='email')}">Email</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='phone')}">SĐT</a></th>
                   <th scope="col">Thao tác</th>
                 </tr>
               </thead>

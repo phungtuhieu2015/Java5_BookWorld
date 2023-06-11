@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.poly.dao.AuthorDAO;
 import com.poly.model.Author;
 import com.poly.model.Category;
+import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;
 
@@ -25,13 +28,15 @@ public class AuthorsController {
 
     @Autowired
     AuthorDAO dao;
+    @Autowired
+    SessionService session;
 
     Boolean form = false;
     Boolean isEdit = false;
     Author author = new Author();
     String isSuccess = "";
     @RequestMapping("/authors")
-    public String author(Model model, @RequestParam("p") Optional<Integer> p) {
+    public String author(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
         model.addAttribute("pageName", "authors products");
 
         if(p.isPresent()){
@@ -65,7 +70,11 @@ public class AuthorsController {
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("author", author);
 
-        Pageable pageable = PageRequest.of(p.orElse(0), 5);
+        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
+        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+
+        Pageable pageable = PageRequest.of(p.orElse(0), 5 ,sort);
         Page<Author> page = dao.findAll(pageable);   
         model.addAttribute("page", page);
 

@@ -8,6 +8,8 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.CategoryDAO;
 import com.poly.model.Category;
+import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;
 
@@ -26,6 +29,8 @@ public class CategoriesController {
 
     @Autowired
     CategoryDAO dao;
+    @Autowired
+    SessionService session;
 
     Boolean form = false;
     Boolean isEdit = false;
@@ -35,7 +40,7 @@ public class CategoriesController {
     String isSuccess = "";
 
     @RequestMapping("/categories")
-    public String categories(Model model, @RequestParam("p") Optional<Integer> p ) {
+    public String categories(Model model, @RequestParam("p") Optional<Integer> p ,@RequestParam("field") Optional<String> field) {
         model.addAttribute("pageName", "categories products");
         if(p.isPresent()){
             //check khi bấm phân trang khi đang sửa
@@ -64,13 +69,18 @@ public class CategoriesController {
         }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa danh mục thành công");
         }
-
         isSuccess = "";
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("category", category);
 
-        Pageable pageable = PageRequest.of(p.orElse(0), 5);
+        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
+        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+
+
+
+        Pageable pageable = PageRequest.of(p.orElse(0), 5 ,sort);
         Page<Category> page = dao.findAll(pageable);     
         model.addAttribute("page", page);
 

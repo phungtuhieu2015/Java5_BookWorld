@@ -13,6 +13,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,7 @@ import com.poly.dao.PublisherDAO;
 import com.poly.model.Book;
 import com.poly.model.Category;
 import com.poly.model.Publisher;
+import com.poly.service.SessionService;
 
 import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
@@ -45,6 +48,8 @@ public class ProductsController {
 
     @Autowired
     ServletContext app;
+    @Autowired
+    SessionService session;
 
     Book book =  new Book();
     boolean form = false;
@@ -52,7 +57,7 @@ public class ProductsController {
 
     String oldImg ;
     @RequestMapping("/products")
-    public String products(Model model,@RequestParam("p") Optional<Integer> p) {
+    public String products(Model model,@RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
 
         model.addAttribute("pageName", "products products");
         if(p.isPresent()){  
@@ -76,7 +81,12 @@ public class ProductsController {
             }
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
-        Pageable pageable = PageRequest.of( p.orElse(0), 5);
+
+        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
+        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+
+        Pageable pageable = PageRequest.of( p.orElse(0), 5 ,sort);
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();

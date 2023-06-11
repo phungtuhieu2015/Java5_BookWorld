@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.PublisherDAO;
 import com.poly.model.Publisher;
+import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +27,8 @@ public class PublishersController {
 
     @Autowired
     PublisherDAO dao;
+    @Autowired
+    SessionService session;
    
     Boolean form = false;
     Boolean isEdit = false;
@@ -31,7 +36,7 @@ public class PublishersController {
     Publisher publisher = new Publisher();
     String isSuccess = ""; 
     @RequestMapping("/publishers")
-    public String publisher(Model model, @RequestParam("p") Optional<Integer> p) {
+    public String publisher(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
         model.addAttribute("pageName", "publishers products");
         if(p.isPresent()){
             //check khi bấm phân trang khi đang sửa
@@ -64,7 +69,11 @@ public class PublishersController {
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("publisher", publisher);
 
-        Pageable pageable = PageRequest.of(p.orElse(0), 5);
+        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
+        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+
+        Pageable pageable = PageRequest.of(p.orElse(0), 5 ,sort);
         Page<Publisher> page = dao.findAll(pageable);
         model.addAttribute("page", page);
         
