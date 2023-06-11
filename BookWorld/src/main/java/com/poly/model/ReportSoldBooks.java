@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SoldBooks implements Serializable {
+public class ReportSoldBooks implements Serializable {
     @Id
     String tenSach;
     String danhMuc;

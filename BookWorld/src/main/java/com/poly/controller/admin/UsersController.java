@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.poly.dao.UserDAO;
 import com.poly.model.Book;
@@ -49,7 +51,7 @@ public class UsersController {
   User user = new User();
 
   @RequestMapping("/users")
-  public String Users(Model model, @RequestParam("p") Optional<Integer> p) {
+  public String Users(Model model, @RequestParam("p") Optional<Integer> p,@RequestParam("field") Optional<String> field) {
     model.addAttribute("pageName", "users user");
     if (p.isPresent()) {
       // check khi bấm phân trang khi đang sửa
@@ -78,7 +80,11 @@ public class UsersController {
     model.addAttribute("isEdit", isEdit);
     model.addAttribute("user", user);
 
-    Pageable pageable = PageRequest.of(p.orElse(0), 5);
+    Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("username")); 
+        session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
+
+    Pageable pageable = PageRequest.of(p.orElse(0), 5,sort);
     Page<User> page = dao.findAll(pageable);
     model.addAttribute("page", page);
 

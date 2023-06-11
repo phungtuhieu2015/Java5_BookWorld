@@ -28,7 +28,7 @@
                 <input type="text" th:field="*{publisherName}" id="youtube-title" tabindex="2" class="form-control"
                   placeholder="Tên NXB" th:value="${publisher.publisherName}">
                 <!-- lỗi -->
-                <div class="alert alert-warning " th:if="${#fields.hasErrors('publisherName')}"
+                <div class="message-errorsq " th:if="${#fields.hasErrors('publisherName')}"
                   th:errors="*{publisherName}">
                 </div>
               </div>
@@ -36,28 +36,28 @@
                 <input type="text" th:field="*{address}" tabindex="1" class="form-control" placeholder="Địa chi"
                   th:value="${publisher.address}">
                 <!-- lỗi -->
-                <div class="alert alert-warning " th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                <div class="message-errorsq " th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{city}" tabindex="1" class="form-control" placeholder="Thành phố"
                   th:value="${publisher.city}">
                 <!-- lỗi -->
-                <div class="alert alert-warning " th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                <div class="message-errorsq " th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{email}" tabindex="1" class="form-control" placeholder="Email"
                   th:value="${publisher.email}">
                 <!-- lỗi -->
-                <div class="alert alert-warning " th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                <div class="message-errorsq " th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{phone}" tabindex="1" class="form-control" placeholder="Số điện thoại"
                   th:value="${publisher.phone}">
                 <!-- lỗi -->
-                <div class="alert alert-warning " th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                <div class="message-errorsq " th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
@@ -71,7 +71,7 @@
                 <input class="form-control input-datalist" th:field="*{country}" style="border-radius:0;"
                   list="DSQuocTich" th:value="${publisher.country}" placeholder="Quốc tịch...">
                 <!-- lỗi -->
-                <div class="alert alert-warning " th:if="${#fields.hasErrors('country')}" th:errors="*{country}">
+                <div class="message-errorsq " th:if="${#fields.hasErrors('country')}" th:errors="*{country}">
                 </div>
                 <datalist id="DSQuocTich">
                   <option value="Việt Nam">
@@ -144,13 +144,13 @@
             <table class="table table-hover">
               <thead>
                 <tr class="tb-header">
-                  <th scope="col">ID </th>
-                  <th scope="col">Tên NXB</th>
-                  <th scope="col">Địa chỉ</th>
-                  <th scope="col">Thành phố</th>
-                  <th scope="col">Quốc gia</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">SĐT</th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='id')}">ID </a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='publisherName')}">Tên NXB</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='address')}">Địa chỉ</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='city')}">Thành phố</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='country')}">Quốc gia</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='email')}">Email</a></th>
+                  <th scope="col"><a th:href="@{/admin/publishers(field='phone')}">SĐT</a></th>
                   <th scope="col">Thao tác</th>
                 </tr>
               </thead>

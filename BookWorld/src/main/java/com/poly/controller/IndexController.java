@@ -1,5 +1,6 @@
 package com.poly.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.dao.BookDAO;
+import com.poly.dao.CategoryDAO;
 import com.poly.model.Book;
+import com.poly.model.Category;
 import com.poly.model.MailInfo;
 import com.poly.service.MailerServiceImpl;
 
@@ -30,19 +35,41 @@ public class IndexController {
 
     @Autowired
     MailerServiceImpl mailer;
+    @Autowired
+    CategoryDAO categoryDao;
 
     Book book = new Book();
+
+   // boolean isSuccess = false;
 
     @RequestMapping("/index")
     public String index(Model model, @RequestParam("p") Optional<Integer> p) {
 
-        Pageable pageable = PageRequest.of(p.orElse(0), 8);
-        Page<Book> page = dao.findAll(pageable);
+       
+
+        Pageable pageable = PageRequest.of(p.orElse(0), 16);
+        Page page = dao.findAll(pageable);
         model.addAttribute("page", page);
 
+
+        // List<Category> listCat = categoryDao.findAllCategories();
+        // Page page = dao.findByCategory(listCat.get(0), pageable);
+        // Page page1 = dao.findByCategory(listCat.get(1), pageable);
+        // Page page2 = dao.findByCategory(listCat.get(2), pageable);
+        // model.addAttribute("page", page);
+        // model.addAttribute("page1", page1);
+        // model.addAttribute("page2", page2);
+        // model.addAttribute("name1", listCat.get(0).getCategoryName());
+        // model.addAttribute("name2", listCat.get(1).getCategoryName());
+        // model.addAttribute("name3", listCat.get(2).getCategoryName());
+
+       
+    
         return "index";
 
     }
+
+
 
     @RequestMapping("/share/{bookId}")
     public String edit(@PathVariable("bookId") String bookId, Model model, @RequestParam("emailShare") String to) {

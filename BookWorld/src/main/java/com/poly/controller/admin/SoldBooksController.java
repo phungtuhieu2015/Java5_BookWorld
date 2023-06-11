@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.dao.BookDAO;
-import com.poly.model.SoldBooks;
+import com.poly.model.ReportSoldBooks;
 
 
 @Controller
@@ -20,7 +20,7 @@ public class SoldBooksController {
     public String soldeBooks(Model model){
         model.addAttribute("pageName", "sold-books statistical");
         
-        List<SoldBooks> items = dao.getSoldBooks();
+        List<ReportSoldBooks> items = dao.getSoldBooks();
         model.addAttribute("items", items);
         return "admin/index-admin";
     }

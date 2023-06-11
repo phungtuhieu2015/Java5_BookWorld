@@ -156,22 +156,20 @@
           <table class="table table-hover">
             <thead>
               <tr class="tb-header">
-                <th scope="col">ID </th>
-                <th scope="col">Mật khẩu</th>
-                <th scope="col">Họ tên</th>
-                <th scope="col">SĐT</th>
-                <th scope="col">Email</th>
-                <th scope="col">Địa chỉ</th>
-                <th scope="col">Trạng thái</th>
-                <th scope="col">Vai trò</th>
-                <th scope="col">Hình ảnh</th>
+                <th scope="col"><a th:href="@{/admin/users(field='username')}"> ID </a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='password')}"> Mật khẩu</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='fullName')}"> Họ tên</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='phone')}"> SĐT</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='email')}"> Email</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='address')}"> Địa chỉ</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='activated')}"> Trạng thái</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='admin')}"> Vai trò</a></th>
+                <th scope="col"><a th:href="@{/admin/users(field='image')}"> Hình ảnh</a></th>
                 <th scope="col">Thao tác</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="item : ${page.content}">
-
-
                 <td th:text="${item.username}"></td>
                 <td th:text="${item.password}"></td>
                 <td th:text="${item.fullName}"></td>
@@ -180,15 +178,13 @@
                 <td th:text="${item.address}"></td>
                 <td th:text="${item.activated ? 'Active' : 'inactive'}"></td>
                 <td th:text="${item.admin ? 'Admin' : 'User'}"></td>
-                <td class="p-0">               
-                   <img th:src="@{/admin/img/__${item.image}__}" alt="">
+                <td class="p-0">
+                  <img th:src="@{/admin/img/__${item.image}__}" alt="">
                 </td>
 
                 <td class="td-action ">
                   <a th:href="@{/admin/users/edit/{username}(username=${item.username})}"
                     class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
-
-
                   <!-- 
                     <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a> -->
                 </td>
@@ -199,23 +195,25 @@
         </div>
 
       </div>
-      <!-- page -->
+      <!-- /page -->
       <nav aria-label="Page navigation example" class="pagination-section">
-        <div class="text">
+        <div>
           <i th:text="${page.number +1}"></i> <strong th:text="'of  '+${page.totalPages}"></strong>
         </div>
         <ul class="pagination">
           <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}">
-            <a class="page-link" th:href="@{/admin/users(p=0)}">First</a>
+            <a class="page-link" th:href="@{/admin/users(p=0)}"><i class="bi bi-chevron-double-left"></i></a>
           </li>
           <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
-            <a class="page-link" th:href="@{/admin/users(p=${page.number-1})}">Prev</a>
+            <a class="page-link" th:href="@{/admin/users(p=${page.number-1})}"><i class="bi bi-chevron-left"></i></a>
           </li>
           <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
-            <a class="page-link" th:href="@{/admin/users(p=${page.number+1})}">Next</a>
+            <a class="page-link" th:href="@{/adminusersproducts(p=${page.number+1})}"><i
+                class="bi bi-chevron-right"></i></a>
           </li>
           <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
-            <a class="page-link" th:href="@{/admin/users(p=${page.totalPages-1})}">Last</a>
+            <a class="page-link" th:href="@{/admin/users(p=${page.totalPages-1})}"><i
+                class="bi bi-chevron-double-right"></i></a>
           </li>
 
         </ul>
@@ -229,12 +227,15 @@
 </div>
 </div>
 <section class="message-section ">
-  <div th:class="'toast my-3  align-items-center text-white bg-primary border-0 ' + ${message != null ? 'fade show' :''}" role="alert" aria-live="assertive" aria-atomic="true">
+  <div
+    th:class="'toast my-3  align-items-center text-white bg-primary border-0 ' + ${message != null ? 'fade show' :''}"
+    role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body">
         <tb:block th:text="${message}"></tb:block>
       </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+        aria-label="Close"></button>
     </div>
   </div>
 </section>
