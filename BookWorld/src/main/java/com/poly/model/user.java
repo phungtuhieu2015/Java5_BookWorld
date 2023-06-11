@@ -67,5 +67,7 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade=CascadeType.REFRESH)
   List<Order> order ;
-    
+  
+  @OneToMany(mappedBy = "user", cascade=CascadeType.REFRESH)
+  List<Cart> carts ;
 }

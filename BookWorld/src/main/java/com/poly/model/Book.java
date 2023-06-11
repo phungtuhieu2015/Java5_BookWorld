@@ -89,4 +89,7 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Favorite> favorites;
 
+    @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
+    List<Cart> carts;
+
 }

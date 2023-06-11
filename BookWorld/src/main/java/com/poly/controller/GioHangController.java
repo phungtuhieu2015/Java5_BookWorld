@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.poly.model.Product;
-import com.poly.model.ShoppingCartService;
+import com.poly.service.ShoppingCartService;
 
 @Controller
 public class GioHangController {
@@ -22,13 +22,12 @@ public class GioHangController {
 
     @RequestMapping("/giohang")
     public String view(Model model) {
-        model.addAttribute("cart", cart);
+        model.addAttribute("list", cart.getOrderDetails());
         return "gio-hang";
     }
 
     @RequestMapping("/cart/add/{id}")
     public String add(@PathVariable("id") String id) {
-        System.out.println(id);
         cart.add(id);
         return "redirect:/giohang";
     }
@@ -52,12 +51,12 @@ public class GioHangController {
         return "redirect:/giohang";
     }
 
-    @ResponseBody
-    @PostMapping("/cart/item/update")
-    public Product updateCardItem(@RequestBody Product item) {
-        Product updatedItem = cart.update(item.getId(), item.getSoLuong());
-        return updatedItem;
-    }
+    // @ResponseBody
+    // @PostMapping("/cart/item/update")
+    // public Product updateCardItem(@RequestBody Product item) {
+    //     Product updatedItem = cart.update(item.getId(), item.getSoLuong());
+    //     return updatedItem;
+    // }
     @ResponseBody
     @PostMapping("/cart/item/remove")
     public String removeCardItem(@RequestBody Product item) {

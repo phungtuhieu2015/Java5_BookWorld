@@ -32,29 +32,29 @@
 
                 </ul>
             </div>
-            <div class="basket-product" th:each="prod,pStat: ${cart.products}">
+            <div class="basket-product" th:each="prod,pStat: ${list}">
                 <div class="item">
                     <div class="product-image">
-                        <img th:src="@{/assets/img/__${prod.anh}__}" alt="Placholder Image 2" height="148px"
+                        <img th:src="@{/assets/img/}" alt="Placholder Image 2" height="148px"
                             class="product-frame">
                     </div>
                     <div class="product-details">
-                        <h1 class="td_titleBook"><strong th:text="${prod.ten}"> </strong>
+                        <h1 class="td_titleBook"><strong th:text="${prod.book.title}"> </strong>
                         </h1>
                     </div>
                 </div>
-                <div class="price"><span class="td-giaGiam" th:text="${prod.gia}"></span>
+                <div class="price"><span class="td-giaGiam" th:text="${prod.quantity}"></span>
                     <!-- <p><del class="td-giaCu">86.000</del></p> -->
                 </div>
                 <div class="quantity">
-                    <input type="number" id="example" value="1" th:onchange="refreshCart([[${prod}]],[[${pStat}]])"
+                    <input type="number" id="example" value="1"
                         name="example" min="0" max="100" step="1" pattern="\d+" class="input-number">
                 </div>
                 <div class="subtotal td-giaTong">0</div>
 
                 <div class="remove">
-                    <a th:onclick="removeCart([[${prod}]],[[${pStat}]])" class="btn-delete"><i
-                            class="bi bi-trash3"></i></a>
+                    <!-- <a th:onclick="removeCart([[${prod}]],[[${pStat}]])" class="btn-delete"><i
+                            class="bi bi-trash3"></i></a>  th:onchange="refreshCart([[${prod}]],[[${pStat}]]) -->
                     <!-- <button   th:data-item="${prod}" th:href="@{/cart/remove/__${prod.id}__}"  class="removeBtn"><i class="bi bi-trash3"></i></button > -->
 
                 </div>
