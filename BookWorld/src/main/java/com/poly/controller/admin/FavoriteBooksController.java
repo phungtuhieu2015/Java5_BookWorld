@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.BookDAO;
-import com.poly.model.FavoriteBook;
+import com.poly.model.ReportFavoriteBook;
 
 @Controller
 @RequestMapping("/admin")
