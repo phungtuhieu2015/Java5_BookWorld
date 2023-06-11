@@ -74,13 +74,17 @@ public class CategoriesController {
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("category", category);
 
-        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
-        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+         Pageable pageable;
 
+        if(field.isPresent()){
+              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
+              pageable = PageRequest.of(p.orElse(0), 5 ,sort);
+              session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+        }else{
+             pageable = PageRequest.of(p.orElse(0), 5 );
+        }
 
-
-        Pageable pageable = PageRequest.of(p.orElse(0), 5 ,sort);
         Page<Category> page = dao.findAll(pageable);     
         model.addAttribute("page", page);
 

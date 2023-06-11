@@ -70,13 +70,21 @@ public class AuthorsController {
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("author", author);
 
-        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+        Pageable pageable;
 
-        Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
+        if(field.isPresent()){
+              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
+              pageable = PageRequest.of(p.orElse(0), 5 ,direction,field.orElse("id"));
+              session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+        }else{
+             pageable = PageRequest.of(p.orElse(0), 5 );
+        }
+       
 
-        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+       
 
-        Pageable pageable = PageRequest.of(p.orElse(0), 5 ,sort);
+        
         Page<Author> page = dao.findAll(pageable);   
         model.addAttribute("page", page);
 

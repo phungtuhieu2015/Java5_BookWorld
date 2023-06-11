@@ -83,11 +83,16 @@ public class ProductsController {
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
 
-        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
-        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+       Pageable pageable;
 
-        Pageable pageable = PageRequest.of( p.orElse(0), 5 ,sort);
+        if(field.isPresent()){
+              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
+              pageable = PageRequest.of(p.orElse(0), 5 ,direction,field.orElse("id"));
+              session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+        }else{
+             pageable = PageRequest.of(p.orElse(0), 5 );
+        }
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();
