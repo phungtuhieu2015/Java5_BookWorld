@@ -36,7 +36,6 @@ public class Category {
     @Pattern(regexp = "^[\\p{L}\\s]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt ")
     String categoryName;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade=CascadeType.REFRESH)
     List<Book> book;
 }

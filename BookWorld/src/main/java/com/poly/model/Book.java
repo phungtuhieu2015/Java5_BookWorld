@@ -78,24 +78,24 @@ public class Book {
     String description;
 
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<OrderDetail> orderDetails;
 
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<AuthorBook> authorBooks;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Share> shares;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Favorite> favorites;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "book", cascade=CascadeType.REFRESH)
     List<Cart> carts;
 
