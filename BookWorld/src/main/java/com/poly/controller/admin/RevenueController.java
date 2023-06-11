@@ -1,5 +1,7 @@
 package com.poly.controller.admin;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -23,16 +25,32 @@ import com.poly.model.ReportRevenue;
 public class RevenueController {
     @Autowired
     OrderDetailDAO dao;
+
     @RequestMapping("/revenue")
-    public String revenue(Model model, @RequestParam("startDate") Optional<Date> startDate,
-    @RequestParam("endDate") Optional<Date> endDate,@RequestParam("p") Optional<Integer> p){
+    public String revenue(Model model,
+            @RequestParam("startDate") Optional<String> startDate,
+            @RequestParam("endDate") Optional<String> endDate,
+            @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "revenue statistical");
-        LocalDate localDate = LocalDate.of(1975, 1, 1);
-        Date startDateDefault = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date currentDateDefault = new Date();
-        Pageable pageable = PageRequest.of( p.orElse(0), 5);
-        Page page = dao.findByRevenueDate(startDate.orElse(startDateDefault),endDate.orElse(currentDateDefault) , pageable);
-         model.addAttribute("page", page);
+        Date sdate = null;
+        Date edate = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            sdate = dateFormat.parse(startDate.orElse("1975-01-01"));
+            edate = dateFormat.parse(endDate.orElse(dateFormat.format(new Date())));
+        } catch (ParseException e) {
+            model.addAttribute("message", "Vui lòng chọn ngày để tìm!");
+            try {
+                sdate = dateFormat.parse("1975-01-01");
+                edate = dateFormat.parse(dateFormat.format(new Date()));
+            } catch (ParseException e1) {
+            }
+            e.printStackTrace();
+        }
+        Pageable pageable = PageRequest.of(p.orElse(0), 5);
+        Page page = dao.findByRevenueDate(sdate, edate, pageable);
+        model.addAttribute("page", page);
         return "admin/index-admin";
     }
+
 }

@@ -11,18 +11,19 @@
       <div class="tab-pane fade  show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab" tabindex="0">
         <div class="table-top row px-0 mx-0">
           <div class="table-top__search-set col-6 px-0 d-flex justify-content-end align-items-center">
-            <form action="" class="form-section mt-3">
+            <form action="/admin/revenue" method="post" class="form-section mt-3">
               <div class="row">
                 <div class="form-group mb-3 col-4  ">
-                  <input type="date" name="startDate"   class="form-control ">
+                  <input type="date" name="startDate" class="form-control ">
                 </div>
                 <div class="form-group mb-3 col-4">
-                  <input type="date" name="endDate"   class="form-control ">
+                  <input type="date" name="endDate" class="form-control ">
                 </div>
                 <div class="form-group mb-3 col-4">
-                  <input  type="submit" tabindex="4" class="form-control btn ms-2" style="padding: 6px 15px;" value="Search">
+                  <input  type="submit" tabindex="4" class="form-control btn ms-2" style="padding: 6px 15px;" value="Tìm kiếm">
                 </div>
               </div>
+              <div class="message-errors" style="margin-left: 20%;"  th:text="${message}"></div>
             </form>
           </div>  
           <div class="table-top__wordset col-6  px-0">
@@ -69,6 +70,22 @@
               </table>
             </div> 
         </div>
+        <nav aria-label="Page navigation example" class="pagination-section mt-2" >
+          <ul class="pagination" >
+            <li th:class="${'page-item ' + (page.isFirst ?'disabled': '' )}" >
+              <a class="page-link" th:href="@{/admin/products(p=0)}">First</a>
+            </li>
+            <li th:class="${'page-item ' + (not page.hasPrevious ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/products(p=${page.number-1})}" >Prev</a>
+            </li>
+            <li th:class="${'page-item ' + (not page.hasNext ? 'disabled' :'')}">
+              <a class="page-link"  th:href="@{/admin/products(p=${page.number+1})}">Next</a>
+            </li>
+            <li th:class="${'page-item ' + ( page.isLast ? 'disabled' :'')}">
+              <a class="page-link" th:href="@{/admin/products(p=${page.totalPages-1})}">Last</a>
+            </li>
+          </ul>
+      </nav>
       </div>
      <!-- /Danh sách -->
     </div>
