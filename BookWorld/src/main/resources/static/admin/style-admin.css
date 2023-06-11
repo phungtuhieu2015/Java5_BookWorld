@@ -21,7 +21,11 @@
     --mau-bg-header-table:#FAFBFE;
 }
 
-
+img,
+svg {
+  width: 100px;
+  vertical-align: middle;
+}   
 
 #header {
     background-color: #fff;

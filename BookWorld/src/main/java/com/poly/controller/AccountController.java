@@ -1,10 +1,14 @@
 package com.poly.controller;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.poly.dao.UserDAO;
 import com.poly.model.User;
@@ -20,6 +25,8 @@ import com.poly.service.MailerServiceImpl;
 import com.poly.service.SessionService;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -28,20 +35,21 @@ public class AccountController {
     @Autowired
     UserDAO dao;
 
+    String oldImg;
     @Autowired
     MailerServiceImpl mailer;
 
     User user = new User();
 
-
     Boolean isSuccess = false;
-    
+
     @Autowired
     SessionService session;
 
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("user", new User());
+        // System.out.println("sssssssssssssssssssssssssssssssssssssssss");
         return "login";
     }
 
@@ -68,10 +76,6 @@ public class AccountController {
             }
         }
         model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác!");
-
-        // Khi không tìm thấy người dùng hoặc mật khẩu không khớp
-        // bindingResult.rejectValue("username", "error.user", "Tài Khoản là bắt buộc");
-        // bindingResult.rejectValue("password", "error.user", "Mật Khẩu là bắt buộc");
         return "login";
     }
 
@@ -79,6 +83,7 @@ public class AccountController {
     public String doSignUp(@ModelAttribute("user") User user, BindingResult result, Model model) {
 
         return "sign-up";
+
     }
 
     @PostMapping("/sign-up")
@@ -87,38 +92,11 @@ public class AccountController {
 
             return "sign-up";
         }
-
-        List<User> users = dao.findAll();
-        for (User b : users) {
-            if (b.getUsername().equalsIgnoreCase(user.getUsername())) {
-                String successMessage = "ID đã tồn tại !";
-                model.addAttribute("failed", successMessage);
-                return "sign-up";
-            }
-
-        }
-        for (User b : users) {
-            if (b.getEmail().equalsIgnoreCase(user.getEmail())) {
-                String successMessage = "gmail đã tồn tại !";
-                model.addAttribute("failed", successMessage);
-                return "sign-up";
-            }
-        }
         user.setActivated(true);
         dao.save(user);
 
         return "login";
     }
-
-
-    //             model.addAttribute("checkLG", true);
-    //             return"/index";
-    //           }
-    //         }
-    //     }
-    //     return"login";
-    // }
-
 
     public String generateRandomString() {
         int length = 20;
@@ -136,154 +114,169 @@ public class AccountController {
     }
 
     @RequestMapping("/forgot-password")
-    public String doForgotPassword(User account,Model model){
+    public String doForgotPassword(User account, Model model) {
 
         return "forgot-password";
     }
+
     @RequestMapping("/forgot-password/save")
-    public String postForgotPassword( User account ){
+    public String postForgotPassword(User account) {
 
         System.out.println(account.getEmail());
 
         User user1 = dao.findByEmail(account.getEmail());
 
+        // System.out.println("check12312312312: "+user1.getEmail());
 
-       // System.out.println("check12312312312: "+user1.getEmail());
-
-        if(user1 != null){
-                user1.setPassword(generateRandomString());
-                dao.save(user1);
-                try {
-                    mailer.send(user1.getEmail(), "RESET PASSWORD",
-                     "<div style='font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;'>"
-                       +" <h2 style='margin-top: 0;'>Đặt lại mật khẩu</h2>"
-                       +" <p>Xin chào ,<strong>"+user1.getUsername()+"</strong></p>"
-                       +" <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn. Để tiếp tục quá trình đặt lại mật khẩu, vui lòng làm"
-                       +"     theo hướng dẫn dưới đây:</p>"
-                       +" <ol>"
-                       +"     <li>Sao chép mật khẩu mới được reset ngẫu nhiên sau đây:</li>"
-                       +"     <p"
-                       +"         style='background-color: #f5f5f5; padding: 10px; border: 1px solid #ddd; font-family: Courier New, Courier, monospace; font-size: 14px; color: red; font-weight: 900; text-align: center;'>"
-                       +"         "+user1.getPassword()+"</p>"
-                       +"     <li>Tiếp theo, bấm vào <a href='http://localhost:8081/account/login'"
-                       +"             style='text-decoration: none; background-color: #4CAF50; color: white; padding: 8px 20px; border-radius: 5px; font-weight: bold;'>đăng"
-                       +"             nhập</a></li>"
-                       +" </ol>"
-                       +" <p>Để đảm bảo an toàn cho tài khoản của bạn, hãy thay đổi mật khẩu ngay sau khi đăng nhập.</p>"
-                       +" <p>Nếu bạn không khởi tạo yêu cầu đặt lại mật khẩu này, xin vui lòng bỏ qua email này. Tài khoản của bạn vẫn an"
-                       +"     toàn.</p>"
-                       +" <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 14px; color: #888;'>"
-                       +"     <p>Trân trọng,</p>"
-                       +"     <p>Success 202 - BOOKWORLD</p>"
-                       +"     <p>&copy; 2023 Tất cả các quyền được bảo lưu.</p>"
-                       +" </div>"
-                   +" </div>","");
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                }
+        if (user1 != null) {
+            user1.setPassword(generateRandomString());
+            dao.save(user1);
+            try {
+                mailer.send(user1.getEmail(), "RESET PASSWORD",
+                        "<div style='font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;'>"
+                                + " <h2 style='margin-top: 0;'>Đặt lại mật khẩu</h2>"
+                                + " <p>Xin chào ,<strong>" + user1.getUsername() + "</strong></p>"
+                                + " <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn. Để tiếp tục quá trình đặt lại mật khẩu, vui lòng làm"
+                                + "     theo hướng dẫn dưới đây:</p>"
+                                + " <ol>"
+                                + "     <li>Sao chép mật khẩu mới được reset ngẫu nhiên sau đây:</li>"
+                                + "     <p"
+                                + "         style='background-color: #f5f5f5; padding: 10px; border: 1px solid #ddd; font-family: Courier New, Courier, monospace; font-size: 14px; color: red; font-weight: 900; text-align: center;'>"
+                                + "         " + user1.getPassword() + "</p>"
+                                + "     <li>Tiếp theo, bấm vào <a href='http://localhost:8081/account/login'"
+                                + "             style='text-decoration: none; background-color: #4CAF50; color: white; padding: 8px 20px; border-radius: 5px; font-weight: bold;'>đăng"
+                                + "             nhập</a></li>"
+                                + " </ol>"
+                                + " <p>Để đảm bảo an toàn cho tài khoản của bạn, hãy thay đổi mật khẩu ngay sau khi đăng nhập.</p>"
+                                + " <p>Nếu bạn không khởi tạo yêu cầu đặt lại mật khẩu này, xin vui lòng bỏ qua email này. Tài khoản của bạn vẫn an"
+                                + "     toàn.</p>"
+                                + " <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 14px; color: #888;'>"
+                                + "     <p>Trân trọng,</p>"
+                                + "     <p>Success 202 - BOOKWORLD</p>"
+                                + "     <p>&copy; 2023 Tất cả các quyền được bảo lưu.</p>"
+                                + " </div>"
+                                + " </div>",
+                        "");
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
         }
 
-
-
-        return"forgot-password";
+        return "forgot-password";
     }
-  
-    
 
+    @GetMapping("/change-password")
+    public String showChangePasswordForm(@ModelAttribute("user") User account, BindingResult result, Model model) {
+        if (result.hasErrors()) {
 
-
-    @RequestMapping("/change-password")
-    public String doChangePassword(@ModelAttribute("user") User account,Model model){
-
+        }
+        user = session.get("user");
+        model.addAttribute("user", user);
         return "change-password";
-    } 
-    @RequestMapping("/change-password/save")
-    public String postChangePassword(@Valid @ModelAttribute("user") User account ,BindingResult result,Model model){
 
-        if(result.hasErrors()){
-            return"change-password";
+    }
+
+    @PostMapping("/change-password")
+public String processChangePasswordForm(@ModelAttribute("user") User account, @RequestParam("pw") String pw,
+        @RequestParam("confirmPassword") String confirmPassword, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+        // Xử lý lỗi nếu có
+    }
+
+    User user = session.get("user");
+    if (user.getPassword().equals(account.getPassword())) {
+        if (!pw.equals(confirmPassword)) {
+            // Xử lý khi mật khẩu mới và xác nhận mật khẩu không trùng nhau
+            model.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không trùng nhau");
+            return "/change-password";
         }
-
-
-
-        return"change-password";
-    }
-
-
-
-
-
-    @RequestMapping("/sign-up")
-    public String doSignUp( @ModelAttribute("user") User account,Model model){
-
-        return "sign-up";
-    }
-    @RequestMapping("/sign-up/save")
-    public String doSignUp(@Valid @ModelAttribute("user") User account ,BindingResult result){
-
-        if(result.hasErrors()){
-            return"sign-up";
-        }
-        return"sign-up";
-    }
-    @RequestMapping("/profile")
-    public String doMyProfile(Model model){
-
-
-        User users = session.get("user");
         
-        return"edit-profile";
+        user.setPassword(pw);
+        dao.save(user); 
+        return "redirect:/account/login";
     }
 
-
+    return "/change-password";
 }
 
-// @RequestMapping("/forgot-password")
-// public String doForgotPassword( @ModelAttribute("user") User account,Model
-// model){
 
-// return "forgot-password";
-// }
-// @RequestMapping("/forgot-password/save")
-// public String postForgotPassword(@Valid @ModelAttribute("user") User account
-// ,BindingResult result){
+    // @PostMapping("/change-password")
+    // public String processChangePasswordForm(@ModelAttribute("user") User account,@RequestParam("pw") String pw, BindingResult result,
+    //         Model model) {
+    //     if (result.hasErrors()) {
+    //     }
+    //     User user = new User();
+    //     user = session.get("user");
+    //     if (user.getPassword().equals(account.getPassword())) {
+         
+    //         user.setPassword(pw);
+    //         dao.save(user); 
+    //         return "redirect:/account/login";
+            
+    //     }
+         
+    //     return "/change-password";
+    // }
 
-// if(result.hasErrors()){
-// return"forgot-password";
-// }
-// return"forgot-password";
-// }
+    @GetMapping("/profile")
+    public String doMyProfile(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
 
-// @RequestMapping("/change-password")
-// public String doChangePassword(@ModelAttribute("user") User account,Model
-// model){
+        }
+        User users = session.get("user");
+        // System.out.println(user.getUsername()+"sssssssssssss");
+        if (users == null)
 
-// return "change-password";
-// }
-// @RequestMapping("/change-password/save")
-// public String postChangePassword(@Valid @ModelAttribute("user") User account
-// ,BindingResult result,Model model){
+        {
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+            model.addAttribute("user", user);
 
-// if(result.hasErrors()){
+            model.addAttribute("checkLG", true);
+        }
+        user = session.get("user");
+        model.addAttribute("user", user);
+        return "edit-profile";
+    }
 
-// String newPass = paramService.getString("newPassword", "");
-// String confirmPass = paramService.getString("confirmPassword", "");
+    @PostMapping("/profile")
+    public String doMyProfilesave(@Valid @ModelAttribute("user") User user, BindingResult result, Model model,
+            @RequestParam("fileImage") MultipartFile fileImage) {
+        if (result.hasErrors()) {
 
-// if(newPass.trim().isBlank()){
-// model.addAttribute("mesNP", false);
-// }
-// if(confirmPass.trim().isBlank()){
-// model.addAttribute("mesCP", false);
-// }else{
-// if(!newPass.equals(confirmPass)){
-// model.addAttribute("message", false);
-// }
-// }
+        }
+        if (fileImage.isEmpty()) {
+            user.setImage(oldImg);
+            dao.save(user);
+        } else {
+            String fileName = fileImage.getOriginalFilename();
+            String uploadDirectory = "static/assets/img/";
+            try {
+                Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
+                fileImage.transferTo(path.resolve(fileName).toFile());
+                System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
+                user.setImage(fileName);
+                isSuccess = true;
+                dao.save(user);
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-// return"change-password";
-// }
+        user.setActivated(false);
+        user.setAdmin(false);
+        dao.save(user);
+        return "edit-profile";
+    }
 
-// return"change-password";
-// }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // Xóa phiên
+        }
+        return "redirect:/index";
+    }
 
-// }
+}

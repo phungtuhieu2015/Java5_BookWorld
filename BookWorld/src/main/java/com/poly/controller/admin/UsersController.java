@@ -73,7 +73,7 @@ public class UsersController {
       user = new User();
     }
     if (isSuccess) {
-      model.addAttribute("message", "Update Thành công!");
+      model.addAttribute("message",   "Update Thành công!");
     }
     isSuccess = false;
     model.addAttribute("form", form);

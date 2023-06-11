@@ -13,14 +13,14 @@
 
 <body>
 
-       
-    <main >
-          <!-- preloder-loader -->
 
-  <!-- /preloder-loader -->
-      <!-- Header -->
-      <div th:replace="fragment/header.html :: #header "></div>
-      <!-- /Header -->
+    <main>
+        <!-- preloder-loader -->
+
+        <!-- /preloder-loader -->
+        <!-- Header -->
+        <div th:replace="fragment/header.html :: #header "></div>
+        <!-- /Header -->
         <div class="container-xl px-4 mt-5 mb-5 d-flex justify-content-center ">
             <!-- Account page navigation-->
             <div class="row w-75">
@@ -30,71 +30,72 @@
                     <div class="card mb-4 ">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
-                            <form>
-                                <div class="mb-3">
-                                    <form action="" method="post" enctype="multipart/form-data">
-                                        <div class="avatar-upload">
-                                            <div class="avatar-preview">
-                                                <img id="avatar-img" src="https://i.ibb.co/bs6s3QT/luf.jpg"
-                                                    alt="Avatar Preview" />
-                                            </div>
-                                            <div class="avatar-edit">
-                                                <input type="file" name="avatar" id="avatar"
-                                                    accept=".jpg, .jpeg, .png, .webp" />
-                                                <label for="avatar">Chọn ảnh</label>
-                                            </div>
-                                        </div>
-                                    </form>
+                            <form class="form-section" th:action="@{/account/profile}" method="post" th:object="${user}"
+                                enctype="multipart/form-data">
+                                <div class="avatar-upload">
+
+                                    <div class="avatar-edit">
+                                        <input type="file" class="form-control" id="inputGroupFile02" name="fileImage">
+
+                                        <label class="" for="inputGroupFile02">Hình ảnh</label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <img id="avatar-img" th:src="@{/assets/img/__${user.image}__}" alt="" />
+                                    </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="fullName">Họ và tên <span
-                                            class="text-danger">*</span>
+                                    <label class="small mb-1" for="fullName">Họ và tên <span>
                                     </label>
                                     <input class="form-control" id="fullName" type="text"
-                                        placeholder="Enter your fullname" name="fullname">
+                                        placeholder="Enter your fullName" name="fullName" th:field="*{fullName}">
+                                    <!-- lỗi -->
+                                    <div class="alert alert-warning " th:if="${#fields.hasErrors('fullName')}"
+                                        th:errors="*{fullName}">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="phone">Số điện thoại<span
-                                            class="text-danger">*</span>
+                                    <label class="small mb-1" for="phone">Số điện thoại<span>
                                     </label>
-                                    <input class="form-control" id="phone" type="text" placeholder="Enter your phone">
+                                    <input class="form-control" id="phone" type="text" placeholder="Enter your phone"
+                                        th:field="*{phone}">
+                                    <div class="alert alert-warning " th:if="${#fields.hasErrors('phone')}"
+                                        th:errors="*{phone}">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="email">Email <span
-                                            class="text-danger">*</span></label>
+                                    <label class="small mb-1" for="email">Email <span></label>
                                     <input class="form-control" id="email" type="email" placeholder="Enter your email"
-                                        name="email">
+                                        name="email" th:field="*{email}">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="address">Địa chỉ<span class="text-danger">*</span>
+                                    <label class="small mb-1" for="address">Địa chỉ<span>
                                     </label>
                                     <input class="form-control" id="address" type="text" placeholder="Enter your phone"
-                                        name="address">
+                                        name="address" th:field="*{address}">
                                 </div>
 
 
                                 <div class="row gx-3 mb-3">
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="UserName">UserName<span
-                                                class="text-danger">*</span></label>
+                                        <label class="small mb-1" for="UserName">UserName<span></label>
                                         <input class="form-control" id="UserName" type="text"
-                                            placeholder="Enter your username" value="">
+                                            placeholder="Enter your username" th:field="*{username}">
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="password">Password <span
-                                                class="text-danger">*</span></label>
-                                        <input class="form-control" id="password" type="password"
-                                            placeholder="Enter your password" value="">
+                                        <label class="small mb-1" for="UserName">Mật Khẩu</label>
+                                        <input type="text" name="password" id="youtube-title" tabindex="2"
+                                            class="form-control" placeholder="password" th:field="*{password}" readonly>
                                     </div>
                                 </div>
 
                                 <div class="cardbtn">
-                                    <button class="btn btn-primary" type="submit">Save changes</button>
+                                    <button class="btn btn-primary">Save changes</button>
+
                                     <a class="btnCP" th:href="@{/account/change-password}">Change password</a>
                                 </div>
                             </form>
@@ -109,6 +110,7 @@
     </main>
 
     <script th:src="@{/assets/js/edit-profile.js}"></script>
+
 </body>
 
 </html>
