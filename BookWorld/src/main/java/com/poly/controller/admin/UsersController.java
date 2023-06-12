@@ -80,12 +80,17 @@ public class UsersController {
     model.addAttribute("isEdit", isEdit);
     model.addAttribute("user", user);
 
-    Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("username")); 
-        session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
+    Pageable pageable;
 
-    Pageable pageable = PageRequest.of(p.orElse(0), 5,sort);
-    Page<User> page = dao.findAll(pageable);
+        if(field.isPresent()){
+              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("username") ); 
+              pageable = PageRequest.of(p.orElse(0), 5 ,sort);
+              session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
+        }else{
+             pageable = PageRequest.of(p.orElse(0), 5 );
+        }
+    Page<User> page = dao.findByAdmin(false, pageable);
     model.addAttribute("page", page);
 
     return "admin/index-admin";

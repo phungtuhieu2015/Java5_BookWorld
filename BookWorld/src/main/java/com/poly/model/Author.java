@@ -22,9 +22,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -44,7 +44,7 @@ public class Author {
     Date dateOfBirth = new Date();
 
     @NotBlank(message = "(*) Vui lòng nhập quốc tịch")
-    @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "(*) Không chưa ký tự đặc biệt")
+    @Pattern(regexp = "^[\\p{L}\\d\\s,.]+$", message = "(*) Không chưa ký tự đặc biệt")
     String nationality;
 
 

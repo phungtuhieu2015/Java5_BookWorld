@@ -97,11 +97,18 @@ public class ProductsController {
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
 
-        Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-        Sort sort = Sort.by((direction == Direction.ASC ?  Direction.DESC : Direction.ASC), field.orElse("id")); 
-        session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+       Pageable pageable;
 
-        Pageable pageable = PageRequest.of( p.orElse(0), 5 ,sort);
+        if(field.isPresent()){
+              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
+              pageable = PageRequest.of(p.orElse(0), 5 ,direction,field.orElse("id"));
+              session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+        }else{
+             pageable = PageRequest.of(p.orElse(0), 5 );
+        }
+
+    
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();
@@ -109,6 +116,7 @@ public class ProductsController {
         model.addAttribute("listAut", listAut);
         model.addAttribute("listPub", listPub);
         model.addAttribute("listCat", listCat);
+        model.addAttribute("listAut", listAut);
         model.addAttribute("book",this.book);
         model.addAttribute("page", page);
         return "admin/index-admin"; 
@@ -177,6 +185,7 @@ public class ProductsController {
 
     @RequestMapping("/products/edit/{id}")
     public String edit(@PathVariable("id") String id) {
+         
         this.book = dao.findById(id).get();
         this.oldImg = this.book.getImage();
         this.form = true;
@@ -192,7 +201,7 @@ public class ProductsController {
         return "redirect:/admin/products"; 
     }
     @RequestMapping("/products/update")
-    public String update(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage) {
+    public String update(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage ) {
         if (result.hasErrors()) {
             return "forward:/admin/products/form-errors";
         }
