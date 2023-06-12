@@ -10,7 +10,9 @@
           data-bs-target="#nav-authors" type="button" role="tab" aria-controls="nav-authors" aria-selected="true">Danh
           sách</button>
       </div>
+     
     </nav>
+    <span th:if="${errorDelete}" class="message-errors" th:text="${errorDelete}"></span>
     <div class="tab-content" id="nav-tabContent">
       <!-- Cập nhật -->
       <div th:class="'tab-pane fade ' + (${form} == true? 'show active':'') " id="nav-form" role="tabpanel"

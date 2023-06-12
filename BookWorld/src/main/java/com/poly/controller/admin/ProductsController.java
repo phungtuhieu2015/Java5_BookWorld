@@ -60,7 +60,8 @@ public class ProductsController {
     ServletContext app;
     @Autowired
     SessionService session;
-
+    boolean isError = false;
+    boolean isErrorDelete = false;
     Book book =  new Book();
     boolean form = false;
     boolean isEdit = false;
@@ -90,6 +91,9 @@ public class ProductsController {
             if( this.book.getId() == null){
                 this.book = new Book();
             }
+        if(isErrorDelete) {
+            model.addAttribute("errorDelete", " (*) Sách đã tồn tại trong các bản khác");
+        }
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
 
@@ -131,7 +135,7 @@ public class ProductsController {
     @RequestParam("authors") Optional< List<Long>> items) {
         
        
-        boolean isError  = false;
+        isError = false;
         if(dao.existsById(book.getId())){
              isError = true;    
             model.addAttribute("isExist", "(*) Mã sách đã tồn tại");
@@ -216,7 +220,13 @@ public class ProductsController {
     public String delete(Model model , Book book,@PathVariable("id") String id) {
         model.addAttribute("pageName", "products products");
         book = dao.findById(id).get();
-        dao.delete(book);
+        try {
+            dao.delete(book);
+        } catch (Exception e) {
+            isErrorDelete = true;
+            return "redirect:/admin/products"; 
+        }
+        
         book = new Book();
         this.form = false;
         this.isEdit = false;
