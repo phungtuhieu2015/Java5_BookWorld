@@ -64,27 +64,41 @@
               </div>
             </div>
 
-            <div class="mb-3 row">
-              <div class="col-auto">
-                <label class="form-label " for="">Trạng thái: </label>
-              </div>
-              <div class="col-auto">
-                <div class="form-group text-black">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:field="*{available}" value="true" checked
-                      id="available">
-                    <label class="form-check-label" for="available">Còn hàng</label>
+            <div class="form-group mb-3 col-12">
+             <div class="row">
+              <div class="col-6">
+                <div class=" row">
+                  <div class="col-auto">
+                    <label class="form-label " for="">Trạng thái: </label>
                   </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:field="*{available}" id="available2" value="false">
-                    <label class="form-check-label" for="available2">Hết hàng</label>
+                  <div class="col-auto">
+                    <div class="form-group text-black">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" th:field="*{available}" value="true" checked
+                          id="available">
+                        <label class="form-check-label" for="available">Còn hàng</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" th:field="*{available}" id="available2" value="false">
+                        <label class="form-check-label" for="available2">Hết hàng</label>
+                      </div>
+                    </div>
+  
+                    <div class="message-errors" th:if="${#fields.hasErrors('available')}" th:errors="*{available}"></div>
                   </div>
+  
                 </div>
-
-                <div class="message-errors" th:if="${#fields.hasErrors('available')}" th:errors="*{available}"></div>
               </div>
-
+              
+              <div class="form-group mb-3 col-6">
+                <input  type="button" tabindex="4" class="form-control btn ms-2 w-100" data-bs-toggle="modal"
+                data-bs-target="#modalAuthors"   value="Tác giả">
+              </div>
             </div>
+           
+            
+             </div>
+          
             <div class="form-group mb-3 text-black col-12">
               <textarea class="form-control" th:field="*{description}" id="description1" placeholder="Mô tả"
                 rows="4"></textarea>
@@ -98,6 +112,46 @@
                 value="Delete">
               <a th:href="@{/admin/products/reset}" tabindex="4" class="form-control btn ms-2">Reset</a>
             </div>
+               <!-- Chi tiết tác giả -->
+    <div class="modal fade"id="modalAuthors" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tác giả</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <div class="modal-body">
+                <table class="table w-100">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Tên tác giả</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="item : ${listAut}">
+                      <td scope="row">
+                        <div class="form-check">
+                          <label class="form-check-label" for="defaultCheck1" style="width: 100%; height: 100%;">
+                            <input class="form-check-input" name="authors" type="checkbox" th:value="${item.id}" id="defaultCheck1">
+                          </label>
+                        </div>
+                      </td>
+                      <td th:text="${item.id}"></td>
+                      <td th:text="${item.authorName}">Otto</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Chi tiết tác giả -->
+    <!-- Modal -->
           </form>
         </div>
       </div>
@@ -245,6 +299,6 @@
       </div>
       <!-- /Danh sách -->
     </div>
-    <!-- Modal -->
+ 
   </div>
 </div>

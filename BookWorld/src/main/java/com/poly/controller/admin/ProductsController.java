@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.poly.dao.AuthorBookDAO;
+import com.poly.dao.AuthorDAO;
 import com.poly.dao.BookDAO;
 import com.poly.dao.CategoryDAO;
 import com.poly.dao.PublisherDAO;
+import com.poly.model.Author;
+import com.poly.model.AuthorBook;
 import com.poly.model.Book;
 import com.poly.model.Category;
 import com.poly.model.Publisher;
@@ -45,6 +50,11 @@ public class ProductsController {
 
     @Autowired
     PublisherDAO daoPub;
+
+    @Autowired
+    AuthorDAO daoAut;
+    @Autowired
+    AuthorBookDAO daoAutBook;
 
     @Autowired
     ServletContext app;
@@ -91,6 +101,8 @@ public class ProductsController {
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();
+        List<Author> listAut = daoAut.findAll();
+        model.addAttribute("listAut", listAut);
         model.addAttribute("listPub", listPub);
         model.addAttribute("listCat", listCat);
         model.addAttribute("book",this.book);
@@ -114,7 +126,11 @@ public class ProductsController {
         return "admin/index-admin";  
     }
     @RequestMapping("/products/create")
-    public String create(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage) {
+    public String create(@Valid Book book,BindingResult result,Model model,
+    @RequestParam("fileImage") MultipartFile fileImage,
+    @RequestParam("authors") Optional< List<Long>> items) {
+        
+       
         boolean isError  = false;
         if(dao.existsById(book.getId())){
              isError = true;    
@@ -124,8 +140,17 @@ public class ProductsController {
              isError = true;
             model.addAttribute("errorImg", "(*) Vui lòng chọn ảnh");
         }
+        if(items.get() == null) {
+             isError = true;
+        }
         if(isError || result.hasErrors()) {
              return "forward:/admin/products/form-errors";
+        }
+        
+        List<Author> listAuthor = new ArrayList<>();
+        for (Long authorId : items.get()) {
+                Author authorsSelected  = daoAut.findById(authorId).get();
+                listAuthor.add( authorsSelected);
         }
          if(!fileImage.isEmpty()) {        
             String fileName = fileImage.getOriginalFilename();
@@ -135,6 +160,10 @@ public class ProductsController {
                 fileImage.transferTo(path.resolve(fileName).toFile());
                 book.setImage(fileName);
                 dao.save(book);
+                for (Author author : listAuthor) {
+                    AuthorBook authorBook = new AuthorBook(author,book);
+                     daoAutBook.save(authorBook);
+                }
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
             }

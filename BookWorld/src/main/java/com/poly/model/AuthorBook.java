@@ -36,5 +36,8 @@ public class AuthorBook {
     @ManyToOne
     @JoinColumn(name = "book_id")
     Book book;
-
+    public AuthorBook(Author author, Book book) {
+        this.author = author;
+        this.book = book;
+    }
 }
