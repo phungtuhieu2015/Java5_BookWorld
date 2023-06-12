@@ -1,5 +1,7 @@
 package com.poly.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.poly.model.Cart;
 import com.poly.model.Product;
+import com.poly.model.User;
+import com.poly.service.SessionService;
 import com.poly.service.ShoppingCartService;
 
 @Controller
@@ -21,9 +25,14 @@ public class GioHangController {
     @Autowired
     ShoppingCartService cart; 
 
+    @Autowired
+    SessionService session;
+
+    boolean isError = false;
     @RequestMapping("/giohang")
     public String view(Model model) {
-        model.addAttribute("list", cart.getOrderDetails());
+        model.addAttribute("list", cart.getOrderDetails()); 
+        model.addAttribute("total", cart.getTotal());
         return "gio-hang";
     }
 
@@ -35,20 +44,38 @@ public class GioHangController {
 
     @RequestMapping("/cart/remove/{id}")
     public String remove(@PathVariable("id") String id) {
-        cart.remove(Long.parseLong(id) );
+        cart.remove(id );
         return "redirect:/giohang";
     }
 
     @RequestMapping("/cart/update/{id}")
     public String update(@PathVariable("id") String id,
             @RequestParam("qty") Integer qty) {
-        cart.update(Long.parseLong(id), qty);
+        cart.update(id, qty);
         return "redirect:/giohang";
     }
 
     @RequestMapping("/cart/clear")
     public String clear() {
         cart.clear();
+        return "redirect:/giohang";
+    }
+
+    @RequestMapping("/cart/payment")
+    public String payment(User user,@RequestParam("paymentMethod") Optional<String> param) {
+        if(session.get("user") == null) {
+            return"redirect:/account/login";
+        } else {
+            User currentUser = session.get("user");
+            currentUser.setFullName(user.getFullName());
+            currentUser.setPhone(user.getPhone());
+            currentUser.setAddress(user.getAddress());
+            Boolean paymentMethod = true;
+            if(param.equals("online")){
+                    paymentMethod = false;
+            }
+            cart.payment(currentUser, paymentMethod );
+        }
         return "redirect:/giohang";
     }
 

@@ -3,14 +3,17 @@ package com.poly.service;
 
 import java.util.Collection;
 import com.poly.model.Cart;
+import com.poly.model.Order;
+import com.poly.model.OrderDetail;
+import com.poly.model.User;
 
 public interface ShoppingCartService {
    
     Cart add(String id);
 
-    void remove(Long id);
+    void remove(String id);
 
-    Cart update(Long id, Integer qty);
+    Cart update(String id, Integer qty);
 
     void clear();
 
@@ -20,5 +23,7 @@ public interface ShoppingCartService {
     int getCount();
 
 
-    double getAmount();
+    double getTotal();
+
+    Order payment(User user, Boolean paymentMethod);
 }

@@ -65,19 +65,19 @@
         <aside>
             <div class="summary">
                 <div class="summary-total-items">Thông Tin Khách Hàng</div>
-
+                <form action="/cart/payment" method="post" th:object="${user}">
                 <div class="summary-delivery ">
                     <div class="mb-5">
                         <label for="fullname" class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" id="fullname" placeholder="Nhập họ và tên">
+                        <input type="text" name="fullName" th:readonly="${session.user!=null?true:false}" class="form-control" id="fullname"  th:value="${session.user != null? session.user.fullName:''}" placeholder="Nhập họ và tên">
                     </div>
                     <div class="mb-5">
                         <label for="" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="" placeholder="Nhập số điện thoại">
+                        <input type="text" class="form-control" name="phone" id=""  th:value="${session.user != null? session.user.phone:''}" placeholder="Nhập số điện thoại">
                     </div>
                     <div class="mb-1">
                         <label for="address" class="form-label">địa chỉ</label>
-                        <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ">
+                        <input type="text" class="form-control" name="address" id="address" th:value="${session.user != null? session.user.address:''}" placeholder="Nhập địa chỉ">
                     </div>
                 </div>
                 <div class="subtotal-title fw-bold">Phương Thức Thanh Toán</div>
@@ -87,19 +87,16 @@
                         <div class="fhs-radio-big-with-icon-container">
                             <label class="fhs-radio-big fhs-raido-big-with-icon">
                                 <div class="fhs-payment-name-with-icon-container">
-
                                     <img src="https://cdn0.fahasa.com/skin/frontend/base/default/images/payment_icon/ico_cashondelivery.svg?q=102205"
                                         alt="">
                                     <div class="fhs-payment-name" style="width: 139px;">Thanh toán bằng tiền mặt
                                     </div>
-                                    <input style="display: none;" type="radio" name="td-payRadio"
+                                    <input style="display: none;" type="radio" name="paymentMethod"
                                         class="fhs_checkout_paymentmethod_option" value="tienmat" checked="checked">
                                     <span class="radiomark-big"></span>
                                 </div>
                             </label>
                         </div>
-
-
                         <div class="fhs-radio-big-with-icon-container">
                             <label class="fhs-radio-big fhs-raido-big-with-icon">
                                 <div class="fhs-payment-name-with-icon-container">
@@ -107,8 +104,8 @@
                                     <img src="https://cdn0.fahasa.com/skin/frontend/base/default/images/payment_icon/ico_zalopayatm.svg?q=102248"
                                         alt="">
                                     <div class="fhs-payment-name">ATM / Internet Banking</div>
-                                    <input style="display: none;" type="radio" name="td-payRadio"
-                                        class="fhs_checkout_paymentmethod_option" value="zalopayapp">
+                                    <input style="display: none;" type="radio" name="paymentMethod"
+                                        class="fhs_checkout_paymentmethod_option" value="online">
                                     <span class="radiomark-big"></span>
                                 </div>
                             </label>
@@ -120,11 +117,12 @@
                 </div>
                 <div class="summary-total">
                     <div class="total-title">Tổng</div>
-                    <div class="total-value final-value td-giaGiam" id="basket-total">130.00</div>
+                    <div class="total-value final-value td-giaGiam" id="basket-total" th:text="${total}"></div>
                 </div>
                 <div class="summary-checkout">
-                    <button class="checkout-cta">Thanh Toán</button>
+                    <button class="checkout-cta">Đặt Hàng</button>
                 </div>
+            </form>
             </div>
         </aside>
     </div>

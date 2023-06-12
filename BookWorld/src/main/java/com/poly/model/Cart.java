@@ -20,8 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Carts")
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    String id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,10 +34,12 @@ public class Cart {
 
     Double totalPrice;
 
-    public Cart(User user, Book book, Integer quantity, Double totalPrice) {
+    Integer status;
+    public Cart(User user, Book book, Integer quantity, Double totalPrice,Integer status) {
         this.user = user;
         this.book = book;
         this.totalPrice = totalPrice;
         this.quantity = quantity;
+        this.status = status;
     }
 }
