@@ -56,10 +56,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
         this.user = session.get("user");
         book = daoBook.findById(id).get() ;
         if(this.user == null) {
-            cart = new Cart(id,this.user, book, 1, book.getPrice() * 1,statusOrder.UNPAID);
+            cart = new Cart(id,this.user, book, 1, book.getPrice() * 1);
             map.put(id, cart);
         } else {
-            cart = new Cart( id,this.user, book, 1, book.getPrice() * 1, statusOrder.UNPAID);
+            cart = new Cart( id,this.user, book, 1, book.getPrice() * 1);
             daoCart.save(cart);
         }
         return cart;
@@ -73,7 +73,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
         } else {
              map.remove( id) ;
         }
-        
     }
 
     @Override
@@ -94,7 +93,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
     public void clear() {
         this.user = session.get("user");
         if(this.user  != null) {
-            daoCart.deleteAllByUserAndStatus(this.user,statusOrder.UNPAID);
+            daoCart.deleteAllByUser(this.user);
         } else {
             map.clear();
         }
@@ -105,7 +104,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
     public Collection<Cart> getCarts() {
         this.user = session.get("user");
         if(user != null) {
-            List<Cart> list = daoCart.findByUserAndStatus(this.user,statusOrder.UNPAID);
+            List<Cart> list = daoCart.findByUser(this.user);
             return list;
         } 
         return map.values();
@@ -122,7 +121,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
          this.user = session.get("user");
          
         if(this.user != null) {
-            List<Cart> carts = daoCart.findByUserAndStatus(user,statusOrder.UNPAID);
+            List<Cart> carts = daoCart.findByUser(this.user);
             for (Cart cart : carts) {
                 amount += cart.getTotalPrice();
             }
@@ -143,12 +142,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
         order.setStatus(1);
         order.setUser(user);
         daoOrder.save(order);
-        List<Cart> carts = daoCart.findByUserAndStatus(user,statusOrder.UNPAID);
+        List<Cart> carts = daoCart.findByUser(user);
         
         for (Cart cart : carts) {
-            cart.setStatus(statusOrder.PENDING);
             OrderDetail orderDet = new OrderDetail(order, cart.getBook(),cart.getQuantity() , cart.getTotalPrice());
             daoOrderDet.save(orderDet);
+            daoCart.delete(cart);
         }
         return order;
     }

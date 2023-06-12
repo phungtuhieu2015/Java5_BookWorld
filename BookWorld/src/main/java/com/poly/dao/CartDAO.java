@@ -15,9 +15,9 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface CartDAO extends JpaRepository<Cart,String> {
-    List<Cart> findByUserAndStatus(User user,Integer status); 
+    List<Cart> findByUser(User user); 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Cart c WHERE c.user  = :userCurrent AND c.status = :status")
-    void deleteAllByUserAndStatus(@Param("userCurrent") User user,@Param("status") Integer status);
+    @Query("DELETE FROM Cart c WHERE c.user  = :userCurrent")
+    void deleteAllByUser(@Param("userCurrent") User user);
 }

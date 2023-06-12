@@ -1,5 +1,6 @@
 package com.poly.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +83,10 @@ public class GioHangController {
                 } if(user.getAddress().isBlank()){
                     isError = true;
                 }
-                if(cart.getCarts() == null){
+                List<Cart> list = (List<Cart>) cart.getCarts();
+
+                System.out.println("==========================================="+list);
+                if(list == null){
                     isEmptyCarts = true;
                 }
                 if(isError == true || isEmptyCarts == true) {

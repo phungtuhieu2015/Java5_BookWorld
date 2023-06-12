@@ -34,12 +34,10 @@ public class Cart {
 
     Double totalPrice;
 
-    Integer status;
-    public Cart(User user, Book book, Integer quantity, Double totalPrice,Integer status) {
+    public Cart(User user, Book book, Integer quantity, Double totalPrice) {
         this.user = user;
         this.book = book;
         this.totalPrice = totalPrice;
         this.quantity = quantity;
-        this.status = status;
     }
 }
