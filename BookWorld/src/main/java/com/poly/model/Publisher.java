@@ -38,15 +38,15 @@ public class Publisher {
     String publisherName;
     
     @NotBlank(message = "(*) Vui lòng nhập địa chỉ")    
-    @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "(*) Không chưa ký tự đặc biệt")
+    @Pattern(regexp = "^[\\p{L}\\d\\s,.]+$", message = "(*) Không chưa ký tự đặc biệt")
     String address;
 
     @NotBlank(message = "(*) Vui lòng nhập công ty")
-    @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "(*) Không chưa ký tự đặc biệt")
+    @Pattern(regexp = "^[\\p{L}\\d\\s,.]+$", message = "(*) Không chưa ký tự đặc biệt")
     String city;
 
     @NotEmpty(message = "(*) Vui lòng nhập quốc gia")
-    @Pattern(regexp = "^[\\p{L}\\s]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt")
+    @Pattern(regexp = "^[\\p{L}\\s,.]+$", message = "(*) Không được chứa số hoặc ký tự đặc biệt")
     String country;
 
     @NotBlank(message = "(*) Vui lòng nhập email")

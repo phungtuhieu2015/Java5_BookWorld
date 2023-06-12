@@ -28,36 +28,35 @@
                 <input type="text" th:field="*{publisherName}" id="youtube-title" tabindex="2" class="form-control"
                   placeholder="Tên NXB" th:value="${publisher.publisherName}">
                 <!-- lỗi -->
-                <div class="message-errorsq " th:if="${#fields.hasErrors('publisherName')}"
-                  th:errors="*{publisherName}">
+                <div class="message-errors " th:if="${#fields.hasErrors('publisherName')}" th:errors="*{publisherName}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{address}" tabindex="1" class="form-control" placeholder="Địa chi"
                   th:value="${publisher.address}">
                 <!-- lỗi -->
-                <div class="message-errorsq " th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                <div class="message-errors " th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{city}" tabindex="1" class="form-control" placeholder="Thành phố"
                   th:value="${publisher.city}">
                 <!-- lỗi -->
-                <div class="message-errorsq " th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                <div class="message-errors " th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{email}" tabindex="1" class="form-control" placeholder="Email"
                   th:value="${publisher.email}">
                 <!-- lỗi -->
-                <div class="message-errorsq " th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                <div class="message-errors " th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="text" th:field="*{phone}" tabindex="1" class="form-control" placeholder="Số điện thoại"
                   th:value="${publisher.phone}">
                 <!-- lỗi -->
-                <div class="message-errorsq " th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                <div class="message-errors " th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
                 </div>
               </div>
               <div class="form-group mb-3 col-6">

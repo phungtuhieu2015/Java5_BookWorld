@@ -30,6 +30,13 @@
                   placeholder="Tên sách" value="">
                 <div class="message-errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
               </div>
+
+              <div class="form-group mb-3 col-6">
+                <select class="form-select" name="author">
+                  <option th:each="item : ${listAut}" th:value="${item.id}" th:text="${item.authorName}"></option>
+                </select>
+              </div>
+
               <div class="form-group mb-3 col-6">
                 <select class="form-select" th:field="*{category}">
                   <option th:each="item : ${listCat}" th:value="${item.id}" th:text="${item.categoryName}"></option>
@@ -161,7 +168,7 @@
                   <td th:text="${item.quantity}"></td>
                   <td class="p-0">
                     <div class="td-box-img">
-                      <img th:src="@{/admin/img/__${item.image}__}" alt="">
+                      <img th:src="@{/assets/img/__${item.image}__}" alt="">
                     </div>
                   </td>
                   <td th:text="${item.available}"></td>
