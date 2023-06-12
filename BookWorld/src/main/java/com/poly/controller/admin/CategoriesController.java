@@ -68,6 +68,8 @@ public class CategoriesController {
             model.addAttribute("message", "Cập nhật danh mục thành công");
         }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa danh mục thành công");
+        }else if(isSuccess.equals("errorDelete")){
+             model.addAttribute("message", "Danh mục tồn tại trong sách");
         }
         isSuccess = "";
         model.addAttribute("form", form);
@@ -155,8 +157,14 @@ public class CategoriesController {
         this.category = new Category();
         form = false;
         isEdit = false;
-        dao.deleteById(id);
-        isSuccess = "Delete";
+
+        try {
+            dao.deleteById(id);
+            isSuccess = "Delete";
+        } catch (Exception e) {
+             isSuccess = "errorDelete";
+        }
+      
         return "redirect:/admin/categories";
     }
 

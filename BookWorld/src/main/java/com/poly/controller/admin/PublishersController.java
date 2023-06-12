@@ -63,6 +63,8 @@ public class PublishersController {
             model.addAttribute("message", "Cập nhật nhà xuất bản thành công");
         }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa nhà xuất bản thành công");
+        }else if(isSuccess.equals("errorDelete")){
+             model.addAttribute("message", "NXB tồn tại trong sách");
         }
         isSuccess = "";
         model.addAttribute("form", form);
@@ -140,8 +142,13 @@ public class PublishersController {
         this.publisher = new Publisher();
         form = false;
         isEdit = false;
-        dao.deleteById(id);
-        isSuccess = "Delete";
+        try {
+            dao.deleteById(id);
+            isSuccess = "Delete";
+        } catch (Exception e) {
+             isSuccess = "errorDelete";
+        }
+       
         return "redirect:/admin/publishers";
     }
 

@@ -64,6 +64,8 @@ public class AuthorsController {
             model.addAttribute("message", "Cập nhật tác giả thành công");
         }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa tác giả thành công");
+        }else if(isSuccess.equals("errorDelete")){
+             model.addAttribute("message", "Tác giả tồn tại trong sách");
         }
         isSuccess = "";
         model.addAttribute("form", form);
@@ -142,8 +144,12 @@ public class AuthorsController {
         this.author = new Author();
          form = false;
          isEdit = false;
-        dao.deleteById(id);
-        isSuccess = "Delete";
+       try {
+            dao.deleteById(id);
+            isSuccess = "Delete";
+        } catch (Exception e) {
+             isSuccess = "errorDelete";
+        }
         return "redirect:/admin/authors";
     }
 
