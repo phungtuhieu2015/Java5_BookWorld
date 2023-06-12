@@ -29,10 +29,20 @@ public class GioHangController {
     SessionService session;
 
     boolean isError = false;
+    boolean isEmptyCarts = false;
     @RequestMapping("/giohang")
     public String view(Model model) {
-        model.addAttribute("list", cart.getOrderDetails()); 
+        model.addAttribute("list", cart.getCarts()); 
         model.addAttribute("total", cart.getTotal());
+        if(isError) {
+           
+            model.addAttribute("error", "Vui lòng nhập thông tin");
+        } 
+        if(isEmptyCarts) {
+            model.addAttribute("isEmptyCarts", "Chưa có sản phẩm trong giỏ hàng");
+        }
+        isError = false;
+        isEmptyCarts = false;
         return "gio-hang";
     }
 
@@ -63,19 +73,31 @@ public class GioHangController {
 
     @RequestMapping("/cart/payment")
     public String payment(User user,@RequestParam("paymentMethod") Optional<String> param) {
-        if(session.get("user") == null) {
-            return"redirect:/account/login";
-        } else {
-            User currentUser = session.get("user");
-            currentUser.setFullName(user.getFullName());
-            currentUser.setPhone(user.getPhone());
-            currentUser.setAddress(user.getAddress());
-            Boolean paymentMethod = true;
-            if(param.equals("online")){
-                    paymentMethod = false;
+            isError = false;
+            if(session.get("user") == null) {
+                return"redirect:/account/login";
+            } else {
+                if(user.getPhone().isBlank()) {
+                    isError = true;
+                } if(user.getAddress().isBlank()){
+                    isError = true;
+                }
+                if(cart.getCarts() == null){
+                    isEmptyCarts = true;
+                }
+                if(isError == true || isEmptyCarts == true) {
+                    return "redirect:/giohang";
+                }
+                User currentUser = session.get("user");
+                currentUser.setFullName(user.getFullName());
+                currentUser.setPhone(user.getPhone());
+                currentUser.setAddress(user.getAddress());
+                Boolean paymentMethod = true;
+                if(param.equals("online")){
+                        paymentMethod = false;
+                }
+                cart.payment(currentUser, paymentMethod );
             }
-            cart.payment(currentUser, paymentMethod );
-        }
         return "redirect:/giohang";
     }
 

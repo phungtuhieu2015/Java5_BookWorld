@@ -18,7 +18,7 @@ public interface ShoppingCartService {
     void clear();
 
  
-    Collection<Cart> getOrderDetails();
+    Collection<Cart> getCarts();
 
     int getCount();
 

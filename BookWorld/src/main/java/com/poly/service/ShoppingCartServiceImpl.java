@@ -56,10 +56,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
         this.user = session.get("user");
         book = daoBook.findById(id).get() ;
         if(this.user == null) {
-            cart = new Cart(id,this.user, book, 1, book.getPrice() * 1,statusOrder.PENDING);
+            cart = new Cart(id,this.user, book, 1, book.getPrice() * 1,statusOrder.UNPAID);
             map.put(id, cart);
         } else {
-            cart = new Cart( id,this.user, book, 1, book.getPrice() * 1, statusOrder.PENDING);
+            cart = new Cart( id,this.user, book, 1, book.getPrice() * 1, statusOrder.UNPAID);
             daoCart.save(cart);
         }
         return cart;
@@ -92,8 +92,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
 
     @Override
     public void clear() {
-        if(this.user != null) {
-            daoCart.deleteAll();
+        this.user = session.get("user");
+        if(this.user  != null) {
+            daoCart.deleteAllByUserAndStatus(this.user,statusOrder.UNPAID);
         } else {
             map.clear();
         }
@@ -101,10 +102,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
     }
 
     @Override
-    public Collection<Cart> getOrderDetails() {
+    public Collection<Cart> getCarts() {
         this.user = session.get("user");
         if(user != null) {
-            List<Cart> list = daoCart.findByUserAndStatus(  this.user,statusOrder.UNPAID);
+            List<Cart> list = daoCart.findByUserAndStatus(this.user,statusOrder.UNPAID);
             return list;
         } 
         return map.values();

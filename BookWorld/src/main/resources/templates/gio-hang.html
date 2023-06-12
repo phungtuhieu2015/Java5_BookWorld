@@ -110,10 +110,7 @@
                                 </div>
                             </label>
                         </div>
-
-
                     </div>
-
                 </div>
                 <div class="summary-total">
                     <div class="total-title">Tổng</div>
@@ -123,6 +120,8 @@
                     <button class="checkout-cta">Đặt Hàng</button>
                 </div>
             </form>
+            <span th:if="${error != null}" style="font-size: 15px; color: red; margin-top: 10px;" th:text="${error}"></span>
+            <span th:if="${isEmptyCarts != null}" style="font-size: 15px; color: red; margin-top: 10px;" th:text="${isEmptyCarts}"></span>
             </div>
         </aside>
     </div>
