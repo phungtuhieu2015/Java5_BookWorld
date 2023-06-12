@@ -217,7 +217,8 @@ svg {
 .table-top__wordset > .navbar  {
     background-color: #fff !important;
 }
-.card.page-wrapper  .table thead{
+
+.card.page-wrapper  .table thead {
     background: var(--mau-dong-bo) !important ;
     border-bottom: 1px solid #E9ECEF;
 }
@@ -245,6 +246,7 @@ svg {
     vertical-align: middle;
     white-space: nowrap;
 }
+
 .table thead th {
     font-weight: 600;
     color: #fff;
