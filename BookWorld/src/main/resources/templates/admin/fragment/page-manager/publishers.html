@@ -70,7 +70,7 @@
                 <input class="form-control input-datalist" th:field="*{country}" style="border-radius:0;"
                   list="DSQuocTich" th:value="${publisher.country}" placeholder="Quốc tịch...">
                 <!-- lỗi -->
-                <div class="message-errorsq " th:if="${#fields.hasErrors('country')}" th:errors="*{country}">
+                <div class="message-errors" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">
                 </div>
                 <datalist id="DSQuocTich">
                   <option value="Việt Nam">

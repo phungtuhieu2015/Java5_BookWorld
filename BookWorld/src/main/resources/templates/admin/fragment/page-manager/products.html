@@ -33,7 +33,9 @@
 
               <div class="form-group mb-3 col-6">
                 <select class="form-select" name="author">
-                  <option th:each="item : ${listAut}" th:value="${item.id}" th:text="${item.authorName}"></option>
+                  <option th:each="item : ${listAut}" th:value="${item.id}" th:text="${item.authorName}"
+                    th:selected="${item.id == author}"></option>
+
                 </select>
               </div>
 

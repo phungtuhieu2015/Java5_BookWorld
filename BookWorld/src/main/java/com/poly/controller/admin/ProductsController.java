@@ -217,23 +217,27 @@ public class ProductsController {
                 book.setImage(oldImg);
                 dao.save(book);
 
-                // System.out.println("asdkjaskdasdnjasjdk: "+authorId);
+                // Author author1 ;
+
+                   
+                //   author1 = daoAut.findById(authorId).get();
+                //   AuthorBook authorBook = daoAuthorBook.findByBookAndAuthor(book, author1);  
+                //   if(book.getId().equals(authorBook.getBook().getId())){
+                //         daoAuthorBook.save(authorBook);
+                //   }
                 
 
-                // Author author1 = daoAut.findById(authorId).get();
-
                 // if(author1 != null){
-                //     AuthorBook authorBook = new AuthorBook();
-                //     AuthorsBooks_PK pk = new AuthorsBooks_PK();
+                   
 
-                //     // pk.setAuthorId(author1.getId());
-                //     // pk.setBookId(book.getId());
-
-                //     authorBook.setId(pk);
-                //     authorBook.setAuthor(author1);
-                //     authorBook.setBook(book);
+                //     // AuthorsBooks_PK pk = new AuthorsBooks_PK();
+                //     //  pk.setAuthorId(listAB.get(0).getAuthor().getId());
+                //     //  pk.setBookId(authorBook.getBook().getId());
+                //    //   authorBook.setId(pk);
+                //       authorBook.setAuthor(author1);
+                //     // authorBook.setBook(book);
                     
-                //     daoAuthorBook.save(authorBook);
+                   
                 //     System.out.println("update thanh cong");
                 // }
                 
@@ -247,16 +251,19 @@ public class ProductsController {
                 dao.save(book);
 
 
-                // System.out.println("asdkjaskdasdnjasjdk: "+authorId);
+                //Author author1 ;
 
-                // Author author1 = daoAut.findById(authorId).get();
-
+                // if(authorId == null){
+                //     author1 = listAB.get(0).getAuthor() ;
+                // }else{
+                //     author1 = daoAut.findById(authorId).get();
+                // }
                 // if(author1 != null){
-                //     AuthorBook authorBook = new AuthorBook();
-                //     AuthorsBooks_PK pk = new AuthorsBooks_PK();
+                //     AuthorBook authorBook = daoAuthorBook.findByBookAndAuthor(book, author1);
 
-                //     pk.setAuthorId(author1.getId());
-                //     pk.setBookId(book.getId());
+                //     AuthorsBooks_PK pk = new AuthorsBooks_PK();
+                //      pk.setAuthorId(author1.getId());
+                //      pk.setBookId(book.getId());
 
                 //     authorBook.setId(pk);
                 //     authorBook.setAuthor(author1);
