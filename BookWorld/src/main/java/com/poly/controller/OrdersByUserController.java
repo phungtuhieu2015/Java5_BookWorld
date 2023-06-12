@@ -39,6 +39,19 @@ public class OrdersByUserController {
         model.addAttribute("page",page);
         model.addAttribute("order", new Order());
         isError = false;
+        User users = session.get("user");
+   
+        if (users == null)
+
+        {
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+            model.addAttribute("user", user);
+
+            model.addAttribute("checkLG", true);
+        }q
+        
         return "danh-sach-don-hang";
     }
     @RequestMapping("/cancel-order") 

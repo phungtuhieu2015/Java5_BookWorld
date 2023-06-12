@@ -290,12 +290,11 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
         }
 
         user.setActivated(false);
-        user.setAdmin(false);
-        dao.save(user);
-           User users = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (users == null)
+        
 
+        
+           User users = session.get("user");
+        if (users == null)
         {
             model.addAttribute("user", user);
             model.addAttribute("checkLG", false);
