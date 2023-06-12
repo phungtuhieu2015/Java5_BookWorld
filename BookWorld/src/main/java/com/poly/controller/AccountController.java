@@ -224,6 +224,24 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
 }
 
 
+    // @PostMapping("/change-password")
+    // public String processChangePasswordForm(@ModelAttribute("user") User account,@RequestParam("pw") String pw, BindingResult result,
+    //         Model model) {
+    //     if (result.hasErrors()) {
+    //     }
+    //     User user = new User();
+    //     user = session.get("user");
+    //     if (user.getPassword().equals(account.getPassword())) {
+         
+    //         user.setPassword(pw);
+    //         dao.save(user); 
+    //         return "redirect:/account/login";
+            
+    //     }
+         
+    //     return "/change-password";
+    // }
+
     @GetMapping("/profile")
     public String doMyProfile(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {

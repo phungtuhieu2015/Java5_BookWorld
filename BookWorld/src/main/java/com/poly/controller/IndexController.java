@@ -53,19 +53,7 @@ public class IndexController {
        
 
         
-        User user = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (user == null)
-
-        {
-             model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-             model.addAttribute("user", user);
-            
-            model.addAttribute("checkLG", true);
-        }
-
+      
         Pageable pageable = PageRequest.of(p.orElse(0), 16);
         Page page = dao.findAll(pageable);
         model.addAttribute("page", page);
@@ -82,7 +70,19 @@ public class IndexController {
         // model.addAttribute("name2", listCat.get(1).getCategoryName());
         // model.addAttribute("name3", listCat.get(2).getCategoryName());
 
-       
+         User user = session.get("user");
+        // System.out.println(user.getUsername()+"sssssssssssss");
+        if (user == null)
+
+        {
+             model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+             model.addAttribute("user", user);
+            
+            model.addAttribute("checkLG", true);
+        }
+
     
         return "index";
 
