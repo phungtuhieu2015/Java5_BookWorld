@@ -39,6 +39,8 @@ public class YeuthichController {
     @GetMapping("/yeuthich")
     public String yeuThich(Model model, @RequestParam("p") Optional<Integer> p){
         User user = session.get("user");
+
+ 
         Pageable pageable = PageRequest.of(p.orElse(0), 8);        
         Page page = favoriteDao.findByUser(user,pageable);
         model.addAttribute("page",page);
@@ -50,6 +52,19 @@ public class YeuthichController {
             model.addAttribute("message", "Đã thêm sách yêu thích");
         }else if(isSuccess.equals("deleteSuccess")){
             model.addAttribute("message", "Đã xóa sách yêu thích");
+        }
+                
+
+        // System.out.println(user.getUsername()+"sssssssssssss");
+        if (user == null)
+
+        {
+             model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+             model.addAttribute("user", user);
+            
+            model.addAttribute("checkLG", true);
         }
         isSuccess ="";
 

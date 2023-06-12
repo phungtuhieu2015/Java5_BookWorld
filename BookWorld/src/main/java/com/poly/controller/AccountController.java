@@ -59,6 +59,18 @@ public class AccountController {
         if (isSuccess.equals("login")) {
 
         }
+           User s = session.get("user");
+        // System.out.println(user.getUsername()+"sssssssssssss");
+        if (s == null)
+
+        {
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+            model.addAttribute("user", user);
+
+            model.addAttribute("checkLG", true);
+        }
         List<User> users = dao.findAll();
         for (User user2 : users) {
             if (username.equalsIgnoreCase(user2.getUsername())) {
@@ -171,6 +183,17 @@ public class AccountController {
 
         }
         user = session.get("user");
+        // System.out.println(user.getUsername()+"sssssssssssss");
+        if (user == null)
+
+        {
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+            model.addAttribute("user", user);
+
+            model.addAttribute("checkLG", true);
+        }
         model.addAttribute("user", user);
         return "change-password";
 
@@ -182,6 +205,7 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
     if (result.hasErrors()) {
         // Xử lý lỗi nếu có
     }
+    
 
     User user = session.get("user");
     if (user.getPassword().equals(account.getPassword())) {
@@ -246,6 +270,7 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
         if (result.hasErrors()) {
 
         }
+      
         if (fileImage.isEmpty()) {
             user.setImage(oldImg);
             dao.save(user);
@@ -267,6 +292,18 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
         user.setActivated(false);
         user.setAdmin(false);
         dao.save(user);
+           User users = session.get("user");
+        // System.out.println(user.getUsername()+"sssssssssssss");
+        if (users == null)
+
+        {
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", false);
+        } else {
+            model.addAttribute("user", user);
+
+            model.addAttribute("checkLG", true);
+        }
         return "edit-profile";
     }
 
