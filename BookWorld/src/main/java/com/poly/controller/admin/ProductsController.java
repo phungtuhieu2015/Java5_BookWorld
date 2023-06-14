@@ -30,6 +30,7 @@ import com.poly.dao.PublisherDAO;
 import com.poly.model.Book;
 import com.poly.model.Category;
 import com.poly.model.Publisher;
+import com.poly.model.User;
 import com.poly.service.SessionService;
 
 import jakarta.servlet.ServletContext;
@@ -61,6 +62,8 @@ public class ProductsController {
     public String products(Model model,@RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
 
         model.addAttribute("pageName", "products products");
+              User user = session.get("user");
+        model.addAttribute("user", user);
         if(p.isPresent()){  
             // check phân trang khi đang edit
             if(isEdit) {

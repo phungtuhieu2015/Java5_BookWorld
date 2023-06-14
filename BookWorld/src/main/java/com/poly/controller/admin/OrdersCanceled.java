@@ -13,16 +13,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.OrderDAO;
 import com.poly.model.StatusOrder;
+import com.poly.model.User;
+import com.poly.service.SessionService;
 
 @Controller
 @RequestMapping("/admin")
 public class OrdersCanceled {
+        @Autowired
+    SessionService session;
     @Autowired
     OrderDAO dao;
     StatusOrder status;
     @RequestMapping("/orders-canceled")
     public String ordersShipped(Model model,@RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "orders-canceled orders");
+              User user = session.get("user");
+        model.addAttribute("user", user);
          Pageable pageable = PageRequest.of( p.orElse(0), 5);
         Page page = dao.findByStatus(StatusOrder.CANCELED,pageable);
         model.addAttribute("page", page);

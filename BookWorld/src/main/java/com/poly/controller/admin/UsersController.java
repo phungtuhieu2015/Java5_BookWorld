@@ -53,6 +53,8 @@ public class UsersController {
   @RequestMapping("/users")
   public String Users(Model model, @RequestParam("p") Optional<Integer> p,@RequestParam("field") Optional<String> field) {
     model.addAttribute("pageName", "users user");
+          User user = session.get("user");
+        model.addAttribute("user", user);
     if (p.isPresent()) {
       // check khi bấm phân trang khi đang sửa
       if (isEdit == true) {

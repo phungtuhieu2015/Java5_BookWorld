@@ -83,7 +83,7 @@
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="UserName">UserName<span></label>
                                         <input class="form-control" id="UserName" type="text"
-                                            placeholder="Enter your username" th:field="*{username}">
+                                            placeholder="Enter your username" th:field="*{username}" readonly>
                                     </div>
 
                                     <div class="col-md-6">
@@ -93,10 +93,41 @@
                                     </div>
                                 </div>
 
-                                <div class="cardbtn">
-                                    <button class="btn btn-primary">Save changes</button>
+                    
+                                <div style="display: none;" class="mb-3">
+                                    <div class="form-group text-black">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" th:field="*{activated}" id="admin" value="true" />
+                                            <label class="form-check-label" for="admin">Hoạt Động</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" th:field="*{activated}" id="user" value="false" />
+                                            <label class="form-check-label" for="user">Ngưng Hoạt Động</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
 
-                                    <a class="btnCP" th:href="@{/account/change-password}">Change password</a>
+                                <div style="display: none;" class="mb-3">
+                                    <div class="form-group text-black">
+                                        <div class="form-check form-check-inline" th:if="${session.user.admin == true}">
+                                            <input class="form-check-input" type="radio" th:field="*{admin}" id="admin1"
+                                                value="true" />
+                                            <label class="form-check-label" for="admin1">Admin</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" th:field="*{admin}" id="user"
+                                                value="false" />
+                                            <label class="form-check-label" for="user">User</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="cardbtn">
+                                    <button class="btn btn-primary">Lưu</button>
+
+                                    <a class="btnCP" th:href="@{/account/change-password}">Đổi Mật Khẩu</a>
                                 </div>
                             </form>
                         </div>

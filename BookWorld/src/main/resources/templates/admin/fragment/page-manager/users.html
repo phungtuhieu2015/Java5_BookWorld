@@ -102,22 +102,12 @@
             </div>
 
             <div class="form-group mb-3 d-flex justify-content-end">
-              <!-- <input formaction="/admin/users/create" th:disabled="${isEdit==true}" type="submit" tabindex="4"
-                class="form-control btn ms-2" value="Create"> -->
               <input formaction="/admin/users/update" type="submit" tabindex="4" th:disabled="${isEdit==false}"
                 class="form-control btn ms-2" value="Update">
               <input type="submit" tabindex="4" formaction="/admin/users/reset" class="form-control btn ms-2"
                 value="Reset">
 
             </div>
-
-            <!-- <input th:attr="formaction=@{/admin/users/delete/{itemUsers}(itemUsers=${item.username})}"
-                th:disabled="${isEdit==false}" type="submit" tabindex="4" class="form-control btn ms-2" value="Delete">
-              <div class="pull-right"> -->
-
-
-            <!-- <input type="submit" tabindex="4" formaction="/admin/users/reset" class="form-control btn ms-2"
-                value="Reset"> -->
         </div>
         </form>
       </div>
@@ -176,17 +166,15 @@
                 <td th:text="${item.phone}"></td>
                 <td th:text="${item.email}"></td>
                 <td th:text="${item.address}"></td>
-                <td th:text="${item.activated ? 'Active' : 'inactive'}"></td>
+                <td th:text="${item.activated ? 'Hoạt động' : 'Ngưng Hoạt Động'}"></td>
                 <td th:text="${item.admin ? 'Admin' : 'User'}"></td>
                 <td class="p-0" >               
-                   <img th:src="@{/admin/img/__${item.image}__}"  >
+                   <img th:src="@{/assets/img/__${item.image}__}"  >
                 </td>
 
                 <td class="td-action ">
                   <a th:href="@{/admin/users/edit/{username}(username=${item.username})}"
                     class="btn action__btn-success btn-rounded"><span>Sửa</span> </a>
-                  <!-- 
-                    <a type="button" class="btn action__btn-danger btn-rounded"><span>Xóa</span></a> -->
                 </td>
               </tr>
             </tbody>

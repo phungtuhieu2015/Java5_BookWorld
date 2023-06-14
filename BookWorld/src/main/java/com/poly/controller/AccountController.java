@@ -51,6 +51,7 @@ public class AccountController {
         model.addAttribute("user", new User());
         // System.out.println("sssssssssssssssssssssssssssssssssssssssss");
         return "login";
+
     }
 
     @PostMapping("/login")
@@ -59,24 +60,31 @@ public class AccountController {
         if (isSuccess.equals("login")) {
 
         }
-           User s = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (s == null)
 
-        {
-            model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-            model.addAttribute("user", user);
+        // User ss = session.get("user");
+        // // System.out.println(user.getUsername()+"sssssssssssss");
+        // if (ss== null)
 
-            model.addAttribute("checkLG", true);
-        }
+        // {
+        // model.addAttribute("user", user);
+        // model.addAttribute("checkLG", false);
+        // } else {
+        // model.addAttribute("user", user);
+
+        // model.addAttribute("checkLG", true);
+        // }
         List<User> users = dao.findAll();
         for (User user2 : users) {
             if (username.equalsIgnoreCase(user2.getUsername())) {
                 if (password.equalsIgnoreCase(user2.getPassword())) {
+                    if (!user2.getActivated()) {
+                        // Xử lý trạng thái tài khoản ngưng hoạt động
+                        model.addAttribute("error", "Tài khoản của bạn đã bị Khóa!");
+                        return "login";
+                    }
                     if (user2.getAdmin()) {
                         session.set("user", user2);
+                        model.addAttribute("isAdminLoggedIn", true);
                         isSuccess = true;
                         return "redirect:/admin/index";
                     } else {
@@ -101,9 +109,25 @@ public class AccountController {
     @PostMapping("/sign-up")
     public String douSignUp(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-
             return "sign-up";
         }
+
+        List<User> users = dao.findAll();
+        for (User b : users) {
+            if (b.getUsername().equalsIgnoreCase(user.getUsername())) {
+                String successMessage = "Username đã tồn tại !";
+                model.addAttribute("failed", successMessage);
+                return "/sign-up";
+            }
+        }
+        for (User b : users) {
+            if (b.getEmail().equalsIgnoreCase(user.getEmail())) {
+                String successMessage = "gmail đã tồn tại !";
+                model.addAttribute("failed", successMessage);
+                return "/sign-up";
+            }
+        }
+
         user.setActivated(true);
         dao.save(user);
 
@@ -200,53 +224,35 @@ public class AccountController {
     }
 
     @PostMapping("/change-password")
-public String processChangePasswordForm(@ModelAttribute("user") User account, @RequestParam("pw") String pw,
-        @RequestParam("confirmPassword") String confirmPassword, BindingResult result, Model model) {
-    if (result.hasErrors()) {
-        // Xử lý lỗi nếu có
-    }
-    
-
-    User user = session.get("user");
-    if (user.getPassword().equals(account.getPassword())) {
-        if (!pw.equals(confirmPassword)) {
-            // Xử lý khi mật khẩu mới và xác nhận mật khẩu không trùng nhau
-            model.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không trùng nhau");
-            return "/change-password";
+    public String processChangePasswordForm(@ModelAttribute("user") User account, @RequestParam("pw") String pw,
+            @RequestParam("confirmPassword") String confirmPassword, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            // Xử lý lỗi nếu có
         }
-        
-        user.setPassword(pw);
-        dao.save(user); 
-        return "redirect:/account/login";
+
+        User user = session.get("user");
+        if (user.getPassword().equals(account.getPassword())) {
+            if (!pw.equals(confirmPassword)) {
+                // Xử lý khi mật khẩu mới và xác nhận mật khẩu không trùng nhau
+                model.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không trùng nhau");
+                return "/change-password";
+            }
+
+            user.setPassword(pw);
+            dao.save(user);
+            return "redirect:/account/login";
+        }
+
+        return "/change-password";
     }
-
-    return "/change-password";
-}
-
-
-    // @PostMapping("/change-password")
-    // public String processChangePasswordForm(@ModelAttribute("user") User account,@RequestParam("pw") String pw, BindingResult result,
-    //         Model model) {
-    //     if (result.hasErrors()) {
-    //     }
-    //     User user = new User();
-    //     user = session.get("user");
-    //     if (user.getPassword().equals(account.getPassword())) {
-         
-    //         user.setPassword(pw);
-    //         dao.save(user); 
-    //         return "redirect:/account/login";
-            
-    //     }
-         
-    //     return "/change-password";
-    // }
 
     @GetMapping("/profile")
     public String doMyProfile(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
 
         }
+        model.addAttribute("isAdminLoggedIn", session.get("isAdminLoggedIn"));
+
         User users = session.get("user");
         // System.out.println(user.getUsername()+"sssssssssssss");
         if (users == null)
@@ -270,7 +276,7 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
         if (result.hasErrors()) {
 
         }
-      
+
         if (fileImage.isEmpty()) {
             user.setImage(oldImg);
             dao.save(user);
@@ -290,13 +296,9 @@ public String processChangePasswordForm(@ModelAttribute("user") User account, @R
         }
 
         user.setActivated(false);
-        user.setAdmin(false);
-        dao.save(user);
-           User users = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (users == null)
 
-        {
+        User users = session.get("user");
+        if (users == null) {
             model.addAttribute("user", user);
             model.addAttribute("checkLG", false);
         } else {

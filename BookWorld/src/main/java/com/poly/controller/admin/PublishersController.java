@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.PublisherDAO;
 import com.poly.model.Publisher;
+import com.poly.model.User;
 import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;
@@ -37,7 +38,10 @@ public class PublishersController {
     String isSuccess = ""; 
     @RequestMapping("/publishers")
     public String publisher(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
-        model.addAttribute("pageName", "publishers products");
+        model.addAttribute("pageName", "publishers products");      
+        User user = session.get("user");
+        model.addAttribute("user", user);
+        
         if(p.isPresent()){
             //check khi bấm phân trang khi đang sửa
             if(isEdit == true){          

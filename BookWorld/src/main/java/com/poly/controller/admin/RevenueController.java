@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.OrderDetailDAO;
 import com.poly.model.ReportRevenue;
+import com.poly.model.User;
+import com.poly.service.SessionService;
 
 @Controller
 @RequestMapping("/admin")
 public class RevenueController {
+        @Autowired
+    SessionService session;
     @Autowired
     OrderDetailDAO dao;
 
@@ -32,6 +36,8 @@ public class RevenueController {
             @RequestParam("endDate") Optional<String> endDate,
             @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "revenue statistical");
+              User user = session.get("user");
+        model.addAttribute("user", user);
         Date sdate = null;
         Date edate = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
