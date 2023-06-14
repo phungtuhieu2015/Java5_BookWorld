@@ -20,4 +20,6 @@ public interface CartDAO extends JpaRepository<Cart,String> {
     @Modifying
     @Query("DELETE FROM Cart c WHERE c.user  = :userCurrent")
     void deleteAllByUser(@Param("userCurrent") User user);
+
+    
 }

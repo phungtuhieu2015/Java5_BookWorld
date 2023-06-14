@@ -28,15 +28,25 @@ import org.springframework.web.multipart.MultipartFile;
 import com.poly.dao.AuthorBookDAO;
 import com.poly.dao.AuthorDAO;
 import com.poly.dao.BookDAO;
+import com.poly.dao.CartDAO;
 import com.poly.dao.CategoryDAO;
+import com.poly.dao.FavoriteDAO;
+import com.poly.dao.OrderDetailDAO;
 import com.poly.dao.PublisherDAO;
+import com.poly.dao.ShareDAO;
 import com.poly.model.Author;
 import com.poly.model.AuthorBook;
 import com.poly.model.Book;
+import com.poly.model.Cart;
 import com.poly.model.Category;
+import com.poly.model.Favorite;
+import com.poly.model.OrderDetail;
 import com.poly.model.Publisher;
+import com.poly.model.Share;
+import com.poly.model.StatusBook;
 import com.poly.service.SessionService;
 
+import jakarta.persistence.PrePersist;
 import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 
@@ -52,9 +62,22 @@ public class ProductsController {
     PublisherDAO daoPub;
 
     @Autowired
+    OrderDetailDAO daoOdrDet;
+
+    @Autowired
     AuthorDAO daoAut;
+
     @Autowired
     AuthorBookDAO daoAutBook;
+
+    @Autowired
+    CartDAO daoCart;
+    
+    @Autowired
+    ShareDAO daoShare;
+
+    @Autowired
+    FavoriteDAO daoFav;
 
     @Autowired
     ServletContext app;
@@ -94,14 +117,11 @@ public class ProductsController {
         } 
         if( this.book.getId() == null){
             this.book = new Book();
-        }
-        
-        if(isErrorDelete) {
-            model.addAttribute("errorDelete", " (*) Sách đã tồn tại trong các bản khác");
+            this.book.setStatus(StatusBook.INSTOCK);
+            this.book.setQuantity(1);
         }
 
        Pageable pageable;
-
         if(field.isPresent()){
              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
               if(direction == null){
@@ -115,8 +135,6 @@ public class ProductsController {
         }
 
         Page page = dao.findAll(pageable);
-        List<Category> listCat = daoCat.findAll();
-        List<Publisher> listPub = daoPub.findAll();
         if(isEdit) {
             List<Long> listAuthorId = new ArrayList<>();
             for (Author aut : listAutOfBook) {
@@ -138,8 +156,11 @@ public class ProductsController {
             case "update":
                   messageSuccess = "Cập nhật thành công!";
                 break;
-            case "delete":
+            case "delete-book":
                   messageSuccess = "Xóa thành công!";
+                break;
+            case "delete-book-existed":
+                  messageSuccess = "Đã chuyển trạng thái ngừng kinh doanh!";
                 break;
             case "delete-author":
                   messageSuccess = "Xóa tác giả thành công!";
@@ -148,6 +169,9 @@ public class ProductsController {
                 messageSuccess = null;
                 break;
         }
+
+        List<Category> listCat = daoCat.findAll();
+        List<Publisher> listPub = daoPub.findAll();
         model.addAttribute("message", messageSuccess);
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
@@ -158,6 +182,7 @@ public class ProductsController {
         model.addAttribute("book",this.book);
         model.addAttribute("page", page);
         messageSuccess = null;
+        this.typeSuccess = "";
         return "admin/index-admin"; 
     }
  
@@ -196,7 +221,10 @@ public class ProductsController {
              model.addAttribute("nullAuthor", "(*) Vui lòng chọn tác giả");
         }
         
-        
+        if(book.getQuantity() <= 0) {
+             isError = true;
+             model.addAttribute("errorQuantity", "(*) Vui lòng nhập số lượng lớn hơn 0");
+        }
         if(isError || result.hasErrors()) {
              return "forward:/admin/products/form-errors";
         }
@@ -205,7 +233,6 @@ public class ProductsController {
             Author authorsSelected  = daoAut.findById(authorId).get();
             listAuthor.add( authorsSelected);
         }
-       
          if(!fileImage.isEmpty()) {        
             String fileName = fileImage.getOriginalFilename();
             
@@ -225,6 +252,7 @@ public class ProductsController {
                 e.printStackTrace();
             }
         } 
+        this.form = false;
         return "redirect:/admin/products";  
     }
 
@@ -232,7 +260,7 @@ public class ProductsController {
     public String edit(@PathVariable("id") String id) {
         this.listAutOfBook = new ArrayList<>();
         this.book = dao.findById(id).get();
-        List<AuthorBook> listAutBook = daoAutBook.findByBook(this.book);
+        List<AuthorBook> listAutBook = this.book.getAuthorBooks();
         for (AuthorBook authorBook : listAutBook) {
             this.listAutOfBook.add( authorBook.getAuthor());
         }
@@ -258,22 +286,24 @@ public class ProductsController {
         if(result.hasErrors()) {
              return "forward:/admin/products/form-errors";
         }
-        List<Author> listAuthor = new ArrayList<>();
-        if(items.isPresent()) {
-            for (Long authorId : items.get()) {
-                    Author authorsSelected  = daoAut.findById(authorId).get();
-                    listAuthor.add( authorsSelected);
-            }   
-            for (Author author : listAuthor) {
-                 AuthorBook authorBook = new AuthorBook(author,book);
-                 daoAutBook.save(authorBook);
+       
+
+        if(book.getQuantity() <= 0) {
+            if(book.getStatus() != StatusBook.NOTAVAILABLE) {
+                book.setStatus(StatusBook.SOLDOUT);
             }
-        }   
-        
+          
+        } else  {
+
+            if(book.getStatus() == StatusBook.SOLDOUT) {
+                book.setStatus(StatusBook.INSTOCK);
+            }
+        } 
         if(fileImage.isEmpty()) {
                 book.setImage(oldImg);
                 dao.save(book);
                 this.typeSuccess = "update";
+                
         } else {
             String fileName = fileImage.getOriginalFilename();
             try {
@@ -287,6 +317,18 @@ public class ProductsController {
                 e.printStackTrace();
             }
         } 
+        List<Author> listAuthor = new ArrayList<>();
+        if(items.isPresent()) {
+            for (Long authorId : items.get()) {
+                    Author authorsSelected  = daoAut.findById(authorId).get();
+                    listAuthor.add( authorsSelected);
+            }   
+            for (Author author : listAuthor) {
+                 AuthorBook authorBook = new AuthorBook(author,book);
+                 daoAutBook.save(authorBook);
+            }
+        }  
+    
         this.listAutOfBook = new ArrayList<>();
         List<AuthorBook> listAutBook = daoAutBook.findByBook(book);
         for (AuthorBook authorBook : listAutBook) {
@@ -299,17 +341,32 @@ public class ProductsController {
     @RequestMapping("/products/delete/{id}")
     public String delete(Model model , Book book,@PathVariable("id") String id) {
         book = dao.findById(id).get();
+
+       
         try {
+             if(book.getFavorites().isEmpty() &&
+              book.getOrderDetails().isEmpty() &&
+              book.getShares().isEmpty() &&
+              book.getCarts().isEmpty()) {
+                List<AuthorBook> listABCurrent = book.getAuthorBooks();
+                for (AuthorBook ab : listABCurrent) {
+                    daoAutBook.delete(ab);
+                }
+            }
             dao.delete(book);
+             this.typeSuccess = "delete-book";
         } catch (Exception e) {
-            isErrorDelete = true;
+            this.typeSuccess = "delete-book-existed";
+            book.setStatus(StatusBook.NOTAVAILABLE);
+            dao.save(book);
+            e.printStackTrace();
             return "redirect:/admin/products"; 
         }
         
         book = new Book();
         this.form = false;
         this.isEdit = false;
-        this.typeSuccess = "delete";
+        this.typeSuccess = "delete-book";
         return "redirect:/admin/products"; 
     }
 

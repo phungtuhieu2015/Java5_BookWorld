@@ -73,7 +73,7 @@ public class Book {
     String image;
 
     @NotNull(message = "(*) Vui lòng chọn trạng thái")
-    Boolean available;
+    Integer status;
 
     String description;
 

@@ -12,7 +12,6 @@
       </div>
      
     </nav>
-    <span th:if="${errorDelete}" class="message-errors" th:text="${errorDelete}"></span>
     <div class="tab-content" id="nav-tabContent">
       <!-- Cập nhật -->
       <div th:class="'tab-pane fade ' + (${form} == true? 'show active':'') " id="nav-form" role="tabpanel"
@@ -51,9 +50,10 @@
                 <div class="message-errors" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
               </div>
               <div class="form-group mb-3 col-6">
-                <input type="number" name="views" id="view-count" th:field="*{quantity}" tabindex="1"
-                  class="form-control" placeholder="Số lượng" value="">
+                <input type="number" name="views" id="view-count" th:field="*{quantity}" tabindex="1" step="1" min="0"
+                  class="form-control" placeholder="Số lượng" >
                 <div class="message-errors" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
+                <div class="message-errors" th:if="${errorQuantity != null}" th:text="${errorQuantity}"></div>
               </div>
               <div class="form-group mb-3 col-6">
                 <input type="date" th:field="*{createdDate}" readonly class="form-control ">
@@ -69,7 +69,7 @@
 
             <div class="form-group mb-3 col-12">
              <div class="row">
-              <div class="col-6">
+              <div class="col-8">
                 <div class=" row">
                   <div class="col-auto">
                     <label class="form-label " for="">Trạng thái: </label>
@@ -77,23 +77,26 @@
                   <div class="col-auto">
                     <div class="form-group text-black">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" th:field="*{available}" value="true" checked
-                          id="available">
-                        <label class="form-check-label" for="available">Còn hàng</label>
+                        <input class="form-check-input" type="radio" th:field="*{status}" value="1"  id="status">
+                        <label class="form-check-label" for="status">Còn hàng </label>
                       </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" th:field="*{available}" id="available2" value="false">
-                        <label class="form-check-label" for="available2">Hết hàng</label>
+                      <div class="form-check form-check-inline" th:if="${isEdit}">
+                        <input class="form-check-input" type="radio" th:field="*{status}"id="status2"  value="0">
+                        <label class="form-check-label" for="status2">Hết hàng</label>
+                      </div>
+                      <div class="form-check form-check-inline" th:if="${isEdit}">
+                        <input class="form-check-input" type="radio" th:field="*{status}" id="status3" value="2">
+                        <label class="form-check-label" for="status3">Ngừng kinh doanh</label>
                       </div>
                     </div>
   
-                    <div class="message-errors" th:if="${#fields.hasErrors('available')}" th:errors="*{available}"></div>
+                    <div class="message-errors" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
                   </div>
   
                 </div>
               </div>
               
-              <div class="form-group mb-3 col-6">
+              <div class="form-group mb-3 col-4">
                 <input  type="button" tabindex="4" class="form-control btn ms-2 w-100" data-bs-toggle="modal"
                 data-bs-target="#modalAuthors"   value="Tác giả">
                 <div class="message-errors" th:if="${nullAuthor != null}" th:text="${nullAuthor}"></div>
@@ -108,12 +111,12 @@
             </div>
 
             <div class="form-group mb-3 d-flex justify-content-end">
-              <input th:disabled="${isEdit}" type="submit" tabindex="4" class="form-control btn ms-2" value="Create">
-              <input th:disabled="${!isEdit}" th:formaction="@{/admin/products/update}" type="submit" tabindex="4"
+              <input th:disabled="${isEdit}" type="submit"class="form-control btn ms-2" value="Create">
+              <input th:disabled="${!isEdit}" th:formaction="@{/admin/products/update}" type="submit" 
                 class="form-control btn ms-2" value="Update">
-              <input th:disabled="${!isEdit}" formaction="" type="submit" tabindex="4" class="form-control btn ms-2"
-                value="Delete">
-              <a th:href="@{/admin/products/reset}" tabindex="4" class="form-control btn ms-2">Reset</a>
+              <a  th:href="@{/admin/products/delete/{id} (id = ${book.id})}"  th:class="'form-control btn ms-2 '+ ${!isEdit ?'disabled' :''}"
+                >Delete</a>
+              <a th:href="@{/admin/products/reset}" class="form-control btn ms-2">Reset</a>
             </div>
                <!-- Xem tác giả thuộc sách -->
     <div class="modal fade"id="modalAuthors" tabindex="-1" aria-hidden="true">
@@ -250,7 +253,7 @@
                   <th scope="col"><a th:href="@{/admin/products(field='price')}">Đơn giá</a></th>
                   <th scope="col"><a th:href="@{/admin/products(field='quantity')}">Số lượng</a></th>
                   <th scope="col"><a th:href="@{/admin/products(field='image')}">Ảnh</a></th>
-                  <th scope="col"><a th:href="@{/admin/products(field='available')}">Còn hàng</a></th>
+                  <th scope="col"><a th:href="@{/admin/products(field='status')}">Trạng thái</a></th>
                   <th scope="col"><a th:href="@{/admin/products(field='description')}">Mô tả</a></th>
                   <th scope="col">Thao tác</th>
                 </tr>
@@ -270,7 +273,11 @@
                       <img th:src="@{/assets/img/__${item.image}__}" alt="">
                     </div>
                   </td>
-                  <td th:text="${item.available}"></td>
+                  <td >
+                    <span th:if="${item.status == 0}">Hết hàng</span>
+                    <span th:if="${item.status == 1}">Còn hàng</span>
+                    <span th:if="${item.status == 2}">Ngừng kinh doanh</span>
+                  </td>
                   <td class="reduce-td" th:text="${item.description}"></td>
                   <td class="td-action ">
                     <a href="" class="btn action__btn-info btn-rounded " data-bs-toggle="modal"
