@@ -121,12 +121,14 @@ public class ProductsController {
             for (Author aut : listAutOfBook) {
                 listAuthorId.add( aut.getId());
             }
-             
-            this.listAut = daoAut.findByIdNotIn(listAuthorId);
+            if(!listAuthorId.isEmpty()) {
+                this.listAut = daoAut.findByIdNotIn(listAuthorId);
+            } else {
+                 this.listAut = daoAut.findAll();
+            }
         } else {
              this.listAut = daoAut.findAll();
         }
-
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
         model.addAttribute("listAutOfBook", this.listAutOfBook);
@@ -207,7 +209,7 @@ public class ProductsController {
 
     @RequestMapping("/products/edit/{id}")
     public String edit(@PathVariable("id") String id) {
-         this.listAutOfBook = new ArrayList<>();
+        this.listAutOfBook = new ArrayList<>();
         this.book = dao.findById(id).get();
         List<AuthorBook> listAutBook = daoAutBook.findByBook(this.book);
         for (AuthorBook authorBook : listAutBook) {
@@ -261,13 +263,17 @@ public class ProductsController {
                 e.printStackTrace();
             }
         } 
+        this.listAutOfBook = new ArrayList<>();
+        List<AuthorBook> listAutBook = daoAutBook.findByBook(book);
+        for (AuthorBook authorBook : listAutBook) {
+            this.listAutOfBook.add(authorBook.getAuthor());
+        }
         this.book = book;
         return "redirect:/admin/products"; 
     }
 
     @RequestMapping("/products/delete/{id}")
     public String delete(Model model , Book book,@PathVariable("id") String id) {
-        model.addAttribute("pageName", "products products");
         book = dao.findById(id).get();
         try {
             dao.delete(book);
@@ -289,15 +295,20 @@ public class ProductsController {
         Book book = dao.findById(bookId).get();
         Author authorChecked = daoAut.findById(Long.parseLong(authorId)).get();
         AuthorBook autBook = daoAutBook.findByBookAndAuthor(book,authorChecked);
+       
         try {
             daoAutBook.delete(autBook);
         } catch (Exception e) {
             isErrorDelete = true;
             return "redirect:/admin/products"; 
         }
-        book = new Book();
-        this.form = false;
-        this.isEdit = false;
+         this.listAutOfBook = new ArrayList<>();
+        List<AuthorBook> listAutBook = daoAutBook.findByBook(book);
+        for (AuthorBook authorBook : listAutBook) {
+            this.listAutOfBook.add(authorBook.getAuthor());
+        }
+        this.form = true;
+        this.isEdit = true;
         return "redirect:/admin/products"; 
     }
 }

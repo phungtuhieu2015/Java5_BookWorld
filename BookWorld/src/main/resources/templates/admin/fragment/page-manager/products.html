@@ -129,16 +129,16 @@
             <div class="modal-body">
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button th:class="'nav-link ' + ${isEdit? 'active':''}" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="false" th:if="${isEdit}">Xóa tác giả</button>
-                  <button th:class="'nav-link ' + ${!isEdit? 'active':''}" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thêm tác giả</button>
+                  <button th:class="'nav-link ' + ${isEdit? 'active':''}" id="nav-delete-author-tab" data-bs-toggle="tab" data-bs-target="#nav-delete-author" type="button" role="tab" aria-controls="nav-delete-author" aria-selected="false" th:if="${isEdit}">Xóa tác giả</button>
+                  <button th:class="'nav-link ' + ${!isEdit? 'active':''}" id="nav-add-author-tab" data-bs-toggle="tab" data-bs-target="#nav-add-author" type="button" role="tab" aria-controls="nav-add-author" aria-selected="false">Thêm tác giả</button>
                 </div>
               </nav>
               <div class="tab-content" id="nav-tabContent">
                 <!-- Tab xóa tác giả -->
-                <div th:class="'tab-pane fade ' + ${isEdit ? 'show active' :''} " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div th:class="'tab-pane fade ' + ${isEdit ? 'show active' :''} " id="nav-delete-author" role="tabpanel" aria-labelledby="nav-delete-author-tab">
                   <!-- Table -->
                   <div class="table-responsive py-2">
-                    <table class="table w-100">
+                    <table class="table w-100 table-hover">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -150,7 +150,11 @@
                         <tr th:each="item : ${listAutOfBook}">
                           <td th:text="${item.id}"></td>
                           <td th:text="${item.authorName}"></td>
-                          <td > <a class="btn btn-primary w-100" th:href="@{/admin/products/delete-author-of-book(bookId=${book.id}, authorId=${item.id})}" role="button">Xóa khỏi sách</a> </td>
+                          <td > 
+                            <a class="btn btn-primary w-100"   data-bs-toggle="modal" th:data-bs-target="'#modal_accept_'+${item.id}" role="button">Xóa khỏi sách</a>
+                          </td>
+
+                        
                         </tr>
                       </tbody>
                     </table>
@@ -159,10 +163,10 @@
                 </div>
                 <!-- /Tab xóa tác giả -->
                 <!-- Tab Thêm tác giả -->
-                <div th:class="'tab-pane fade ' + ${!isEdit ? 'show active' :''} " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div th:class="'tab-pane fade ' + ${!isEdit ? 'show active' :''} " id="nav-add-author" role="tabpanel" aria-labelledby="nav-add-author-tab">
                   <!-- Table -->
                   <div class="table-responsive py-2">
-                    <table class="table w-100">
+                    <table class="table w-100 table-hover">
                       <thead>
                         <tr>
                           <th scope="col" >#</th>
@@ -347,6 +351,30 @@
       </div>
       <!-- /Danh sách -->
     </div>
- 
+    
+
+            <!-- Xác nhận xóa tác giả -->
+            <th:block th:each="item : ${listAutOfBook}">
+              <!-- Modal -->
+              <div class="modal fade" th:id="'modal_accept_' + ${item.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Bạn có chắc chắc muốn xóa tác giả khỏi sách?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                      <a  class="btn btn-primary" th:href="@{/admin/products/delete-author-of-book(bookId=${book.id}, authorId=${item.id})}">Chắc chắn</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </th:block>
+              <!-- /Xác nhận xóa tác giả -->
+
   </div>
 </div>
