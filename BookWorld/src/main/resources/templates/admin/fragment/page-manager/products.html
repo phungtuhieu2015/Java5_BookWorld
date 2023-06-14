@@ -33,8 +33,6 @@
                 <div class="message-errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
               </div>
 
-       
-
               <div class="form-group mb-3 col-6">
                 <select class="form-select" th:field="*{category}">
                   <option th:each="item : ${listCat}" th:value="${item.id}" th:text="${item.categoryName}"></option>
@@ -98,9 +96,9 @@
               <div class="form-group mb-3 col-6">
                 <input  type="button" tabindex="4" class="form-control btn ms-2 w-100" data-bs-toggle="modal"
                 data-bs-target="#modalAuthors"   value="Tác giả">
+                <div class="message-errors" th:if="${nullAuthor != null}" th:text="${nullAuthor}"></div>
               </div>
             </div>
-           
             
              </div>
           
@@ -117,45 +115,90 @@
                 value="Delete">
               <a th:href="@{/admin/products/reset}" tabindex="4" class="form-control btn ms-2">Reset</a>
             </div>
-               <!-- Chi tiết tác giả -->
+               <!-- Xem tác giả thuộc sách -->
     <div class="modal fade"id="modalAuthors" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Tác giả</h5>
+            <h5 class="modal-title">
+              <span th:if="${!isEdit}"> Tác giả</span>
+              <span th:if="${isEdit}"> Tác giả thuộc sách</span>
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
             <div class="modal-body">
-                <table class="table w-100">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">ID</th>
-                      <th scope="col">Tên tác giả</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="item : ${listAut}">
-                      <td scope="row">
-                        <div class="form-check">
-                          <label class="form-check-label" for="defaultCheck1" style="width: 100%; height: 100%;">
-                            <input class="form-check-input" name="authors" type="checkbox" th:value="${item.id}" id="defaultCheck1">
-                          </label>
-                        </div>
-                      </td>
-                      <td th:text="${item.id}"></td>
-                      <td th:text="${item.authorName}">Otto</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button th:class="'nav-link ' + ${isEdit? 'active':''}" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="false" th:if="${isEdit}">Xóa tác giả</button>
+                  <button th:class="'nav-link ' + ${!isEdit? 'active':''}" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thêm tác giả</button>
+                </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <!-- Tab xóa tác giả -->
+                <div th:class="'tab-pane fade ' + ${isEdit ? 'show active' :''} " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <!-- Table -->
+                  <div class="table-responsive py-2">
+                    <table class="table w-100">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Tên tác giả</th>
+                          <th scope="col">Thao tác</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="item : ${listAutOfBook}">
+                          <td th:text="${item.id}"></td>
+                          <td th:text="${item.authorName}"></td>
+                          <td > <a class="btn btn-primary w-100" th:href="@{/admin/products/delete-author-of-book(bookId=${book.id}, authorId=${item.id})}" role="button">Xóa khỏi sách</a> </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /Table -->
+                </div>
+                <!-- /Tab xóa tác giả -->
+                <!-- Tab Thêm tác giả -->
+                <div th:class="'tab-pane fade ' + ${!isEdit ? 'show active' :''} " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                  <!-- Table -->
+                  <div class="table-responsive py-2">
+                    <table class="table w-100">
+                      <thead>
+                        <tr>
+                          <th scope="col" >#</th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Tên tác giả</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="item : ${listAut}">
+                          <td scope="row"  >
+                            <div class="form-check">
+                              <label class="form-check-label" th:for="'checkbox_'+${item.id}" style="width: 100%; height: 100%;">
+                                <input class="form-check-input" name="authors" type="checkbox"  th:value="${item.id}" th:id="'checkbox_'+${item.id}">
+                              </label>
+                            </div>
+                          </td>
+                        
+                          <td> <label th:for="'checkbox_'+${item.id}"  th:text="${item.id}"></label></td>
+                          <td ><label th:for="'checkbox_'+${item.id}"  th:text="${item.authorName}"></label></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /Table -->
+                </div>
+                  <!-- /Tab thêm tác giả -->
+              </div>
+                
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
             </div>
         </div>
       </div>
     </div>
-    <!-- /Chi tiết tác giả -->
+    <!--/ Xem tác giả thuộc sách -->
     <!-- Modal -->
           </form>
         </div>

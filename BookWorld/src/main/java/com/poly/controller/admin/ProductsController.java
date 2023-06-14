@@ -65,6 +65,8 @@ public class ProductsController {
     Book book =  new Book();
     boolean form = false;
     boolean isEdit = false;
+    List<Author> listAut = new ArrayList<>();
+    List<Author> listAutOfBook = new ArrayList<>();
 
     String uploadDirectory = "static/assets/img/";
     String oldImg ;
@@ -88,19 +90,22 @@ public class ProductsController {
             form = false;
             isEdit = false;
         } 
-            if( this.book.getId() == null){
-                this.book = new Book();
-            }
+        if( this.book.getId() == null){
+            this.book = new Book();
+        }
+        
         if(isErrorDelete) {
             model.addAttribute("errorDelete", " (*) Sách đã tồn tại trong các bản khác");
         }
-        model.addAttribute("form", this.form);
-        model.addAttribute("isEdit", this.isEdit);
+  
 
        Pageable pageable;
 
         if(field.isPresent()){
-              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+             Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              if(direction == null){
+                direction = Direction.ASC;
+              }
               Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
               pageable = PageRequest.of(p.orElse(0), 5 ,direction,field.orElse("id"));
               session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
@@ -108,15 +113,26 @@ public class ProductsController {
              pageable = PageRequest.of(p.orElse(0), 5 );
         }
 
-    
         Page page = dao.findAll(pageable);
         List<Category> listCat = daoCat.findAll();
         List<Publisher> listPub = daoPub.findAll();
-        List<Author> listAut = daoAut.findAll();
-        model.addAttribute("listAut", listAut);
+        if(isEdit) {
+            List<Long> listAuthorId = new ArrayList<>();
+            for (Author aut : listAutOfBook) {
+                listAuthorId.add( aut.getId());
+            }
+             
+            this.listAut = daoAut.findByIdNotIn(listAuthorId);
+        } else {
+             this.listAut = daoAut.findAll();
+        }
+
+        model.addAttribute("form", this.form);
+        model.addAttribute("isEdit", this.isEdit);
+        model.addAttribute("listAutOfBook", this.listAutOfBook);
+        model.addAttribute("listAut", this.listAut);
         model.addAttribute("listPub", listPub);
         model.addAttribute("listCat", listCat);
-        model.addAttribute("listAut", listAut);
         model.addAttribute("book",this.book);
         model.addAttribute("page", page);
         return "admin/index-admin"; 
@@ -133,6 +149,8 @@ public class ProductsController {
         List<Publisher> listPub = daoPub.findAll();
         model.addAttribute("listPub", listPub);
         model.addAttribute("listCat", listCat);
+        model.addAttribute("listAutOfBook", this.listAutOfBook);
+        model.addAttribute("listAut", this.listAut);
         model.addAttribute("book", book);
         model.addAttribute("page", page);
         return "admin/index-admin";  
@@ -141,8 +159,6 @@ public class ProductsController {
     public String create(@Valid Book book,BindingResult result,Model model,
     @RequestParam("fileImage") MultipartFile fileImage,
     @RequestParam("authors") Optional< List<Long>> items) {
-        
-       
         isError = false;
         if(dao.existsById(book.getId())){
              isError = true;    
@@ -152,18 +168,21 @@ public class ProductsController {
              isError = true;
             model.addAttribute("errorImg", "(*) Vui lòng chọn ảnh");
         }
-        if(items.get() == null) {
+        if(!items.isPresent()) {
              isError = true;
+             model.addAttribute("nullAuthor", "(*) Vui lòng chọn tác giả");
         }
+        
+        
         if(isError || result.hasErrors()) {
              return "forward:/admin/products/form-errors";
         }
-        
         List<Author> listAuthor = new ArrayList<>();
         for (Long authorId : items.get()) {
-                Author authorsSelected  = daoAut.findById(authorId).get();
-                listAuthor.add( authorsSelected);
+            Author authorsSelected  = daoAut.findById(authorId).get();
+            listAuthor.add( authorsSelected);
         }
+       
          if(!fileImage.isEmpty()) {        
             String fileName = fileImage.getOriginalFilename();
             
@@ -172,10 +191,13 @@ public class ProductsController {
                 fileImage.transferTo(path.resolve(fileName).toFile());
                 book.setImage(fileName);
                 dao.save(book);
-                for (Author author : listAuthor) {
+                if (listAuthor != null) {
+                    for (Author author : listAuthor) {
                     AuthorBook authorBook = new AuthorBook(author,book);
                      daoAutBook.save(authorBook);
+                    }
                 }
+                
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
             }
@@ -185,8 +207,12 @@ public class ProductsController {
 
     @RequestMapping("/products/edit/{id}")
     public String edit(@PathVariable("id") String id) {
-         
+         this.listAutOfBook = new ArrayList<>();
         this.book = dao.findById(id).get();
+        List<AuthorBook> listAutBook = daoAutBook.findByBook(this.book);
+        for (AuthorBook authorBook : listAutBook) {
+            this.listAutOfBook.add( authorBook.getAuthor());
+        }
         this.oldImg = this.book.getImage();
         this.form = true;
         this.isEdit = true;
@@ -201,11 +227,25 @@ public class ProductsController {
         return "redirect:/admin/products"; 
     }
     @RequestMapping("/products/update")
-    public String update(@Valid Book book,BindingResult result,Model model,@RequestParam("fileImage") MultipartFile fileImage ) {
-        if (result.hasErrors()) {
-            return "forward:/admin/products/form-errors";
+    public String update(@Valid Book book,BindingResult result,Model model,
+    @RequestParam("fileImage") MultipartFile fileImage,
+    @RequestParam("authors") Optional< List<Long>> items ) {
+
+        if(result.hasErrors()) {
+             return "forward:/admin/products/form-errors";
         }
-        book.setCreatedDate(new Date());
+        List<Author> listAuthor = new ArrayList<>();
+        if(items.isPresent()) {
+            for (Long authorId : items.get()) {
+                    Author authorsSelected  = daoAut.findById(authorId).get();
+                    listAuthor.add( authorsSelected);
+            }   
+            for (Author author : listAuthor) {
+                 AuthorBook authorBook = new AuthorBook(author,book);
+                 daoAutBook.save(authorBook);
+            }
+        }   
+        
         if(fileImage.isEmpty()) {
                 book.setImage(oldImg);
                 dao.save(book);
@@ -236,6 +276,25 @@ public class ProductsController {
             return "redirect:/admin/products"; 
         }
         
+        book = new Book();
+        this.form = false;
+        this.isEdit = false;
+        return "redirect:/admin/products"; 
+    }
+
+    @RequestMapping("/products/delete-author-of-book")
+    public String deleteAuthorOfBook(Model model ,
+    @RequestParam("bookId") String bookId,
+    @RequestParam("authorId") String authorId) {
+        Book book = dao.findById(bookId).get();
+        Author authorChecked = daoAut.findById(Long.parseLong(authorId)).get();
+        AuthorBook autBook = daoAutBook.findByBookAndAuthor(book,authorChecked);
+        try {
+            daoAutBook.delete(autBook);
+        } catch (Exception e) {
+            isErrorDelete = true;
+            return "redirect:/admin/products"; 
+        }
         book = new Book();
         this.form = false;
         this.isEdit = false;

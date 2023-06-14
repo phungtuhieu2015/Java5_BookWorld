@@ -11,7 +11,6 @@ import com.poly.model.Book;
 public interface AuthorBookDAO extends JpaRepository<AuthorBook,Long> {
 
 
-   
    List<AuthorBook> findByBook(Book book);
 
     AuthorBook findByBookAndAuthor(Book book, Author author);
