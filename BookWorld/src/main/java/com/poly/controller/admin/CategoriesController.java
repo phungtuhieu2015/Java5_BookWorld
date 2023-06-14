@@ -40,7 +40,8 @@ public class CategoriesController {
     String isSuccess = "";
 
     @RequestMapping("/categories")
-    public String categories(Model model, @RequestParam("p") Optional<Integer> p ,@RequestParam("field") Optional<String> field) {
+    public String categories(Model model, @RequestParam("p") Optional<Integer> p ,@RequestParam("field") Optional<String> field
+    ,@RequestParam("keywords") Optional<String> keywords) {
         model.addAttribute("pageName", "categories products");
         if(p.isPresent()){
             //check khi bấm phân trang khi đang sửa
@@ -72,6 +73,9 @@ public class CategoriesController {
              model.addAttribute("message", "Danh mục tồn tại trong sách");
         }
         isSuccess = "";
+        if(keywords.isPresent()){
+            form = false;
+        }
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("category", category);
@@ -80,14 +84,20 @@ public class CategoriesController {
 
         if(field.isPresent()){
               Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              if(direction == null){
+                direction = Direction.ASC;
+              }
               Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
               pageable = PageRequest.of(p.orElse(0), 5 ,sort);
               session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
         }else{
              pageable = PageRequest.of(p.orElse(0), 5 );
         }
+        
+        String value = keywords.orElse("");
+         //Page<Category> page = dao.findAll(pageable);
+        Page<Category> page = dao.findByIdOrCategoryName(value,pageable);
 
-        Page<Category> page = dao.findAll(pageable);     
         model.addAttribute("page", page);
 
         return "admin/index-admin";

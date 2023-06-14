@@ -36,7 +36,8 @@ public class PublishersController {
     Publisher publisher = new Publisher();
     String isSuccess = ""; 
     @RequestMapping("/publishers")
-    public String publisher(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
+    public String publisher(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field
+    ,@RequestParam("keywords") Optional<String> keywords) {
         model.addAttribute("pageName", "publishers products");
         if(p.isPresent()){
             //check khi bấm phân trang khi đang sửa
@@ -67,6 +68,9 @@ public class PublishersController {
              model.addAttribute("message", "NXB tồn tại trong sách");
         }
         isSuccess = "";
+        if(keywords.isPresent()){
+            form = false;
+        }
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("publisher", publisher);
@@ -75,6 +79,9 @@ public class PublishersController {
 
         if(field.isPresent()){
               Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              if(direction == null){
+                direction = Direction.ASC;
+              }
               Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
               pageable = PageRequest.of(p.orElse(0), 5 ,sort);
               session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
@@ -82,8 +89,9 @@ public class PublishersController {
              pageable = PageRequest.of(p.orElse(0), 5 );
         }
 
-        
-        Page<Publisher> page = dao.findAll(pageable);
+        String value = keywords.orElse("");
+        //Page<Publisher> page = dao.findAll(pageable);
+        Page<Publisher> page = dao.findByIdOrPublisherName(value,pageable);
         model.addAttribute("page", page);
         
         return "admin/index-admin";
