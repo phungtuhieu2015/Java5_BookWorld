@@ -58,8 +58,10 @@ public class ProductsController {
 
     @Autowired
     ServletContext app;
+
     @Autowired
     SessionService session;
+    String typeSuccess = "";
     boolean isError = false;
     boolean isErrorDelete = false;
     Book book =  new Book();
@@ -97,7 +99,6 @@ public class ProductsController {
         if(isErrorDelete) {
             model.addAttribute("errorDelete", " (*) Sách đã tồn tại trong các bản khác");
         }
-  
 
        Pageable pageable;
 
@@ -129,6 +130,25 @@ public class ProductsController {
         } else {
              this.listAut = daoAut.findAll();
         }
+        String messageSuccess = null;
+        switch (typeSuccess) {
+            case "create":
+                  messageSuccess = "Thêm thành công!";
+                break;
+            case "update":
+                  messageSuccess = "Cập nhật thành công!";
+                break;
+            case "delete":
+                  messageSuccess = "Xóa thành công!";
+                break;
+            case "delete-author":
+                  messageSuccess = "Xóa tác giả thành công!";
+                break;
+            default:
+                messageSuccess = null;
+                break;
+        }
+        model.addAttribute("message", messageSuccess);
         model.addAttribute("form", this.form);
         model.addAttribute("isEdit", this.isEdit);
         model.addAttribute("listAutOfBook", this.listAutOfBook);
@@ -137,6 +157,7 @@ public class ProductsController {
         model.addAttribute("listCat", listCat);
         model.addAttribute("book",this.book);
         model.addAttribute("page", page);
+        messageSuccess = null;
         return "admin/index-admin"; 
     }
  
@@ -199,7 +220,7 @@ public class ProductsController {
                      daoAutBook.save(authorBook);
                     }
                 }
-                
+                this.typeSuccess = "create";
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
             }
@@ -226,6 +247,7 @@ public class ProductsController {
         this.book = new Book();
         this.form = true;
         this.isEdit = false;
+        this.typeSuccess = "";
         return "redirect:/admin/products"; 
     }
     @RequestMapping("/products/update")
@@ -251,6 +273,7 @@ public class ProductsController {
         if(fileImage.isEmpty()) {
                 book.setImage(oldImg);
                 dao.save(book);
+                this.typeSuccess = "update";
         } else {
             String fileName = fileImage.getOriginalFilename();
             try {
@@ -259,6 +282,7 @@ public class ProductsController {
                 System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
                 book.setImage(fileName);
                 dao.save(book);
+                this.typeSuccess = "update";
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
             }
@@ -285,6 +309,7 @@ public class ProductsController {
         book = new Book();
         this.form = false;
         this.isEdit = false;
+        this.typeSuccess = "delete";
         return "redirect:/admin/products"; 
     }
 
@@ -309,6 +334,7 @@ public class ProductsController {
         }
         this.form = true;
         this.isEdit = true;
+        this.typeSuccess = "delete-author";
         return "redirect:/admin/products"; 
     }
 }
