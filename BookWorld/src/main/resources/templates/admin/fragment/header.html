@@ -39,7 +39,8 @@
                                         aria-expanded="false">
                                         <span class="list-user__user-info">
                                             <span class="user-letter">
-                                                <img th:src="@{/admin/img/avator1.jpg}" alt="Avatar">
+                                                <img th:src="@{/assets/img/__${user.image}__}"  >
+                                                
                                             </span>
                                             <span class="user-detail">
                                                 <div th:text="${user.fullName}"></div>
