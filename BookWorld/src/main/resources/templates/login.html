@@ -19,29 +19,7 @@
     <div id="successMessage" class="success-message"></div>
     <div id="errorMessage" class="error-message"></div>
 
-    <script>
-        // Kiểm tra xem có thông báo thành công hay không
-        var message = document.getElementById("successMessage");
-        if (message.innerText !== "") {
-            // Hiển thị thông báo thành công trong một khoảng thời gian nhất định
-            message.style.display = "block";
-            setTimeout(function () {
-                message.style.display = "none";
-            }, 3000); // 3 giây
-        }
-    </script>
-
-    <div id="errorMessage" class="error-message"></div>
-
-    <script>
-        // Kiểm tra xem có thông báo lỗi hay không
-        var error = document.getElementById("errorMessage");
-        if (error.innerText !== "") {
-            // Hiển thị thông báo lỗi
-            error.style.display = "block";
-        }
-    </script>
-
+  
 
     <div class="container py-5  d-flex justify-content-center align-items-center" style="height: 65vh;">
         <div class="form-wrapper w-100 d-flex justify-content-center align-items-center">
@@ -73,7 +51,7 @@
                                                 tabindex="1" class="form-control" placeholder="Tên đăng nhập"
                                                 th:field="*{username}" th:value="${username}" >
                                             <!-- lỗi -->
-                                            - <div class="alert alert-warning " th:if="${#fields.hasErrors('username')}"
+                                             <div class="alert alert-warning " th:if="${#fields.hasErrors('username')}"
                                                 th:errors="*{username}">
                                             </div>
                                         </div>
@@ -162,6 +140,27 @@
     <!--/footer  -->
     <th:block th:include="fragment/script-links.html"></th:block>
 </body>
+<script>
+    // Kiểm tra xem có thông báo thành công hay không
+    var message = document.getElementById("successMessage");
+    if (message.innerText !== "") {
+        // Hiển thị thông báo thành công trong một khoảng thời gian nhất định
+        message.style.display = "block";
+        setTimeout(function () {
+            message.style.display = "none";
+        }, 3000); // 3 giây
+    }
+</script>
+<div id="errorMessage" class="error-message"></div>
+<script>
+    // Kiểm tra xem có thông báo lỗi hay không
+    var error = document.getElementById("errorMessage");
+    if (error.innerText !== "") {
+        // Hiển thị thông báo lỗi
+        error.style.display = "block";
+    }
+</script>
+
 <script>
     // Kiểm tra xem có giá trị tên người dùng đã được lưu trong cookie hay không
     var savedUsername = getCookie("username");
