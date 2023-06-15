@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -21,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.poly.dao.UserDAO;
 import com.poly.model.User;
+import com.poly.service.CookieService;
 import com.poly.service.MailerServiceImpl;
 import com.poly.service.SessionService;
 
@@ -34,67 +34,70 @@ import jakarta.validation.Valid;
 public class AccountController {
     @Autowired
     UserDAO dao;
-
+    boolean isAdmin = false;
     String oldImg;
+
+    @Autowired
+    private IndexController indexController;
+
     @Autowired
     MailerServiceImpl mailer;
 
     User user = new User();
 
     Boolean isSuccess = false;
-
+    @Autowired
+    CookieService cookieService;
     @Autowired
     SessionService session;
 
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("user", new User());
-        // System.out.println("sssssssssssssssssssssssssssssssssssssssss");
+        user.setUsername(cookieService.getValue("username"));
         return "login";
 
     }
 
     @PostMapping("/login")
-    public String login(@Valid User user, BindingResult bindingResult,
-            @RequestParam("username") String username, @RequestParam("password") String password, Model model) {
-        if (isSuccess.equals("login")) {
+    public String login(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model,
+            @RequestParam(name = "remember", defaultValue = "false") boolean remember) {
+        // Lấy danh sách tất cả người dùng từ DAO
+        List<User> users = dao.findAll();
 
+        // Kiểm tra giá trị của remember
+        if (remember) {
+            // Nếu remember là true, thêm cookie "username" với thời gian sống là 10 phút
+            cookieService.add("username", user.getUsername(), 10);
+        } else {
+            // Nếu remember là false, xóa cookie "username"
+            cookieService.remove("username");
         }
 
-        // User ss = session.get("user");
-        // // System.out.println(user.getUsername()+"sssssssssssss");
-        // if (ss== null)
-
-        // {
-        // model.addAttribute("user", user);
-        // model.addAttribute("checkLG", false);
-        // } else {
-        // model.addAttribute("user", user);
-
-        // model.addAttribute("checkLG", true);
-        // }
-        List<User> users = dao.findAll();
+        // Duyệt qua danh sách người dùng
         for (User user2 : users) {
-            if (username.equalsIgnoreCase(user2.getUsername())) {
-                if (password.equalsIgnoreCase(user2.getPassword())) {
+            if (user.getUsername().equalsIgnoreCase(user2.getUsername())) {
+                if (user.getPassword().equalsIgnoreCase(user2.getPassword())) {
+                    // Kiểm tra trạng thái tài khoản
                     if (!user2.getActivated()) {
-                        // Xử lý trạng thái tài khoản ngưng hoạt động
                         model.addAttribute("error", "Tài khoản của bạn đã bị Khóa!");
                         return "login";
                     }
+                    // Kiểm tra vai trò của người dùng
                     if (user2.getAdmin()) {
                         session.set("user", user2);
-                        model.addAttribute("isAdminLoggedIn", true);
-                        isSuccess = true;
+
                         return "redirect:/admin/index";
                     } else {
                         session.set("user", user2);
-                        isSuccess = true;
+
                         return "redirect:/index";
                     }
+
                 }
             }
         }
+        // thị thông báo lỗi
         model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác!");
         return "login";
     }
@@ -206,18 +209,7 @@ public class AccountController {
         if (result.hasErrors()) {
 
         }
-        user = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (user == null)
-
-        {
-            model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-            model.addAttribute("user", user);
-
-            model.addAttribute("checkLG", true);
-        }
+        indexController.checkUsers(model);
         model.addAttribute("user", user);
         return "change-password";
 
@@ -229,7 +221,7 @@ public class AccountController {
         if (result.hasErrors()) {
             // Xử lý lỗi nếu có
         }
-
+   
         User user = session.get("user");
         if (user.getPassword().equals(account.getPassword())) {
             if (!pw.equals(confirmPassword)) {
@@ -254,16 +246,22 @@ public class AccountController {
         model.addAttribute("isAdminLoggedIn", session.get("isAdminLoggedIn"));
 
         User users = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
         if (users == null)
 
         {
             model.addAttribute("user", user);
             model.addAttribute("checkLG", false);
+
         } else {
+            if (users.getAdmin()) {
+                model.addAttribute("isAdmin", true);
+            } else {
+                model.addAttribute("isAdmin", false);
+            }
             model.addAttribute("user", user);
 
             model.addAttribute("checkLG", true);
+
         }
         user = session.get("user");
         model.addAttribute("user", user);
@@ -310,11 +308,22 @@ public class AccountController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate(); // Xóa phiên
+            // Xóa phiên
+            session.invalidate();
         }
+        
+        // // Xóa cookie lưu trữ tên người dùng
+        // cookieService.remove("username");
+
+        // Lấy giá trị tên người dùng từ cookie
+        String username = cookieService.getValue("username");
+
+        // Chuyển giá trị tên người dùng vào mô hình để hiển thị trên trang đăng nhập
+        model.addAttribute("username", username);
+
         return "redirect:/index";
     }
 

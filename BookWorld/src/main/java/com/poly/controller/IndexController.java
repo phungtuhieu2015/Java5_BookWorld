@@ -36,42 +36,39 @@ public class IndexController {
 
     @Autowired
     SessionService session;
-    
+
     @Autowired
     MailerServiceImpl mailer;
     @Autowired
     CategoryDAO categoryDao;
 
-    // private boolean checkLG = false;
     Book book = new Book();
 
-   // boolean isSuccess = false;
-
     @RequestMapping("/index")
-    public String index(Model model, @RequestParam("p") Optional<Integer> p) {   
+    public String index(Model model, @RequestParam("p") Optional<Integer> p) {
         Pageable pageable = PageRequest.of(p.orElse(0), 16);
         Page page = dao.findAll(pageable);
         model.addAttribute("page", page);
 
-         User user = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (user == null)
+        checkUsers(model);
 
-        {
-             model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-             model.addAttribute("user", user);
-            
-            model.addAttribute("checkLG", true);
-        }
-
-    
         return "index";
 
     }
 
-
+    public User checkUsers(Model model) {
+        User user = new User();
+        if (session.get("user") == null) {
+              User user1 = new User();
+            model.addAttribute("user", user1);
+            model.addAttribute("checkLG", false);
+        } else {
+            user = session.get("user");
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", true);
+        }
+        return user;
+    }
 
     @RequestMapping("/share/{bookId}")
     public String edit(@PathVariable("bookId") String bookId, Model model, @RequestParam("emailShare") String to) {

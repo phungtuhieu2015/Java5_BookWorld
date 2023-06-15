@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.poly.controller.IndexController;
 import com.poly.dao.BookDAO;
 import com.poly.model.ReportSoldBooks;
 import com.poly.model.User;
@@ -18,15 +19,19 @@ import com.poly.service.SessionService;
 public class SoldBooksController {
         @Autowired
     SessionService session;
+      @Autowired
+    private IndexController indexController;
     @Autowired 
     BookDAO dao;
     @RequestMapping("/sold-books")
     public String soldeBooks(Model model){
         model.addAttribute("pageName", "sold-books statistical");
               User user = session.get("user");
+               indexController.checkUsers(model);
         model.addAttribute("user", user);
         List<ReportSoldBooks> items = dao.getSoldBooks();
         model.addAttribute("items", items);
+
         return "admin/index-admin";
     }
 

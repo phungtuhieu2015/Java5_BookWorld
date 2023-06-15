@@ -32,10 +32,7 @@ public class ChiTietController {
 
         Book book = bookDao.findById(bookId).get();
         model.addAttribute("book",book);
-        
-        
-        
-        
+
         System.out.println("day ne: "+bookId);
         return "chi-tiet";
     }

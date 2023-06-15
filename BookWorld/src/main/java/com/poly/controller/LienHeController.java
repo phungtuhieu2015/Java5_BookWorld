@@ -16,21 +16,13 @@ import com.poly.service.SessionService;
 public class LienHeController {
     @Autowired
     SessionService session;
+    
+    @Autowired
+    private IndexController indexController;
 
     @GetMapping("/lienhe")
     public String lienHe(Model model, @RequestParam("p") Optional<Integer> p) {
-       User user = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (user == null)
-
-        {
-             model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-             model.addAttribute("user", user);
-            
-            model.addAttribute("checkLG", true);
-        }
+        indexController.checkUsers(model);
         return "lien-he";
     }
 }

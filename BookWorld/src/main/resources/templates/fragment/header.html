@@ -1,5 +1,6 @@
-<!-- Header  -->
-<header id="header" class="header" th:classappend="${isAdminLoggedIn} ? 'admin-header' : ''">
+
+
+<header id="header" class="header" th:unless="${isAdmin}">
     <div class="header__top">
         <div class="container">
             <div class="row">
@@ -105,12 +106,7 @@
         </div>
 
     </div>
-    <style>
-        .admin-header {
-            display: none;
-        }
-    </style>
-
+   
 </header>
 
 <!-- Header Section End -->

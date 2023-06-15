@@ -17,14 +17,17 @@ import com.poly.service.ShoppingCartService;
 
 @Controller
 public class GioHangController {
-    
     @Autowired
-    ShoppingCartService cart; 
+    private IndexController indexController;
+    @Autowired
+    ShoppingCartService cart;
 
     @RequestMapping("/giohang")
     public String view(Model model) {
         model.addAttribute("list", cart.getOrderDetails());
+        indexController.checkUsers(model);
         return "gio-hang";
+
     }
 
     @RequestMapping("/cart/add/{id}")
@@ -35,7 +38,7 @@ public class GioHangController {
 
     @RequestMapping("/cart/remove/{id}")
     public String remove(@PathVariable("id") String id) {
-        cart.remove(Long.parseLong(id) );
+        cart.remove(Long.parseLong(id));
         return "redirect:/giohang";
     }
 
