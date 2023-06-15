@@ -23,7 +23,7 @@ public interface BookDAO extends JpaRepository<Book, String> {
     + " FROM OrderDetail od JOIN od.book.category c"
     + " GROUP BY od.book.title, c.categoryName"
     + " ORDER BY COUNT(od.book) DESC")
-    List<ReportSoldBooks> getSoldBooks();
+    Page getSoldBooks(Pageable pageable);
 
 
     // Page findByCategory(Category category ,Pageable pageable);
