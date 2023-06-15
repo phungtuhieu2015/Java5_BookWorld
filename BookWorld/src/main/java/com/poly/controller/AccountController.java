@@ -300,6 +300,11 @@ public class AccountController {
             model.addAttribute("user", user);
             model.addAttribute("checkLG", false);
         } else {
+             if (users.getAdmin()) {
+                model.addAttribute("isAdmin", true);
+            } else {
+                model.addAttribute("isAdmin", false);
+            }
             model.addAttribute("user", user);
 
             model.addAttribute("checkLG", true);
