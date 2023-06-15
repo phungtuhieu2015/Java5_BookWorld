@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.model.Cart;
 import com.poly.model.Product;
@@ -31,8 +32,9 @@ public class GioHangController {
 
     boolean isError = false;
     boolean isEmptyCarts = false;
+    String typeSuccess = "";
     @RequestMapping("/giohang")
-    public String view(Model model) {
+    public String view(Model model, RedirectAttributes params) {
         model.addAttribute("list", cart.getCarts()); 
         model.addAttribute("total", cart.getTotal());
         if(isError) {
@@ -42,6 +44,30 @@ public class GioHangController {
         if(isEmptyCarts) {
             model.addAttribute("isEmptyCarts", "Chưa có sản phẩm trong giỏ hàng");
         }
+        String messageSuccess = null;
+        switch (this.typeSuccess) {
+            case "add-cart":
+                messageSuccess = "Đã thêm vào giỏ hàng!";
+                break;
+            case "remove-cart":
+                messageSuccess = "Đã xóa khỏi giỏ hàng!";
+                break;
+            case "clear-all-cart":
+                messageSuccess = "Giỏ hàng đã được xóa!";
+                break;
+            case "payment-cart":
+                messageSuccess = "Thanh toán thành công!";
+                params.addAttribute("message", messageSuccess);
+                return "redirect:/user/orders";
+            default:
+                break;
+        }
+        if(messageSuccess != null) {
+            model.addAttribute("message", messageSuccess);
+            model.addAttribute("typeSuccess",this.typeSuccess);
+        }
+        messageSuccess = null;
+        this.typeSuccess = "";
         isError = false;
         isEmptyCarts = false;
         return "gio-hang";
@@ -50,12 +76,14 @@ public class GioHangController {
     @RequestMapping("/cart/add/{id}")
     public String add(@PathVariable("id") String id) {
         cart.add(id);
+        this.typeSuccess = "add-cart";
         return "redirect:/giohang";
     }
 
     @RequestMapping("/cart/remove/{id}")
     public String remove(@PathVariable("id") String id) {
         cart.remove(id );
+        this.typeSuccess = "remove-cart";
         return "redirect:/giohang";
     }
 
@@ -63,12 +91,16 @@ public class GioHangController {
     public String update(@PathVariable("id") String id,
             @RequestParam("qty") Integer qty) {
         cart.update(id, qty);
+
         return "redirect:/giohang";
     }
 
     @RequestMapping("/cart/clear")
     public String clear() {
-        cart.clear();
+        if(cart.getCarts().size() > 0) {
+            cart.clear();
+        }
+        this.typeSuccess = "clear-all-cart";
         return "redirect:/giohang";
     }
 
@@ -85,7 +117,6 @@ public class GioHangController {
                 }
                 List<Cart> list = (List<Cart>) cart.getCarts();
 
-                System.out.println("==========================================="+list);
                 if(list == null){
                     isEmptyCarts = true;
                 }
@@ -102,6 +133,7 @@ public class GioHangController {
                 }
                 cart.payment(currentUser, paymentMethod );
             }
+        this.typeSuccess = "payment-cart";
         return "redirect:/giohang";
     }
 

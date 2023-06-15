@@ -20,7 +20,7 @@ import com.poly.model.User;
 import com.poly.service.SessionService;
 
 @Controller
-    @RequestMapping("/user/orders")
+    @RequestMapping("/user")
 public class OrdersByUserController {
     @Autowired
     OrderDAO dao;
@@ -28,10 +28,11 @@ public class OrdersByUserController {
     SessionService session;
     boolean isError = false;
     StatusOrder statusOrder;
-    @RequestMapping("/list") 
-    public String list(Model model) {
+    String typeSuccess = "";
+    @RequestMapping("/orders") 
+    public String list(Model model,@RequestParam("p") Optional<Integer> p) {
         User user = session.get("user");
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page page = dao.findByUser(user, pageable);
         if(isError == true) {
             model.addAttribute("error", "(*) Vui lòng nhập lí do hủy đơn");
@@ -39,42 +40,38 @@ public class OrdersByUserController {
         model.addAttribute("page",page);
         model.addAttribute("order", new Order());
         isError = false;
-        User users = session.get("user");
-   
-        if (users == null)
-
-        {
-            model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-            model.addAttribute("user", user);
-
-            model.addAttribute("checkLG", true);
+        String messageSuccess = null;
+        switch (this.typeSuccess) {
+            case "canceled-order":
+                messageSuccess = "Đã hủy đơn";
+                break;
+            default:
+                break;
         }
-        
+        model.addAttribute("message", messageSuccess);
+        this.typeSuccess = "";
         return "danh-sach-don-hang";
     }
     @RequestMapping("/cancel-order") 
     public String cancel(Order currentOrder,Model model,@RequestParam("reason") Optional<String> reason) {
-        System.out.println("++++++++++++++++++++++" + currentOrder.getCancellationReason());
-        System.out.println("++++++++++++++++++++++" + currentOrder.getId());
         User user = session.get("user");
         Order order = dao.findById(currentOrder.getId()).get();
         if(order.getStatus() == statusOrder.PENDING) {
             if(currentOrder.getCancellationReason() == null) {
                 isError = true;
-                 return "redirect:/user/orders/list";
+                 return "redirect:/user/orders";
             } else {
                 order.setCancellationDate(new Date());
                 order.setCancellationReason(currentOrder.getCancellationReason());
                 order.setStatus(statusOrder.CANCELED);
                 dao.save(order);
+                this.typeSuccess = "canceled-order";
             }
                
         }
         Pageable pageable = PageRequest.of(0, 5);
         Page page = dao.findByUser(user, pageable);
         model.addAttribute("page",page);
-        return "redirect:/user/orders/list";
+        return "redirect:/user/orders";
     }
 }

@@ -56,10 +56,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
         this.user = session.get("user");
         book = daoBook.findById(id).get() ;
         if(this.user == null) {
-            cart = new Cart(id,this.user, book, 1, book.getPrice() * 1);
+            cart = new Cart(id,this.user, book, 1, book.getPrice() * 1,book.getImage());
             map.put(id, cart);
         } else {
-            cart = new Cart( id,this.user, book, 1, book.getPrice() * 1);
+            cart = new Cart( id,this.user, book, 1, book.getPrice() * 1,book.getImage());
             daoCart.save(cart);
         }
         return cart;
@@ -83,9 +83,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
             cart.setTotalPrice(qty * cart.getBook().getPrice());
             daoCart.save(cart);
             return cart;
-        } 
-            map.get(id).setQuantity(qty);
-            map.get(id).setTotalPrice(qty * map.get(id).getBook().getPrice());
+        }
+        map.get(id).setQuantity(qty);
+        map.get(id).setTotalPrice(qty * map.get(id).getBook().getPrice());
         return  map.get(id);
     }
 
@@ -145,7 +145,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService  {
         List<Cart> carts = daoCart.findByUser(user);
         
         for (Cart cart : carts) {
-            OrderDetail orderDet = new OrderDetail(order, cart.getBook(),cart.getQuantity() , cart.getTotalPrice());
+            Book book = cart.getBook();
+            OrderDetail orderDet = new OrderDetail(order, book,cart.getQuantity() , cart.getTotalPrice());
+            book.setQuantity(book.getQuantity() - cart.getQuantity());
+            daoBook.save(book);
             daoOrderDet.save(orderDet);
             daoCart.delete(cart);
         }

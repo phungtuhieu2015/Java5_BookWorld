@@ -34,7 +34,7 @@
             <div class="basket-product" th:each="prod,pStat: ${list}">
                 <div class="item">
                     <div class="product-image">
-                        <img th:src="@{/assets/img/}" alt="Placholder Image 2" height="148px"
+                        <img th:src="@{/assets/img/__${prod.image}__}" alt="Placholder Image 2" height="148px"
                             class="product-frame">
                     </div>
                     <div class="product-details">
@@ -48,7 +48,7 @@
                 <form th:action="@{/cart/update/{id} (id = ${prod.id})}" method="post">
                     <div class="quantity">
                         <input type="number" id="example"
-                            name="qty" min="0" max="100" step="1"
+                            name="qty" min="1" th:max="${prod.book.quantity}" step="1"
                             th:onblur="this.form.submit()"
                             th:value="${prod.quantity}"
                             pattern="\d+" class="input-number">
@@ -125,6 +125,18 @@
             </div>
         </aside>
     </div>
+    <section class="message-section ">
+        <div th:class="'toast my-3  align-items-center text-white bg-primary border-0 ' + ${message != null ? 'fade show' :''}" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              <tb:block th:text="${message}"></tb:block>
+              <a th:if="${typeSuccess == 'payment-cart'}" class="btn btn-primary" th:href="@{/user/orders}" role="button">Xem đơn hàng</a>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </section>
+      
     <!--  -->
     <div th:replace="fragment/footer.html :: #footer"></div>
     <th:block th:include="fragment/script-links.html"></th:block>
