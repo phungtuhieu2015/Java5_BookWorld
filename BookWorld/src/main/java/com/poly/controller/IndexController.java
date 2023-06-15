@@ -36,59 +36,39 @@ public class IndexController {
 
     @Autowired
     SessionService session;
-    
+
     @Autowired
     MailerServiceImpl mailer;
     @Autowired
     CategoryDAO categoryDao;
 
-    // private boolean checkLG = false;
     Book book = new Book();
-
-   // boolean isSuccess = false;
 
     @RequestMapping("/index")
     public String index(Model model, @RequestParam("p") Optional<Integer> p) {
-
-       
-
-        
-      
         Pageable pageable = PageRequest.of(p.orElse(0), 16);
         Page page = dao.findAll(pageable);
         model.addAttribute("page", page);
 
+        checkUsers(model);
 
-        // List<Category> listCat = categoryDao.findAllCategories();
-        // Page page = dao.findByCategory(listCat.get(0), pageable);
-        // Page page1 = dao.findByCategory(listCat.get(1), pageable);
-        // Page page2 = dao.findByCategory(listCat.get(2), pageable);
-        // model.addAttribute("page", page);
-        // model.addAttribute("page1", page1);
-        // model.addAttribute("page2", page2);
-        // model.addAttribute("name1", listCat.get(0).getCategoryName());
-        // model.addAttribute("name2", listCat.get(1).getCategoryName());
-        // model.addAttribute("name3", listCat.get(2).getCategoryName());
-
-         User user = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (user == null)
-
-        {
-             model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-             model.addAttribute("user", user);
-            
-            model.addAttribute("checkLG", true);
-        }
-
-    
         return "index";
 
     }
 
-
+    public User checkUsers(Model model) {
+        User user = new User();
+        if (session.get("user") == null) {
+              User user1 = new User();
+            model.addAttribute("user", user1);
+            model.addAttribute("checkLG", false);
+        } else {
+            user = session.get("user");
+            model.addAttribute("user", user);
+            model.addAttribute("checkLG", true);
+        }
+        return user;
+    }
 
     @RequestMapping("/share/{bookId}")
     public String edit(@PathVariable("bookId") String bookId, Model model, @RequestParam("emailShare") String to) {

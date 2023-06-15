@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.PublisherDAO;
 import com.poly.model.Publisher;
+import com.poly.model.User;
 import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;

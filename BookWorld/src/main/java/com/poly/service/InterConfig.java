@@ -14,9 +14,7 @@ package com.poly.service;
       @Override
       public void addInterceptors(InterceptorRegistry registry) {
           registry.addInterceptor(auth)
-                  .addPathPatterns("/admin/index", "/account/profile","/admin/authors","/yeuthich","/admin/orders-canceled","/admin/orders-shipped",
-                  "/admin/publishers","/admin/categories","/admin/products","/admin/orders-pending","/admin/favorite-books",
-                  "/admin/sold-books","/admin/revenue","/admin/users" ,"/order/**", "/admin/**,")
-                  .excludePathPatterns("/assets/**", "/admin/home/index","/user/**");
+                  .addPathPatterns( "/account/profile","/yeuthich","/order/**", "/admin/**","/user/orders")
+                  .excludePathPatterns("/assets/**", "/admin/home/index");
       }
   }

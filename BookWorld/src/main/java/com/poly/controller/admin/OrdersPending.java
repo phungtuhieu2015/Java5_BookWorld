@@ -14,37 +14,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.OrderDAO;
 import com.poly.model.StatusOrder;
+import com.poly.model.User;
+import com.poly.service.SessionService;
 import com.poly.model.Order;
-
 
 @Controller
 @RequestMapping("/admin")
 public class OrdersPending {
     @Autowired
+    SessionService session;
+    @Autowired
     OrderDAO dao;
-    
+
     StatusOrder status;
     boolean isSuccess = false;
+
     @RequestMapping("/orders-pending")
-    public String ordersPending(Model model,@RequestParam("p") Optional<Integer> p){
+    public String ordersPending(Model model, @RequestParam("p") Optional<Integer> p) {
         model.addAttribute("pageName", "orders-pending orders");
-        if(isSuccess) {
+        User user = session.get("user");
+        model.addAttribute("user", user);
+        if (isSuccess) {
             model.addAttribute("message", "Đã xác nhận đơn hàng!");
         }
-        Pageable pageable = PageRequest.of( p.orElse(0), 5);
-        Page page = dao.findByStatus(StatusOrder.PENDING,pageable);
-       
+        Pageable pageable = PageRequest.of(p.orElse(0), 5);
+        Page page = dao.findByStatus(StatusOrder.PENDING, pageable);
+
         model.addAttribute("page", page);
         isSuccess = false;
         return "admin/index-admin";
     }
+
     @RequestMapping("/orders-pending/{id}")
-    public String handleShipping(@PathVariable("id") String id, Model model){
+    public String handleShipping(@PathVariable("id") String id, Model model) {
         Order order = dao.findById(id).get();
-        if(order!= null) {
-            order.setStatus( StatusOrder.COMPLETED);
-              dao.save(order);
-              isSuccess = true;
+        if (order != null) {
+            order.setStatus(StatusOrder.COMPLETED);
+            dao.save(order);
+            isSuccess = true;
         }
         return "redirect:/admin/orders-pending";
     }

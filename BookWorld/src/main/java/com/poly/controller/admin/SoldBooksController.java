@@ -12,13 +12,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.poly.controller.IndexController;
 import com.poly.dao.BookDAO;
 import com.poly.model.ReportSoldBooks;
+import com.poly.model.User;
+import com.poly.service.SessionService;
 
 
 @Controller
 @RequestMapping("/admin")
 public class SoldBooksController {
+        @Autowired
+    SessionService session;
+      @Autowired
+    private IndexController indexController;
     @Autowired 
     BookDAO dao;
     @RequestMapping("/sold-books")

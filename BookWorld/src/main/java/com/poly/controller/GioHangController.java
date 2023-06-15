@@ -23,9 +23,10 @@ import com.poly.service.ShoppingCartService;
 
 @Controller
 public class GioHangController {
-    
     @Autowired
-    ShoppingCartService cart; 
+    private IndexController indexController;
+    @Autowired
+    ShoppingCartService cart;
 
     @Autowired
     SessionService session;
@@ -71,6 +72,7 @@ public class GioHangController {
         isError = false;
         isEmptyCarts = false;
         return "gio-hang";
+
     }
 
     @RequestMapping("/cart/add/{id}")

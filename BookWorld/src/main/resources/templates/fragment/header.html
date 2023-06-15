@@ -1,5 +1,6 @@
-<!-- Header  -->
-<header id="header" class="header">
+
+
+<header id="header" class="header" th:unless="${isAdmin}">
     <div class="header__top">
         <div class="container">
             <div class="row">
@@ -42,23 +43,22 @@
                                 <li><a href="#">English</a></li>
                             </ul>
                         </div>
-                        <div th:unless="${checkLG}" class="header__top__right__language">
+                        <div th:if="${session.user==null}" class="header__top__right__language">
                             <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
                             <i class="fa fa-user"></i>
 
-                            <a th:href="@{/account/login}">
+                            <a  th:href="@{/account/login}">
                                 <div>Đăng nhập</div>
                             </a>
-                            <!-- <div  >Đăng nhập</div>
-                            <ul> <li><a th:href="@{/account/login}">Đăng nhập</a></li> -->
+
 
 
                             </ul>
                         </div>
-                        <div th:if="${checkLG}" class="header__top__right__language">
+                        <div th:if="${session.user!=null}" class="header__top__right__language">
                             <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
                             <i class="fa fa-user"></i>
-                            <div th:text="${user.fullName}"></div>
+                            <div th:text="${session.user.fullName}"></div>
                             <ul>
                                 <li><a th:href="@{/account/profile}">Hồ Sơ</a></li>
                                 <li><a th:href="@{/user/orders}">Đơn hàng</a></li>
@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div th:unless="${checkAdmin}" class="container">
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
@@ -107,6 +107,7 @@
         </div>
 
     </div>
-
+   
 </header>
+
 <!-- Header Section End -->

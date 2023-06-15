@@ -34,28 +34,27 @@
                                         <li><a class="dropdown-item" href="#">Tiếng anh</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item dropdown list-user">
-                                    <a class="nav-link dropdown-toggle " href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                <li class="nav-item dropdown list-user" >
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
                                         <span class="list-user__user-info">
                                             <span class="user-letter">
-                                                <img th:src="@{/admin/img/avator1.jpg}">
+                                                 <img th:src="@{/assets/img/__${session.user.image}__}">
                                             </span>
                                             <span class="user-detail">
-                                                <span class="user-name">John Smilga</span>
-                                                <span class="user-role">Super Admin</span>
+                                                <div th:text="${session.user.fullName}"></div>
+                                                <span class="user-role">Admin</span>
                                             </span>
                                         </span>
-
                                     </a>
+
                                     <ul class="dropdown-menu" style="margin-top: -1px;">
                                         <li><a class="dropdown-item" th:href="@{/account/profile}"><i
                                                     class="bi bi-person"></i> Hồ sơ</a></li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item" th:href="@{/account/login}"><i
-                                                    class="bi bi-box-arrow-right"></i> đăng xuất</a></li>
+                                        <li><a th:href="@{/account/logout}">Đăng xuất</a></li>
                                     </ul>
                                 </li>
 

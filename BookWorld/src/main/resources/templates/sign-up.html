@@ -9,7 +9,49 @@
   <link rel="stylesheet" th:href="@{/assets/css/form.css}">
   <th:block th:include="fragment/css-links.html"></th:block>
 </head>
+<style>
+@charset "UTF-8";
+.dialog-overlay {
+  position: fixed;
+	top: 0;
+	right: 0; /* Thay đổi từ left: 0 thành right: 0 */
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end; /* Thay đổi từ justify-content: flex-start thành justify-content: flex-end */
+	z-index: 9999;
+}
 
+.dialog-content {
+	border-radius: 10px;
+	font-weight: bolder;
+	color: white;
+	background-color: #429A43;
+	margin: 20px;
+	padding: 10px;
+	padding-top: 25px;
+	max-width: 1000px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	color: white;
+}
+
+.dialog-content-failed {
+	border-radius: 10px;
+	font-weight: bolder;
+	color: white;
+	background-color: #FF0000;
+	margin: 20px;
+	padding: 10px;
+	padding-left: 100px;
+	padding-right: 100px;
+	padding-top: 25px;
+	max-width: 1000px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	color: white;
+}
+
+</style>
 <body>
   <!-- Header -->
   <div th:replace="fragment/header.html :: #header "></div>
@@ -47,9 +89,10 @@
                     <div class="form-group mb-3">
                       <input type="text" name="username" th:field="*{username}" id="username" tabindex="1" class="form-control"
                         placeholder="Tên đăng nhập" >
-                      <div class="alert alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div> 
-                      
+                      <div class="alert alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>       
+                              
                     </div>
+                    <p th:text="${error}" style="color: red; text-align: center;"></p>   
                     <!--  -->
                     <!--  -->
                     <div class="form-group mb-3">
@@ -79,7 +122,7 @@
                         placeholder="Địa chỉ email"  th:field="*{email}">
                         <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div> 
                     </div>
-                      
+                    <p th:text="${errors}" style="color: red; text-align: center;"></p>
                     <!--  -->
                     <div class="form-group mb-3">
                       <input type="password" name="password" th:field="*{password}" id="password" tabindex="2"
@@ -112,11 +155,19 @@
       </div>
     </div>
   </div>
-
+	<div th:if="${failed}" id="successDialog" class="dialog-overlay">
+		<div class="dialog-content-failed">
+			<p th:text="${failed}"></p>
+		</div>
+	</div>
   <!--footer  -->
   <div th:replace="fragment/footer.html :: #footer"></div>
   <!--/footer  -->
   <th:block th:include="fragment/script-links.html"></th:block>
 </body>
-
+<script th:inline="javascript">
+  setTimeout(function() {
+    document.getElementById("successDialog").style.display = "none";
+  }, 1500); // 5000 milliseconds = 5 seconds
+</script>
 </html>

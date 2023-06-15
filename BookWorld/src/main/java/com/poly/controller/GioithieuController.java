@@ -16,21 +16,11 @@ public class GioithieuController {
 
     @Autowired
     SessionService session;
+     @Autowired
+    private IndexController indexController;
 
     @GetMapping("/gioithieu")
-    public String gioithieu(Model model, @RequestParam("p") Optional<Integer> p) {
-       User user = session.get("user");
-        // System.out.println(user.getUsername()+"sssssssssssss");
-        if (user == null)
-
-        {
-             model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-             model.addAttribute("user", user);
-            
-            model.addAttribute("checkLG", true);
-        }
+    public String gioithieu(Model model) {
         return "gioi-thieu";
     }
 }

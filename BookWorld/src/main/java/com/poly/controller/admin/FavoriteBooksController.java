@@ -14,21 +14,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.dao.BookDAO;
 import com.poly.model.ReportFavoriteBook;
+import com.poly.model.User;
+import com.poly.service.SessionService;
 
 @Controller
 @RequestMapping("/admin")
 public class FavoriteBooksController {
 
-
-    @Autowired 
+    @Autowired
+    SessionService session;
+    @Autowired
     BookDAO dao;
+
     @RequestMapping("/favorite-books")
-    public String favoriteBooks(Model model,@RequestParam("p") Optional<Integer> p) {
-        model.addAttribute("pageName","favorite-books statistical");
-        Pageable pageable = PageRequest.of(p.orElse(0),  5);
+    public String favoriteBooks(Model model, @RequestParam("p") Optional<Integer> p) {
+        model.addAttribute("pageName", "favorite-books statistical");
+        User user = session.get("user");
+        model.addAttribute("user", user);
+        Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page page = dao.getFavoriteBook(pageable);
         model.addAttribute("page", page);
-        
+
         return "admin/index-admin";
     }
 }

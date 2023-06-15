@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.poly.dao.AuthorDAO;
 import com.poly.model.Author;
 import com.poly.model.Category;
+import com.poly.model.User;
 import com.poly.service.SessionService;
 
 import jakarta.validation.Valid;
@@ -39,31 +40,32 @@ public class AuthorsController {
     public String author(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field
     ,@RequestParam("keywords") Optional<String> keywords) {
         model.addAttribute("pageName", "authors products");
-
-        if(p.isPresent()){
-            //check khi bấm phân trang khi đang sửa
-            if(isEdit == true){          
-                 form = false;
+        User user = session.get("user");
+        model.addAttribute("user", user);
+        if (p.isPresent()) {
+            // check khi bấm phân trang khi đang sửa
+            if (isEdit == true) {
+                form = false;
             }
-            // check khi bấm phân trang sau khi bấm reset  
-             if(form == true ){
-                 form = false;
-                 isEdit = false;
-             }
+            // check khi bấm phân trang sau khi bấm reset
+            if (form == true) {
+                form = false;
+                isEdit = false;
+            }
         }
-        // check mặc định tránh bị ghi đè 
-        if( (form == false && isEdit == false)  ){
-             form = false;
-             isEdit = false;
-        } 
-        if(author.getId() == null) {
+        // check mặc định tránh bị ghi đè
+        if ((form == false && isEdit == false)) {
+            form = false;
+            isEdit = false;
+        }
+        if (author.getId() == null) {
             author = new Author();
         }
-        if(isSuccess.equals("Create")){
+        if (isSuccess.equals("Create")) {
             model.addAttribute("message", "Thêm tác giả thành công");
-        }else if(isSuccess.equals("Update")){
+        } else if (isSuccess.equals("Update")) {
             model.addAttribute("message", "Cập nhật tác giả thành công");
-        }else if(isSuccess.equals("Delete")){
+        } else if (isSuccess.equals("Delete")) {
             model.addAttribute("message", "Xóa tác giả thành công");
         }else if(isSuccess.equals("errorDelete")){
              model.addAttribute("message", "Tác giả tồn tại trong sách");
@@ -112,15 +114,15 @@ public class AuthorsController {
     }
 
     @RequestMapping("/authors/create")
-    public String create(@Valid Author author, BindingResult result,Model model) {
+    public String create(@Valid Author author, BindingResult result, Model model) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             model.addAttribute("pageName", "authors products");
             model.addAttribute("form", true);
             model.addAttribute("isEdit", false);
             Optional<Integer> p = Optional.of(0);
             Pageable pageable = PageRequest.of(p.orElse(0), 5);
-            Page<Author> page = dao.findAll(pageable);     
+            Page<Author> page = dao.findAll(pageable);
             model.addAttribute("page", page);
             return "admin/index-admin";
         }
@@ -132,13 +134,13 @@ public class AuthorsController {
 
     @RequestMapping("/authors/update")
     public String update(@Valid Author author, BindingResult result, Model model) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             model.addAttribute("pageName", "authors products");
             model.addAttribute("form", true);
             model.addAttribute("isEdit", true);
             Optional<Integer> p = Optional.of(0);
             Pageable pageable = PageRequest.of(p.orElse(0), 5);
-            Page<Author> page = dao.findAll(pageable);     
+            Page<Author> page = dao.findAll(pageable);
             model.addAttribute("page", page);
             return "admin/index-admin";
         }
