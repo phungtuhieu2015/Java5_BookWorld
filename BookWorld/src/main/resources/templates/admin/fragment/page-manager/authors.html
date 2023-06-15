@@ -98,7 +98,18 @@
         aria-labelledby="nav-authors-tab" tabindex="0">
         <div class="table-top row px-0 mx-0">
           <div class="table-top__search-set col-6 px-0">
-            <div class="search-input">
+            <div class="search-input mt-3">
+
+              <form class="d-flex" role="search">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm" aria-label="Tìm kiếm"
+                    name="keywords" th:value="${param.keywords}">
+
+                  <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                  <button class="btn btn-outline-dark" type="submit" id="clearButton"><i class="bi bi-x"></i></button>
+                </div>
+              </form>
+
             </div>
           </div>
           <div class="table-top__wordset col-6  px-0">

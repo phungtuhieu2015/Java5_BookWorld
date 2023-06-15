@@ -36,7 +36,8 @@ public class AuthorsController {
     Author author = new Author();
     String isSuccess = "";
     @RequestMapping("/authors")
-    public String author(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
+    public String author(Model model, @RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field
+    ,@RequestParam("keywords") Optional<String> keywords) {
         model.addAttribute("pageName", "authors products");
 
         if(p.isPresent()){
@@ -64,8 +65,13 @@ public class AuthorsController {
             model.addAttribute("message", "Cập nhật tác giả thành công");
         }else if(isSuccess.equals("Delete")){
             model.addAttribute("message", "Xóa tác giả thành công");
+        }else if(isSuccess.equals("errorDelete")){
+             model.addAttribute("message", "Tác giả tồn tại trong sách");
         }
         isSuccess = "";
+        if(keywords.isPresent()){
+            form = false;
+        }
         model.addAttribute("form", form);
         model.addAttribute("isEdit", isEdit);
         model.addAttribute("author", author);
@@ -73,19 +79,25 @@ public class AuthorsController {
         Pageable pageable;
 
         if(field.isPresent()){
+
               Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
+              if(direction == null){
+                direction = Direction.ASC;
+              }
               Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("id") ); 
               pageable = PageRequest.of(p.orElse(0), 5 ,direction,field.orElse("id"));
               session.set("currentDirection", sort.getOrderFor(field.orElse("id")).getDirection());
+
         }else{
              pageable = PageRequest.of(p.orElse(0), 5 );
         }
        
 
        
-
+        String value = keywords.orElse("");
         
-        Page<Author> page = dao.findAll(pageable);   
+        // Page<Author> page = dao.findAll(pageable);   
+         Page<Author> page = dao.findByIdOrAuthorName(value,pageable);   
         model.addAttribute("page", page);
 
         return "admin/index-admin";
@@ -142,8 +154,12 @@ public class AuthorsController {
         this.author = new Author();
          form = false;
          isEdit = false;
-        dao.deleteById(id);
-        isSuccess = "Delete";
+       try {
+            dao.deleteById(id);
+            isSuccess = "Delete";
+        } catch (Exception e) {
+             isSuccess = "errorDelete";
+        }
         return "redirect:/admin/authors";
     }
 

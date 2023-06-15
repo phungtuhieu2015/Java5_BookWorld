@@ -45,12 +45,14 @@
                         <div th:unless="${checkLG}" class="header__top__right__language">
                             <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
                             <i class="fa fa-user"></i>
-                         
-                            <a th:href="@{/account/login}"> <div  >Đăng nhập</div></a>   
-                              <!-- <div  >Đăng nhập</div>
+
+                            <a th:href="@{/account/login}">
+                                <div>Đăng nhập</div>
+                            </a>
+                            <!-- <div  >Đăng nhập</div>
                             <ul> <li><a th:href="@{/account/login}">Đăng nhập</a></li> -->
-                            
-                               
+
+
                             </ul>
                         </div>
                         <div th:if="${checkLG}" class="header__top__right__language">
@@ -61,9 +63,9 @@
                                 <li><a th:href="@{/account/profile}">Hồ Sơ</a></li>
                                 <li><a th:href="@{/user/orders}">Đơn hàng</a></li>
                                 <li><a th:href="@{/account/logout}">Đăng xuất</a></li>
-                               
+
                             </ul>
-                        
+
                         </div>
 
                     </div>
@@ -85,7 +87,7 @@
                         <li class="active"><a th:href="@{/index}">Trang Chủ</li>
                         <li><a th:href="@{/gioithieu}">Giới Thiệu</a></li>
                         <li><a th:href="@{/lienhe}">Liên Hệ</a></li>
-                        <li><a th:href="@{/yeuthich}">Yêu Thích</a></li>
+                        <li><a th:href="@{/yeuthich}" th:if="${session.user != null}">Yêu Thích</a></li>
                     </ul>
                 </nav>
             </div>
