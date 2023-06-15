@@ -30,14 +30,16 @@
                                 enctype="multipart/form-data">
                                 <div class="avatar-upload">
 
-                                    <div class="avatar-edit">
-                                        <input type="file" class="form-control" id="inputGroupFile02" name="fileImage">
-
-                                        <label class="" for="inputGroupFile02">Hình ảnh</label>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-preview">
+                                            <img id="avatar-img" th:src="@{/assets/img/__${user.image}__}" alt="Avatar Preview" />
+                                        </div>
+                                        <div class="avatar-edit">
+                                            <input type="file" name="fileImage" id="avatar" accept=".jpg, .jpeg, .png, .webp" />
+                                            <label for="avatar">Hình ảnh</label>
+                                        </div>
                                     </div>
-                                    <div class="avatar-preview">
-                                        <img id="avatar-img" th:src="@{/assets/img/__${user.image}__}" alt="" />
-                                    </div>
+                                
                                 </div>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="fullName">Họ và tên <span>
@@ -64,6 +66,9 @@
                                     <label class="small mb-1" for="email">Email <span></label>
                                     <input class="form-control" id="email" type="email" placeholder="Enter your email"
                                         name="email" th:field="*{email}">
+                                        <div class="alert alert-warning " th:if="${#fields.hasErrors('email')}"
+                                        th:errors="*{email}">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -71,6 +76,9 @@
                                     </label>
                                     <input class="form-control" id="address" type="text" placeholder="Enter your phone"
                                         name="address" th:field="*{address}">
+                                        <div class="alert alert-warning " th:if="${#fields.hasErrors('address')}"
+                                        th:errors="*{address}">
+                                    </div>
                                 </div>
 
 

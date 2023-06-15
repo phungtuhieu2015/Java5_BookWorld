@@ -13,13 +13,10 @@ import com.poly.service.SessionService;
 public class IndexAdminController {
     @Autowired
     SessionService session;
-    @Autowired
-    private IndexController indexController;
 
     @RequestMapping("/index")
     public String index(Model model) {
         model.addAttribute("pageName", "content-index index");
-        indexController.checkUsers(model);
         return "admin/index-admin";
     }
 }

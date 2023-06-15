@@ -20,8 +20,7 @@ public class GioithieuController {
     private IndexController indexController;
 
     @GetMapping("/gioithieu")
-    public String gioithieu(Model model, @RequestParam("p") Optional<Integer> p) {
-            indexController.checkUsers(model);
+    public String gioithieu(Model model) {
         return "gioi-thieu";
     }
 }

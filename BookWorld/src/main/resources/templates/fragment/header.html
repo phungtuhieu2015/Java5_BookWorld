@@ -43,11 +43,11 @@
                                 <li><a href="#">English</a></li>
                             </ul>
                         </div>
-                        <div th:unless="${checkLG}" class="header__top__right__language">
+                        <div th:if="${session.user==null}" class="header__top__right__language">
                             <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
                             <i class="fa fa-user"></i>
 
-                            <a th:href="@{/account/login}">
+                            <a  th:href="@{/account/login}">
                                 <div>Đăng nhập</div>
                             </a>
 
@@ -55,10 +55,10 @@
 
                             </ul>
                         </div>
-                        <div th:if="${checkLG}" class="header__top__right__language">
+                        <div th:if="${session.user!=null}" class="header__top__right__language">
                             <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
                             <i class="fa fa-user"></i>
-                            <div th:text="${user.fullName}"></div>
+                            <div th:text="${session.user.fullName}"></div>
                             <ul>
                                 <li><a th:href="@{/account/profile}">Hồ Sơ</a></li>
                                 <li><a th:href="@{/account/logout}">Đăng xuất</a></li>

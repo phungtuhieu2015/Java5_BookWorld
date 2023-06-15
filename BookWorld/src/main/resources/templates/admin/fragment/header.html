@@ -39,11 +39,10 @@
                                         aria-expanded="false">
                                         <span class="list-user__user-info">
                                             <span class="user-letter">
-                                                <img th:src="@{/assets/img/__${user.image}__}"  >
-                                                
+                                                 <img th:src="@{/assets/img/__${session.user.image}__}">
                                             </span>
                                             <span class="user-detail">
-                                                <div th:text="${user.fullName}"></div>
+                                                <div th:text="${session.user.fullName}"></div>
                                                 <span class="user-role">Admin</span>
                                             </span>
                                         </span>

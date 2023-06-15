@@ -21,8 +21,7 @@ public class LienHeController {
     private IndexController indexController;
 
     @GetMapping("/lienhe")
-    public String lienHe(Model model, @RequestParam("p") Optional<Integer> p) {
-        indexController.checkUsers(model);
+    public String lienHe(Model model) {
         return "lien-he";
     }
 }

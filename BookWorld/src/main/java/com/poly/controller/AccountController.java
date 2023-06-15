@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
 
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -221,7 +222,7 @@ public class AccountController {
         if (result.hasErrors()) {
             // Xử lý lỗi nếu có
         }
-   
+
         User user = session.get("user");
         if (user.getPassword().equals(account.getPassword())) {
             if (!pw.equals(confirmPassword)) {
@@ -239,30 +240,13 @@ public class AccountController {
     }
 
     @GetMapping("/profile")
-    public String doMyProfile(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-
-        }
-        model.addAttribute("isAdminLoggedIn", session.get("isAdminLoggedIn"));
-
+    public String doMyProfile(@ModelAttribute("user") User user, BindingResult result, Model model) {
         User users = session.get("user");
-        if (users == null)
-
-        {
-            model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-
-        } else {
             if (users.getAdmin()) {
                 model.addAttribute("isAdmin", true);
             } else {
                 model.addAttribute("isAdmin", false);
             }
-            model.addAttribute("user", user);
-
-            model.addAttribute("checkLG", true);
-
-        }
         user = session.get("user");
         model.addAttribute("user", user);
         return "edit-profile";
@@ -272,12 +256,15 @@ public class AccountController {
     public String doMyProfilesave(@Valid @ModelAttribute("user") User user, BindingResult result, Model model,
             @RequestParam("fileImage") MultipartFile fileImage) {
         if (result.hasErrors()) {
-
+            return "edit-profile";
         }
-
+        User userSession = new User();
         if (fileImage.isEmpty()) {
+            User userimg = session.get("user");
+            oldImg = userimg.getImage();
             user.setImage(oldImg);
-            dao.save(user);
+            userSession = dao.save(user);
+
         } else {
             String fileName = fileImage.getOriginalFilename();
             String uploadDirectory = "static/assets/img/";
@@ -287,28 +274,21 @@ public class AccountController {
                 System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
                 user.setImage(fileName);
                 isSuccess = true;
-                dao.save(user);
+                userSession = dao.save(user);
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
             }
         }
 
-        user.setActivated(false);
-
+        session.set("user", userSession);
         User users = session.get("user");
-        if (users == null) {
-            model.addAttribute("user", user);
-            model.addAttribute("checkLG", false);
-        } else {
-             if (users.getAdmin()) {
-                model.addAttribute("isAdmin", true);
-            } else {
-                model.addAttribute("isAdmin", false);
-            }
-            model.addAttribute("user", user);
 
-            model.addAttribute("checkLG", true);
+        if (users.getAdmin()) {
+            model.addAttribute("isAdmin", true);
+        } else {
+            model.addAttribute("isAdmin", false);
         }
+
         return "edit-profile";
     }
 
@@ -319,7 +299,7 @@ public class AccountController {
             // Xóa phiên
             session.invalidate();
         }
-        
+
         // // Xóa cookie lưu trữ tên người dùng
         // cookieService.remove("username");
 
