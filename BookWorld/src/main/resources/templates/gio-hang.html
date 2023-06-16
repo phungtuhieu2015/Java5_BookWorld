@@ -114,7 +114,7 @@
                 </div>
                 <div class="summary-total">
                     <div class="total-title">Tổng</div>
-                    <div class="total-value final-value td-giaGiam" id="basket-total" th:text="${total}"></div>
+                    <div class="total-value final-value td-giaGiam" id="basket-total" th:text="${session.cartTotal != null ?session.cartTotal: '0.0'}"></div>
                 </div>
                 <div class="summary-checkout">
                     <button class="checkout-cta">Đặt Hàng</button>

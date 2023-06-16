@@ -33,21 +33,23 @@
         </div>
 
         <!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
-        <div class="btn-cart">
-
-          <a th:href="@{/giohang}" class="btn-cart-to-cart">
-            <span class="bi bi-cart3">
-            </span><span>Thêm vào giỏ hàng</span>
-          </a>
-
-          <a th:href="@{#}" class="btn-cart-to-cart">
-            <span>Mua
-              ngay</span>
-          </a>
-
-
+        <div class="btn-cart"  style="width: 100%;" >
+          <th:block  th:if="${book.status == 1}">
+            <a th:href="@{/cart/add/__${book.id}__}" class="btn-cart-to-cart">
+              <span class="bi bi-cart3">
+              </span><span>Thêm vào giỏ hàng</span>
+            </a>
+  
+            <a th:href="@{#}" class="btn-cart-to-cart">
+              <span>Mua
+                ngay</span>
+            </a>
+          </th:block>
+          <div th:if="${book.status != 1}" style="width: 100%;" class=" d-flex justify-content-center" >
+            <span th:if="${book.status == 0}"  style="color: rgb(95, 5, 5); font-size: 18px; ">Hết hàng</span>
+            <span th:if="${book.status == 2}"  style="color: rgb(95, 5, 5); font-size: 18px; ">Ngừng kinh doanh</span>
+          </div >
         </div>
-
       </div>
       <!-- card right -->
       <div class="product-content">
@@ -83,17 +85,14 @@
 
         <!--  -->
         <div class="product-rating">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star-half-alt"></i>
-          <span>4.7(21)</span>
+          <label style="color: black; font-weight: 900;">Mô tả:</label>
+          <span th:text="${book.description}"></span>
+          <!-- <span>4.7(21)</span> -->
         </div>
         <!--  -->
         <div class="khung">
           <span class="price" th:text="${book.price}+ ' VNĐ'"></span>
-          <span class="price-old">90.000&nbsp;VNĐ</span>
+          <!-- <span class="price-old">90.000&nbsp;VNĐ</span> -->
         </div>
         <!-- -->
 

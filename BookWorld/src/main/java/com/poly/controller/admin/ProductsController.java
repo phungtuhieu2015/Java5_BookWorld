@@ -97,7 +97,9 @@ public class ProductsController {
     String uploadDirectory = "static/assets/img/";
     String oldImg ;
     @RequestMapping("/products")
-    public String products(Model model,@RequestParam("p") Optional<Integer> p, @RequestParam("field") Optional<String> field) {
+    public String products(Model model,@RequestParam("p") Optional<Integer> p,
+     @RequestParam("field") Optional<String> field,
+     @RequestParam("keywords") Optional<String> keywords) {
 
         model.addAttribute("pageName", "products products");
               User user = session.get("user");
@@ -137,7 +139,7 @@ public class ProductsController {
              pageable = PageRequest.of(p.orElse(0), 5 );
         }
 
-        Page page = dao.findAll(pageable);
+        Page page = dao.findByIdOrTitle(keywords.orElse(""), pageable);
         if(isEdit) {
             List<Long> listAuthorId = new ArrayList<>();
             for (Author aut : listAutOfBook) {

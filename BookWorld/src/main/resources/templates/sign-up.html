@@ -103,14 +103,14 @@
                     </div>
 
                     <div class="form-group mb-3">
-                      <input type="phone" name="phone" th:field="*{phone}" id="phone" tabindex="1"
+                      <input type="text" name="phone" th:field="*{phone}" id="phone" tabindex="1"
                         class="form-control" placeholder="Phone">
                       <div class="alert alert-warning" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
                       </div>
                     </div>
 
                     <div class="form-group mb-3">
-                      <input type="phone" name="address" th:field="*{address}" id="address" tabindex="1"
+                      <input type="text" name="address" th:field="*{address}" id="address" tabindex="1"
                         class="form-control" placeholder="Địa chỉ">
                       <div class="alert alert-warning" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
                       </div>

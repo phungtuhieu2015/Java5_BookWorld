@@ -17,14 +17,21 @@
                                 </li>
                                 <li><a href="" data-bs-toggle="modal" th:data-bs-target="'#modal_'+${item.id}"><i
                                             class="fa-solid fa-share"></i></a></li>
-                                <li><a th:href="@{/cart/add/__${item.id}__}"><i class="fa fa-shopping-cart"></i></a>
+                                <li th:if="${item.status == 1}" ><a th:href="@{/cart/add/__${item.id}__}"><i class="fa fa-shopping-cart"></i></a>
                                 </li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
                             <h6><a th:href="@{/chitiet/{bookId}(bookId=${item.id})}" th:text="${item.title}"></a></h6>
-                            <h4 th:text="${item.price}  +' VNĐ'"></h4>
-
+                            <div class="row">
+                                <div class="col-12"><span style="color: red; font-size: 15px;" th:text="${item.price}  +' VNĐ'"></span></div>
+                                <div class="col-12">
+                                    <span th:if="${item.status == 0}"  style="color: rgb(238, 82, 31); font-size: 10px;">Hết hàng</span>
+                                    <span th:if="${item.status == 2}"  style="color: red; font-size: 12px;">Ngừng kinh doanh</span>
+                                </div>
+                            </div>
+                            
+                         
                         </div>
                         <div class="ribben">
                             <p>NEW</p>

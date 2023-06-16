@@ -1,5 +1,6 @@
 package com.poly.controller;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,10 @@ public class GioHangController {
     String typeSuccess = "";
     @RequestMapping("/giohang")
     public String view(Model model, RedirectAttributes params) {
-        model.addAttribute("list", cart.getCarts()); 
-        model.addAttribute("total", cart.getTotal());
+         Collection<Cart> carts = cart.getCarts();
+        model.addAttribute("list",carts); 
+        session.set("cartTotal", cart.getTotal());
+        session.set("cartSize", carts.size());
         if(isError) {
            
             model.addAttribute("error", "Vui lòng nhập thông tin");
