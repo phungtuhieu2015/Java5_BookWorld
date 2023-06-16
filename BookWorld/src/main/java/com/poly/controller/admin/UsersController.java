@@ -116,7 +116,7 @@ public class UsersController {
       model.addAttribute("isEdit", true);
 
       Pageable pageable = PageRequest.of(p.orElse(0), 5);
-      Page<User> page = dao.findAll(pageable);
+      Page<User> page = dao.findByAdmin(false , pageable);
       model.addAttribute("page", page);
       return "admin/index-admin";
     }
