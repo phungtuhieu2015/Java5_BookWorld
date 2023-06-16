@@ -126,7 +126,7 @@ public class UsersController {
       dao.save(user);
     } else {
       String fileName = fileImage.getOriginalFilename();
-      String uploadDirectory = "static/admin/img/";
+      String uploadDirectory = "static/assets/img/";
       try {
         Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
         fileImage.transferTo(path.resolve(fileName).toFile());

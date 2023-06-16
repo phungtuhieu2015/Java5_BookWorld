@@ -1,6 +1,4 @@
-
-
-<header id="header" class="header"  th:if="${session.user == null || session.user.admin==false }" >
+<header id="header" class="header" th:if="${session.user == null || session.user.admin==false }">
     <div class="header__top">
         <div class="container">
             <div class="row">
@@ -12,10 +10,10 @@
 
                             <li>
                                 <div class="cinema_search">
-                                    <form action="#" method="post">
+                                    <!-- <form action="#" method="post">
                                         <input type="text" name="Search" placeholder="Tìm Kiếm" required="" />
                                         <input type="submit" value="Tìm Kiếm" />
-                                    </form>
+                                    </form> -->
                                 </div>
                             </li>
                         </ul>
@@ -47,7 +45,7 @@
                             <link th:href="@{/assets/css/style.css}" rel="stylesheet" type="text/css" />
                             <i class="fa fa-user"></i>
 
-                            <a  th:href="@{/account/login}">
+                            <a th:href="@{/account/login}">
                                 <div>Đăng nhập</div>
                             </a>
 
@@ -95,10 +93,12 @@
                 <div class="header__cart">
                     <ul>
                         <!-- <li><a th:href="@{/yeuthich}"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
-                        <li><a th:href="@{/giohang}"><i class="fa fa-shopping-bag"></i> <span th:text="${session.cartSize !=null ?session.cartSize:'0'}">3</span></a></li>
+                        <li><a th:href="@{/giohang}"><i class="fa fa-shopping-bag"></i> <span
+                                    th:text="${session.cartSize !=null ?session.cartSize:'0'}">3</span></a></li>
 
                     </ul>
-                    <div class="header__cart__price">items: <span  th:text="${session.cartTotal != null ?session.cartTotal: '0.0'}"></span></div>
+                    <div class="header__cart__price">items: <span
+                            th:text="${session.cartTotal != null ?session.cartTotal: '0.0'}"></span></div>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
         </div>
 
     </div>
-   
+
 </header>
 
 <!-- Header Section End -->
