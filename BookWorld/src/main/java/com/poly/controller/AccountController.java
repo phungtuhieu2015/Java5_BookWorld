@@ -43,8 +43,7 @@ public class AccountController {
     boolean isAdmin = false;
     String oldImg;
 
-    @Autowired
-    private IndexController indexController;
+
 
     @Autowired
     MailerServiceImpl mailer;
@@ -216,7 +215,7 @@ public class AccountController {
         if (result.hasErrors()) {
 
         }
-        indexController.checkUsers(model);
+        user = session.get("user");
         model.addAttribute("user", user);
         return "change-password";
 
@@ -248,11 +247,11 @@ public class AccountController {
     @GetMapping("/profile")
     public String doMyProfile(@ModelAttribute("user") User user, BindingResult result, Model model) {
         User users = session.get("user");
-            if (users.getAdmin()) {
-                model.addAttribute("isAdmin", true);
-            } else {
-                model.addAttribute("isAdmin", false);
-            }
+        if (users.getAdmin()) {
+            model.addAttribute("isAdmin", true);
+        } else {
+            model.addAttribute("isAdmin", false);
+        }
         user = session.get("user");
         model.addAttribute("user", user);
         return "edit-profile";

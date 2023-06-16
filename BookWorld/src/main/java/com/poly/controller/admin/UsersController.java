@@ -23,7 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
-import com.poly.controller.IndexController;
 import com.poly.dao.UserDAO;
 import com.poly.model.Book;
 import com.poly.model.User;
@@ -46,19 +45,14 @@ public class UsersController {
   SessionService session;
   @Autowired
   ServletContext app;
-  @Autowired
-  private IndexController indexController;
   Boolean form = false;
   Boolean isEdit = false;
 
   User user = new User();
 
   @RequestMapping("/users")
-  public String Users(Model model, @RequestParam("p") Optional<Integer> p,
-      @RequestParam("field") Optional<String> field) {
+  public String Users(Model model, @RequestParam("p") Optional<Integer> p,@RequestParam("field") Optional<String> field) {
     model.addAttribute("pageName", "users user");
-    User user = session.get("user");
-    model.addAttribute("user", user);
     if (p.isPresent()) {
       // check khi bấm phân trang khi đang sửa
       if (isEdit == true) {
@@ -79,7 +73,7 @@ public class UsersController {
       user = new User();
     }
     if (isSuccess) {
-      model.addAttribute("message", "Update Thành công!");
+      model.addAttribute("message",   "Update Thành công!");
     }
     isSuccess = false;
     model.addAttribute("form", form);
@@ -98,13 +92,13 @@ public class UsersController {
         }
     Page<User> page = dao.findByAdmin(false, pageable);
     model.addAttribute("page", page);
-    indexController.checkUsers(model);
+
     return "admin/index-admin";
   }
 
   @RequestMapping("/users/edit/{username}")
   public String edit(@PathVariable("username") String username) {
-    this.oldImg = this.user.getImage();
+    this.oldImg =this.user.getImage();
     form = true;
     isEdit = true;
     user = dao.findById(username).get();
@@ -112,8 +106,7 @@ public class UsersController {
   }
 
   @RequestMapping("/users/update")
-  public String update(@Valid User user, BindingResult result, Model model,
-      @RequestParam("fileImage") MultipartFile fileImage) {
+  public String update(@Valid User user, BindingResult result, Model model, @RequestParam("fileImage") MultipartFile fileImage)  {
     if (result.hasErrors()) {
 
       isSuccess = false;
@@ -121,32 +114,31 @@ public class UsersController {
       model.addAttribute("pageName", "users user");
       model.addAttribute("form", false);
       model.addAttribute("isEdit", true);
-
+      
       Pageable pageable = PageRequest.of(p.orElse(0), 5);
       Page<User> page = dao.findAll(pageable);
       model.addAttribute("page", page);
       return "admin/index-admin";
     }
 
-    indexController.checkUsers(model);
-    if (fileImage.isEmpty()) {
-      user.setImage(oldImg);
-      dao.save(user);
-    } else {
-      String fileName = fileImage.getOriginalFilename();
-      String uploadDirectory = "static/admin/img/";
-      try {
-        Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
-        fileImage.transferTo(path.resolve(fileName).toFile());
-        System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
-        user.setImage(fileName);
-        isSuccess = true;
-        dao.save(user);
-      } catch (IllegalStateException | IOException e) {
-        e.printStackTrace();
-      }
-    }
-    this.user = user;
+        if(fileImage.isEmpty()) {
+                user.setImage(oldImg);
+                dao.save(user);
+        } else {
+            String fileName = fileImage.getOriginalFilename();
+            String uploadDirectory = "static/admin/img/";
+            try {
+                Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
+                fileImage.transferTo(path.resolve(fileName).toFile());
+                System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
+                user.setImage(fileName);
+                isSuccess = true;
+                dao.save(user);
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        } 
+         this.user = user;
     return "redirect:/admin/users";
 
   }

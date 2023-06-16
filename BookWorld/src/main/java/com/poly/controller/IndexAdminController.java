@@ -11,8 +11,6 @@ import com.poly.service.SessionService;
 @Controller
 @RequestMapping("/admin")
 public class IndexAdminController {
-    @Autowired
-    SessionService session;
 
     @RequestMapping("/index")
     public String index(Model model) {
