@@ -1,6 +1,6 @@
 
 
-<header id="header" class="header" th:unless="${isAdmin}">
+<header id="header" class="header"  th:if="${session.user == null || session.user.admin==false }" >
     <div class="header__top">
         <div class="container">
             <div class="row">

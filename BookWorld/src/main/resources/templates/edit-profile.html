@@ -127,11 +127,11 @@
                                     </div>
                                 </div>
 
-
+                                     
+                               
                                 <div class="cardbtn">
-                                    <button class="btn btn-primary">Lưu</button>
-                                    
-
+                                    <a class="btn btn-primary" th:href="@{/admin/index}" th:if="${isAdmin}" >Quay Lại</a>
+                                    <button class="btn btn-primary">Lưu</button>                                                               
                                     <a class="btnCP" th:href="@{/account/change-password}">Đổi Mật Khẩu</a>
                                 </div>
                             </form>
