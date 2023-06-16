@@ -37,7 +37,7 @@
                                             class="fa-solid fa-thumbs-down"></i></a></li>
                                 <li><a href="" data-bs-toggle="modal" th:data-bs-target="'#modal_'+${item.book.id}"><i
                                             class="fa-solid fa-share"></i></a></li>
-                                <li th:if="${item.book.status == 1}" ><a th:href="@{/cart/add/__${item.id}__}"><i class="fa fa-shopping-cart"></i></a>
+                                <li th:if="${item.book.status == 1}" ><a th:href="@{/cart/add/__${item.book.id}__}"><i class="fa fa-shopping-cart"></i></a>
                                 </li>
                             </ul>
                         </div>
