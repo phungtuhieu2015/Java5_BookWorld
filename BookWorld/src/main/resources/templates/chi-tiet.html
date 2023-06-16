@@ -85,17 +85,14 @@
 
         <!--  -->
         <div class="product-rating">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star-half-alt"></i>
+          <label style="color: black; font-weight: 900;">Mô tả:</label>
+          <span th:text="${book.description}"></span>
           <span>4.7(21)</span>
         </div>
         <!--  -->
         <div class="khung">
           <span class="price" th:text="${book.price}+ ' VNĐ'"></span>
-          <span class="price-old">90.000&nbsp;VNĐ</span>
+          <!-- <span class="price-old">90.000&nbsp;VNĐ</span> -->
         </div>
         <!-- -->
 
