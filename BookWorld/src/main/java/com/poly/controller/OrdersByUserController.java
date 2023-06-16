@@ -1,6 +1,7 @@
 package com.poly.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.poly.dao.BookDAO;
 import com.poly.dao.OrderDAO;
+import com.poly.model.Book;
 import com.poly.model.Order;
+import com.poly.model.OrderDetail;
 import com.poly.model.StatusOrder;
 import com.poly.model.User;
 import com.poly.service.SessionService;
@@ -24,6 +28,8 @@ import com.poly.service.SessionService;
 public class OrdersByUserController {
     @Autowired
     OrderDAO dao;
+    @Autowired
+    BookDAO daoBook;
     @Autowired
     SessionService session;
     boolean isError = false;
@@ -56,6 +62,12 @@ public class OrdersByUserController {
     public String cancel(Order currentOrder,Model model,@RequestParam("reason") Optional<String> reason) {
         User user = session.get("user");
         Order order = dao.findById(currentOrder.getId()).get();
+        List<OrderDetail> listDet =  order.getOrderDetails();
+        for (OrderDetail orderDetail : listDet) {
+            Book book = orderDetail.getBook();
+            book.setQuantity(book.getQuantity() + orderDetail.getQuantity());
+            daoBook.save(book);
+        }
         if(order.getStatus() == statusOrder.PENDING) {
             if(currentOrder.getCancellationReason() == null) {
                 isError = true;
