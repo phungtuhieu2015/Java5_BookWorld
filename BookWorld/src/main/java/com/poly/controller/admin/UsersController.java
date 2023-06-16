@@ -27,6 +27,7 @@ import com.poly.controller.IndexController;
 import com.poly.dao.UserDAO;
 import com.poly.model.Book;
 import com.poly.model.User;
+import com.poly.service.CookieService;
 import com.poly.service.SessionService;
 
 import io.micrometer.common.util.StringUtils;
@@ -38,7 +39,8 @@ import jakarta.validation.Valid;
 public class UsersController {
 
   Boolean isSuccess = false;
-
+  @Autowired
+  CookieService cookieService;
   String oldImg;
   @Autowired
   UserDAO dao;
@@ -88,14 +90,14 @@ public class UsersController {
 
     Pageable pageable;
 
-        if(field.isPresent()){
-              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("username") ); 
-              pageable = PageRequest.of(p.orElse(0), 5 ,sort);
-              session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
-        }else{
-             pageable = PageRequest.of(p.orElse(0), 5 );
-        }
+    if (field.isPresent()) {
+      Sort.Direction direction = (Sort.Direction) session.get("currentDirection");
+      Sort sort = Sort.by((direction == Direction.ASC ? Direction.DESC : Direction.ASC), field.orElse("username"));
+      pageable = PageRequest.of(p.orElse(0), 5, sort);
+      session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
+    } else {
+      pageable = PageRequest.of(p.orElse(0), 5);
+    }
     Page<User> page = dao.findByAdmin(false, pageable);
     model.addAttribute("page", page);
     indexController.checkUsers(model);
@@ -127,8 +129,6 @@ public class UsersController {
       model.addAttribute("page", page);
       return "admin/index-admin";
     }
-
-    indexController.checkUsers(model);
     if (fileImage.isEmpty()) {
       user.setImage(oldImg);
       dao.save(user);
@@ -152,11 +152,13 @@ public class UsersController {
   }
 
   @RequestMapping("/users/reset")
-  public String reset(Model model) {
+  public String reset() {
     this.user = new User();
     form = true;
     isEdit = false;
     return "redirect:/admin/users";
   }
+
+   
 
 }
