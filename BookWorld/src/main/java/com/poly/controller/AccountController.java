@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.poly.dao.CartDAO;
 import com.poly.dao.UserDAO;
+import com.poly.model.Cart;
 import com.poly.model.User;
 import com.poly.service.CookieService;
 import com.poly.service.MailerServiceImpl;
 import com.poly.service.SessionService;
+import com.poly.service.ShoppingCartService;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +38,8 @@ import jakarta.validation.Valid;
 public class AccountController {
     @Autowired
     UserDAO dao;
+    @Autowired
+    ShoppingCartService cart;
     boolean isAdmin = false;
     String oldImg;
 
@@ -91,7 +96,8 @@ public class AccountController {
                         return "redirect:/admin/index";
                     } else {
                         session.set("user", user2);
-
+                        session.set("cartTotal", cart.getTotal());
+                         session.set("cartSize", user2.getCarts().size());
                         return "redirect:/index";
                     }
 

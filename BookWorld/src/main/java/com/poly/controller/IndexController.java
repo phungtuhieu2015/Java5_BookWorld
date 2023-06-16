@@ -22,6 +22,7 @@ import com.poly.dao.CategoryDAO;
 import com.poly.model.Book;
 import com.poly.model.Category;
 import com.poly.model.MailInfo;
+import com.poly.model.StatusBook;
 import com.poly.model.User;
 import com.poly.service.MailerServiceImpl;
 import com.poly.service.SessionService;
@@ -47,7 +48,7 @@ public class IndexController {
     @RequestMapping("/index")
     public String index(Model model, @RequestParam("p") Optional<Integer> p) {
         Pageable pageable = PageRequest.of(p.orElse(0), 16);
-        Page page = dao.findAll(pageable);
+        Page page = dao.findByStatusNot(StatusBook.NOTAVAILABLE,pageable);
         model.addAttribute("page", page);
 
         checkUsers(model);

@@ -28,7 +28,7 @@
             <div class="row featured__filter">
 
                 <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="item :${page.content}">
-                    <div class="featured__item">
+                    <div class="featured__item" >
                         <div class="featured__item__pic set-bg">
                             <a th:href="@{/chitiet/{bookId}(bookId=${item.book.id})}"><img
                                     th:src="@{/assets/img/__${item.book.image}__}" alt=""></a>
@@ -37,16 +37,20 @@
                                             class="fa-solid fa-thumbs-down"></i></a></li>
                                 <li><a href="" data-bs-toggle="modal" th:data-bs-target="'#modal_'+${item.book.id}"><i
                                             class="fa-solid fa-share"></i></a></li>
-                                <li><a th:href="@{/bookworld/giohang}"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li th:if="${item.book.status == 1}" ><a th:href="@{/cart/add/__${item.id}__}"><i class="fa fa-shopping-cart"></i></a>
+                                </li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
                             <h6><a th:href="@{/chitiet/{bookId}(bookId=${item.book.id})}"
                                     th:text="${item.book.title}"></a></h6>
-                            <h4 th:text="${item.book.price} + ' VNĐ'"></h4>
-
-
-
+                                    <div class="row">
+                                        <div class="col-12"><span style="color: red; font-size: 15px;" th:text="${item.book.price}  +' VNĐ'"></span></div>
+                                        <div class="col-12">
+                                            <span th:if="${item.book.status == 0}"  style="color: rgb(95, 5, 5); font-size: 10px;">Hết hàng</span>
+                                            <span th:if="${item.book.status == 2}"  style="color: rgb(95, 5, 5); font-size: 12px;">Ngừng kinh doanh</span>
+                                        </div>
+                                    </div>
                         </div>
                         <div class="ribben">
                             <p>NEW</p>

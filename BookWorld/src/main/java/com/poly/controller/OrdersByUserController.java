@@ -69,9 +69,6 @@ public class OrdersByUserController {
             }
                
         }
-        Pageable pageable = PageRequest.of(0, 5);
-        Page page = dao.findByUser(user, pageable);
-        model.addAttribute("page",page);
         return "redirect:/user/orders";
     }
 }

@@ -24,7 +24,7 @@ public interface BookDAO extends JpaRepository<Book, String> {
     + " GROUP BY od.book.title, c.categoryName"
     + " ORDER BY COUNT(od.book) DESC")
     Page getSoldBooks(Pageable pageable);
-
+    Page findByStatusNot(Integer status,Pageable pageable);
 
     // Page findByCategory(Category category ,Pageable pageable);
 
