@@ -1,10 +1,9 @@
 package com.poly.controller.admin;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Date;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +16,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 import com.poly.dao.UserDAO;
-import com.poly.model.Book;
+
 import com.poly.model.User;
 import com.poly.service.SessionService;
 
-import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 
@@ -51,7 +49,8 @@ public class UsersController {
   User user = new User();
 
   @RequestMapping("/users")
-  public String Users(Model model, @RequestParam("p") Optional<Integer> p,@RequestParam("field") Optional<String> field) {
+  public String Users(Model model, @RequestParam("p") Optional<Integer> p,
+      @RequestParam("field") Optional<String> field) {
     model.addAttribute("pageName", "users user");
     if (p.isPresent()) {
       // check khi bấm phân trang khi đang sửa
@@ -73,7 +72,7 @@ public class UsersController {
       user = new User();
     }
     if (isSuccess) {
-      model.addAttribute("message",   "Update Thành công!");
+      model.addAttribute("message", "Update Thành công!");
     }
     isSuccess = false;
     model.addAttribute("form", form);
@@ -82,14 +81,14 @@ public class UsersController {
 
     Pageable pageable;
 
-        if(field.isPresent()){
-              Sort.Direction direction = (Sort.Direction) session.get("currentDirection") ;
-              Sort sort = Sort.by( (direction == Direction.ASC ?  Direction.DESC : Direction.ASC) , field.orElse("username") ); 
-              pageable = PageRequest.of(p.orElse(0), 5 ,sort);
-              session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
-        }else{
-             pageable = PageRequest.of(p.orElse(0), 5 );
-        }
+    if (field.isPresent()) {
+      Sort.Direction direction = (Sort.Direction) session.get("currentDirection");
+      Sort sort = Sort.by((direction == Direction.ASC ? Direction.DESC : Direction.ASC), field.orElse("username"));
+      pageable = PageRequest.of(p.orElse(0), 5, sort);
+      session.set("currentDirection", sort.getOrderFor(field.orElse("username")).getDirection());
+    } else {
+      pageable = PageRequest.of(p.orElse(0), 5);
+    }
     Page<User> page = dao.findByAdmin(false, pageable);
     model.addAttribute("page", page);
 
@@ -98,7 +97,7 @@ public class UsersController {
 
   @RequestMapping("/users/edit/{username}")
   public String edit(@PathVariable("username") String username) {
-    this.oldImg =this.user.getImage();
+    this.oldImg = this.user.getImage();
     form = true;
     isEdit = true;
     user = dao.findById(username).get();
@@ -106,7 +105,8 @@ public class UsersController {
   }
 
   @RequestMapping("/users/update")
-  public String update(@Valid User user, BindingResult result, Model model, @RequestParam("fileImage") MultipartFile fileImage)  {
+  public String update(@Valid User user, BindingResult result, Model model,
+      @RequestParam("fileImage") MultipartFile fileImage) {
     if (result.hasErrors()) {
 
       isSuccess = false;
@@ -114,31 +114,31 @@ public class UsersController {
       model.addAttribute("pageName", "users user");
       model.addAttribute("form", false);
       model.addAttribute("isEdit", true);
-      
+
       Pageable pageable = PageRequest.of(p.orElse(0), 5);
       Page<User> page = dao.findAll(pageable);
       model.addAttribute("page", page);
       return "admin/index-admin";
     }
 
-        if(fileImage.isEmpty()) {
-                user.setImage(oldImg);
-                dao.save(user);
-        } else {
-            String fileName = fileImage.getOriginalFilename();
-            String uploadDirectory = "static/admin/img/";
-            try {
-                Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
-                fileImage.transferTo(path.resolve(fileName).toFile());
-                System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
-                user.setImage(fileName);
-                isSuccess = true;
-                dao.save(user);
-            } catch (IllegalStateException | IOException e) {
-                e.printStackTrace();
-            }
-        } 
-         this.user = user;
+    if (fileImage.isEmpty()) {
+      user.setImage(oldImg);
+      dao.save(user);
+    } else {
+      String fileName = fileImage.getOriginalFilename();
+      String uploadDirectory = "static/admin/img/";
+      try {
+        Path path = Paths.get(new ClassPathResource(uploadDirectory).getURI());
+        fileImage.transferTo(path.resolve(fileName).toFile());
+        System.out.println(path.resolve(fileName).toFile().getAbsolutePath());
+        user.setImage(fileName);
+        isSuccess = true;
+        dao.save(user);
+      } catch (IllegalStateException | IOException e) {
+        e.printStackTrace();
+      }
+    }
+    this.user = user;
     return "redirect:/admin/users";
 
   }
